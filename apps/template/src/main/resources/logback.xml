@@ -1,0 +1,35 @@
+<!-- logback.xml -->
+<configuration>
+    <springProfile name="local">
+        <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    </springProfile>
+
+    <springProfile name="prod">
+        <appender name="jsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="jsonConsoleAppender"/>
+        </root>
+    </springProfile>
+</configuration>
+
+<!--
+<configuration>
+<appender name="jsonConsoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+        <includeCallerData>true</includeCallerData>
+        <jsonGeneratorDecorator class="net.logstash.logback.decorate.CompositeJsonGeneratorDecorator">
+            <decorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/>
+            <decorator class="net.logstash.logback.mask.MaskingJsonGeneratorDecorator">
+                <defaultMask>XXXX</defaultMask>
+                <path>password</path>
+            </decorator>
+        </jsonGeneratorDecorator>
+    </encoder>
+</appender>
+
+<root level="INFO">
+    <appender-ref ref="jsonConsoleAppender"/>
+</root>
+</configuration>-->

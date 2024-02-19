@@ -1,0 +1,347 @@
+{
+	"info": {
+		"_postman_id": "4abc2a1d-18ce-4b80-9204-b9913a550a5b",
+		"name": "Kinect-Config",
+		"description": "# ⛓️ Get started here\n\nPostman allows you to test your APIs using simple Javascript code. You can evaluate your response body, headers, cookies, and more using the [ChaiJS BDD](https://www.chaijs.com/api/bdd/) syntax.\n\nThis template guides you through the process of setting up an integration test to ensure that all individual components of an API function together seamlessly.\n\nThe API under test in this collection includes three endpoints for registering and receiving a token, accessing your unique generated name, and unregistering a token:\n\n- POST `/register`\n- POST `/unregister`\n- GET `/my-name`\n    \n\nBy setting up requests in the order of the operation, we can test the flow of data to and from the endpoints and ensure they work together as expected. We also verify that the data persists between requests on the back end.\n\n## 🔖 **How to use this template**\n\n**Step 1:** Check out the requests' documentation to learn more about -\n\n- what each request is meant to do.\n- the tests we've added against each one.\n    \n\n**Step 2:** Run this collection by clicking on \"Run\".\n\n<img src=\"https://content.pstmn.io/84019b0f-69c8-4c5f-98b9-2c90a6f9a0b1/Y29sbGVjdGlvbi1ydW5uZXItYnV0dG9uLmpwZWc=\" width=\"266\" height=\"103\">\n\n**Step 3:** To customize this template, replace the request URLs with your API endpoints and add or edit the tests if needed.\n\n## ℹ️ Resources\n\n[Scripting in Postman](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/)\n\n[Test script examples](https://learning.postman.com/docs/writing-scripts/script-references/test-examples/)\n\n[Postman Sandbox API reference](https://learning.postman.com/docs/sending-requests/grpc/postman-sandbox-api/#writing-assertions)\n\n[Using the Collection Runner](https://learning.postman.com/docs/collections/running-collections/intro-to-collection-runs/)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1946650"
+	},
+	"item": [
+		{
+			"name": "Create-Journey",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"A journey is created\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('journeyName')",
+							"    pm.expect(pm.response.json().journeyName).to.be.a('string')",
+							"    // Set the collection-scope \"token\" variable to the token received from the API",
+							"    // This lets us use it in other requests",
+							"    // pm.collectionVariables.set('token', pm.response.json().token)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"journeyId\": \"{{$guid}}\",\n    \"journeyName\": \"{{$randomBs}}\",\n    \"journeyPaths\": [\n        {\n            \"seqId\": 1,\n            \"pathCondition\": \"customer.stats='new'\",\n            \"messageConfigs\": [\n                {\n                    \"eventName\": \"{{$randomTransactionType}}\",\n                    \"messageName\": \"{{$randomBsNoun}}\",\n                    \"messageVersion\": 1,\n                    \"messageCondition\": \"customer.status='new' and customer.email != null\",\n                    \"messageStatus\": \"DRAFT\",\n                    \"emailConfig\": [\n                        {\n                            \"targetSystem\": \"AZURE_COMMUNICATION_SERVICE\",\n                            \"emailHeaders\": null,\n                            \"senderAddress\": \"{{$randomEmail}}\",\n                            \"subject\": \"Welcome to Kinect Messaging\",\n                            \"toRecipients\": [\n                                {\n                                    \"address\": \"{{$randomEmail}}\"\n                                }\n                            ],\n                            \"ccRecipients\": null,\n                            \"bccRecipients\": null,\n                            \"replyTo\": null,\n                            \"attachments\": null,\n                            \"personalizationData\": null,\n                            \"templateConfig\": {\n                                \"template_1\": \"text\",\n                                \"template_2\": \"html\"\n                            }\n                        }\n                    ]\n                }\n            ]\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{kinect-config-baseUrl}}/{{kinect-config-journey-endpoint}}",
+					"host": [
+						"{{kinect-config-baseUrl}}"
+					],
+					"path": [
+						"{{kinect-config-journey-endpoint}}"
+					]
+				},
+				"description": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection."
+			},
+			"response": []
+		},
+		{
+			"name": "Create-Message",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"A journey is created\", () => {",
+							"    pm.expect(pm.response.json()).to.have.property('messageName')",
+							"    pm.expect(pm.response.json().journeyName).to.be.a('string')",
+							"    // Set the collection-scope \"token\" variable to the token received from the API",
+							"    // This lets us use it in other requests",
+							"    // pm.collectionVariables.set('token', pm.response.json().token)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const UTCDate = (new Date()).toISOString();",
+							"pm.collectionVariables.set(\"current_time\", UTCDate);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Transaction-Id",
+						"value": "{{$guid}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"messageId\": \"{{$guid}}\",\n    \"messageName\": \"Customer Created\",\n    \"messageVersion\": 2,\n    \"messageCondition\": \"customer.status='new' and customer.email != null\",\n    \"messageStatus\": \"DEV\",\n    \"emailConfig\": [\n        {\n            \"targetSystem\": \"AZURE_COMMUNICATION_SERVICE\",\n            \"emailHeaders\": null,\n            \"senderAddress\": \"default.senderEmail\",\n            \"subject\": \"Welcome to Kinect Messaging\",\n            \"toRecipients\": [\n                {\n                    \"firstName\": \"customer.firstName\",\n                    \"lastName\": \"customer.lastName\",\n                    \"emailAddress\": \"customer.email\"\n                }\n            ],\n            \"ccRecipients\": null,\n            \"bccRecipients\": null,\n            \"replyTo\": null,\n            \"attachments\": null,\n            \"personalizationData\": null,\n            \"templateConfig\": {\n                \"template_1\": \"text\",\n                \"template_2\": \"html\"\n            }\n        }\n    ],\n    \"journeyId\": \"journey_1\",\n    \"auditInfo\": {\n        \"createdBy\": \"Unit Test 1\",\n        \"createdTime\": \"{{current_time}}\",\n        \"updatedBy\": \"Unit Test 1\",\n        \"updatedTime\": \"{{current_time}}\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{kinect-config-baseUrl}}/{{kinect-config-message-endpoint}}",
+					"host": [
+						"{{kinect-config-baseUrl}}"
+					],
+					"path": [
+						"{{kinect-config-message-endpoint}}"
+					]
+				},
+				"description": "This returns a `token` that you can use to retrieve information later on.\n\nWe have included a test to confirm if a token is returned. We have also added test scripts to copy the token to the `token` collection variable. This makes it easy for us to reuse this token in other requests in the collection."
+			},
+			"response": []
+		},
+		{
+			"name": "Get All-Journey",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"All journeys configs are returned\", () => {",
+							"    let jsonData = pm.response.json()",
+							"    ",
+							"    pm.expect(jsonData[0]).to.have.property('journeyName');",
+							"    pm.expect(jsonData[0].journeyName).to.be.a('string');",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{kinect-config-baseUrl}}/{{kinect-config-journey-endpoint}}",
+					"host": [
+						"{{kinect-config-baseUrl}}"
+					],
+					"path": [
+						"{{kinect-config-journey-endpoint}}"
+					]
+				},
+				"description": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned."
+			},
+			"response": []
+		},
+		{
+			"name": "Get All-Message",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"All message configs are returned\", () => {",
+							"    let jsonData = pm.response.json()",
+							"    ",
+							"    pm.expect(jsonData[0]).to.have.property('messageName');",
+							"    pm.expect(jsonData[0].journeyName).to.be.a('string');",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Transaction-Id",
+						"value": "{{$guid}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{kinect-config-baseUrl}}/{{kinect-config-message-endpoint}}",
+					"host": [
+						"{{kinect-config-baseUrl}}"
+					],
+					"path": [
+						"{{kinect-config-message-endpoint}}"
+					]
+				},
+				"description": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned."
+			},
+			"response": []
+		},
+		{
+			"name": "Get By Id-Journey",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"All journeys configs are returned\", () => {",
+							"    let jsonData = pm.response.json()",
+							"    ",
+							"    pm.expect(jsonData).to.have.property('journeyName');",
+							"    pm.expect(jsonData.journeyName).to.be.a('string');",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{kinect-config-baseUrl}}/{{kinect-config-journey-endpoint}}/c25823ff-b6a7-4c3e-9f16-b8adccbd00f6",
+					"host": [
+						"{{kinect-config-baseUrl}}"
+					],
+					"path": [
+						"{{kinect-config-journey-endpoint}}",
+						"c25823ff-b6a7-4c3e-9f16-b8adccbd00f6"
+					]
+				},
+				"description": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned."
+			},
+			"response": []
+		},
+		{
+			"name": "Get By Id-Message",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"All message configs are returned\", () => {",
+							"    let jsonData = pm.response.json()",
+							"    ",
+							"    pm.expect(jsonData).to.have.property('messageName');",
+							"    pm.expect(jsonData.messageName).to.be.a('string');",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{kinect-config-baseUrl}}/{{kinect-config-message-endpoint}}/76568c26-0aeb-4543-a85b-083984f4b04a",
+					"host": [
+						"{{kinect-config-baseUrl}}"
+					],
+					"path": [
+						"{{kinect-config-message-endpoint}}",
+						"76568c26-0aeb-4543-a85b-083984f4b04a"
+					]
+				},
+				"description": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned."
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.request.headers.add({",
+					"    key: \"X-Transaction-Id\",",
+					"    value: \"{{$guid}}\"",
+					"})"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "kinect-config-journey-endpoint",
+			"value": "kinect/messaging/config/journey"
+		},
+		{
+			"key": "kinect-config-message-endpoint",
+			"value": "kinect/messaging/config/message"
+		},
+		{
+			"key": "current_time",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
