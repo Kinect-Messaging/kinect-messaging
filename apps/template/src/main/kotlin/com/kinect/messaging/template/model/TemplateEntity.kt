@@ -1,18 +1,20 @@
 package com.kinect.messaging.template.model
 
-import com.azure.spring.data.cosmos.core.mapping.Container
-import com.azure.spring.data.cosmos.core.mapping.PartitionKey
+import com.kinect.messaging.libs.model.Audit
 import com.kinect.messaging.libs.model.TemplateLanguage
 import com.kinect.messaging.libs.model.TemplateType
 import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.index.Indexed
+import org.springframework.data.mongodb.core.mapping.Document
 
-@Container(containerName = "templates")
+@Document(collection = "templates")
 data class TemplateEntity(
     @Id
     val templateId: String,
-    @PartitionKey
+    @Indexed
     val templateName: String,
     val templateType: TemplateType = TemplateType.CONTROL,
     val templateLanguage: TemplateLanguage = TemplateLanguage.EN,
-    val templateContent: String
+    val templateContent: String,
+    val auditInfo: Audit
 )

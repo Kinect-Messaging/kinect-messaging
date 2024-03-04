@@ -1,9 +1,10 @@
 package com.kinect.messaging.config.controller
 
-import com.azure.spring.data.cosmos.core.query.CosmosPageRequest
 import com.kinect.messaging.config.model.EnvEntity
 import com.kinect.messaging.config.repository.EnvRepository
-import com.kinect.messaging.libs.model.*
+import com.kinect.messaging.libs.model.ChangeLog
+import com.kinect.messaging.libs.model.EnvConfig
+import com.kinect.messaging.libs.model.EnvNames
 import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.any
 import org.mockito.BDDMockito.given
@@ -13,11 +14,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 import java.util.*
 
-@AutoConfigureMockMvc
 @AutoConfigureWebTestClient
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class EnvControllerTest {
@@ -138,17 +140,17 @@ class EnvControllerTest {
         val pageNo = 1
         val pageSize = 1
         val sortBy = "envName"
-        val pagingOptions = CosmosPageRequest(pageNo, pageSize, sortBy)
+        val sortOrder = Sort.Direction.ASC
 
         // mock the database response
         val mockData = PageImpl(
             envEntity
         )
-        given(envRepository.findAll(any(CosmosPageRequest::class.java))).willReturn(mockData)
+        given(envRepository.findAll(any(Pageable::class.java))).willReturn(mockData)
 
         // when API is invoked, then return valid response
         webTestClient.get()
-            .uri("$baseUrl?pageNo=$pageNo&pageSize=$pageSize&sortBy=$sortBy")
+            .uri("$baseUrl?_start=$pageNo&_end=$pageSize&_sort=$sortBy&_order=$sortOrder")
             .header("X-Transaction-Id", UUID.randomUUID().toString())
             .exchange()
             .expectStatus().isOk

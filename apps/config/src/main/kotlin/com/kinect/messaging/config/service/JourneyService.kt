@@ -1,6 +1,5 @@
 package com.kinect.messaging.config.service
 
-import com.azure.spring.data.cosmos.core.query.CosmosPageRequest
 import com.kinect.messaging.config.model.JourneyEntity
 import com.kinect.messaging.config.repository.JourneyRepository
 import com.kinect.messaging.libs.common.ErrorConstants
@@ -8,6 +7,7 @@ import com.kinect.messaging.libs.exception.InvalidInputException
 import com.kinect.messaging.libs.model.JourneyConfig
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
@@ -33,19 +33,20 @@ class JourneyService {
         return result
     }
 
-    fun findJourneys(pageNo: Int = 0, pageSize: Int = 20, sortBy: String = "journeyId"): List<JourneyConfig>?{
-        val pageOption = CosmosPageRequest(pageNo, pageSize, null, Sort.by(sortBy))
+    fun findJourneys(pageNo: Int, pageSize: Int, sortBy: String, sortOrder: Sort.Direction): List<JourneyConfig>?{
+        val pageOption = PageRequest.of(pageNo, pageSize, sortOrder, sortBy)
         val pageResult = journeyRepository.findAll(pageOption)
         var dbResult = pageResult.content
         val result = mutableListOf<JourneyConfig>()
         if (pageResult.isEmpty){
             throw InvalidInputException("${ErrorConstants.NO_DATA_FOUND_MESSAGE}, page-number - $pageNo, page-size - $pageSize, sort-by - $sortBy")
         }
-        while (pageResult.hasNext()) {
+        // no need to iterate all pages
+        /*while (pageResult.hasNext()) {
             val nextPageable = pageResult.nextPageable()
             val page = journeyRepository.findAll(nextPageable)
             dbResult = page.content
-        }
+        }*/
         dbResult.forEach {
             result.add(it.toJourneyConfig())
         }

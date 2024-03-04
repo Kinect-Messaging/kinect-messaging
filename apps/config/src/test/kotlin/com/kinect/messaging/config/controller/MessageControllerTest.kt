@@ -1,6 +1,5 @@
 package com.kinect.messaging.config.controller
 
-import com.azure.spring.data.cosmos.core.query.CosmosPageRequest
 import com.kinect.messaging.config.model.MessageEntity
 import com.kinect.messaging.config.repository.MessageRepository
 import com.kinect.messaging.libs.model.*
@@ -13,10 +12,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 import java.util.*
-import javax.mail.internet.InternetAddress
 
 @AutoConfigureMockMvc
 @AutoConfigureWebTestClient
@@ -62,7 +61,7 @@ class MessageControllerTest {
         )
     )
 
-    val messageEntity = mutableListOf(
+    val messageEntities = mutableListOf(
         MessageEntity(
             messageId = "1",
             messageName = "Customer Created",
@@ -116,7 +115,7 @@ class MessageControllerTest {
         val givenInput = messageConfig[0]
 
         // mock the database response
-        val mockData = messageEntity[0]
+        val mockData = messageEntities[0]
 
         given(messageRepository.save(mockData)).willReturn(mockData)
 
@@ -140,7 +139,7 @@ class MessageControllerTest {
         val givenInput = "1"
 
         // mock the database response
-        val mockData = messageEntity[0]
+        val mockData = messageEntities[0]
         given(messageRepository.findById(givenInput)).willReturn(Optional.of(mockData))
 
         //when API is invoked, then valid response is returned
@@ -161,17 +160,16 @@ class MessageControllerTest {
         val pageNo = 1
         val pageSize = 1
         val sortBy = "messageName"
-        val pagingOptions = CosmosPageRequest(pageNo, pageSize, sortBy)
 
         // mock the database response
         val mockData = PageImpl(
-            messageEntity
+            messageEntities
         )
-        given(messageRepository.findAll(any(CosmosPageRequest::class.java))).willReturn(mockData)
+        given(messageRepository.findAll(any(Pageable::class.java))).willReturn(mockData)
 
         // when API is invoked, then return valid response
         webTestClient.get()
-            .uri("$baseUrl?pageNo=$pageNo&pageSize=$pageSize&sortBy=$sortBy")
+            .uri("$baseUrl?_start=$pageNo&_end=$pageSize&_sort=$sortBy&_order=ASC")
             .header("X-Transaction-Id", UUID.randomUUID().toString())
             .exchange()
             .expectStatus().isOk

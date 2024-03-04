@@ -1,6 +1,5 @@
 package com.kinect.messaging.config.controller
 
-import com.azure.spring.data.cosmos.core.query.CosmosPageRequest
 import com.kinect.messaging.config.model.JourneyEntity
 import com.kinect.messaging.config.repository.JourneyRepository
 import com.kinect.messaging.libs.model.Audit
@@ -15,11 +14,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 import java.util.*
 
-@AutoConfigureMockMvc
 @AutoConfigureWebTestClient
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class JourneyControllerTest {
@@ -32,35 +31,43 @@ class JourneyControllerTest {
     @MockBean
     lateinit var journeyRepository: JourneyRepository
 
-    /*val messageConfig = mutableListOf(
-        MessageConfig(
-            messageName = "Customer Created",
-            messageCondition = "customer.status='new' and customer.email != null",
-            messageStatus = MessageStatus.DRAFT,
-            messageVersion = 1,
-            emailConfig = mutableListOf(
-                EmailConfig(
-                    targetSystem = TargetSystem.AZURE_COMMUNICATION_SERVICE,
-                    subject = "Welcome to Kinect Messaging",
-                    senderAddress = "welcome@kinectmessaging.com",
-                    toRecipients = mutableListOf(
-                        InternetAddress("test@kinectmessaging.com")
-                    ),
-                    templateConfig = mutableMapOf(Pair("template_1", "text"), Pair("template_2", "html")),
-                    emailHeaders = null
-                )
-            )
-        )
-    )*/
-
-    val messageConfig = mutableMapOf(Pair("1", "Customer Created"), Pair("2", "Customer Welcome"))
+    private final val messageConfig = mutableMapOf(Pair("1", "Customer Created"), Pair("2", "Customer Welcome"))
 
 
-    val auditInfo = Audit(
+    private final val auditInfo = Audit(
         createdBy = "Unit Test 1",
         createdTime = Calendar.getInstance().time.toString(),
         updatedBy = "Unit Test 1",
         updatedTime = Calendar.getInstance().time.toString()
+    )
+
+    val journeyEntities = mutableListOf(
+        JourneyEntity(
+            journeyId = "1",
+            journeyName = "Welcome Customer Journey",
+            journeySteps = mutableListOf(
+                JourneySteps(
+                    seqId = 1,
+                    eventName = "CustomerCreated",
+                    stepCondition = "customer.stats='new'",
+                    messageConfigs = messageConfig
+                )
+            ),
+            auditInfo = auditInfo
+        ),
+        JourneyEntity(
+            journeyId = "2",
+            journeyName = "Customer Subscription Journey",
+            journeySteps = mutableListOf(
+                JourneySteps(
+                    seqId = 1,
+                    eventName = "CustomerCreated",
+                    stepCondition = "customer.subscriptions.size > 0",
+                    messageConfigs = messageConfig
+                )
+            ),
+            auditInfo = auditInfo
+        )
     )
 
     @Test
@@ -81,19 +88,7 @@ class JourneyControllerTest {
         )
 
         // mock the database response
-        val mockData = JourneyEntity(
-            journeyId = "1",
-            journeyName = "Welcome Customer Journey",
-            journeySteps = mutableListOf(
-                JourneySteps(
-                    seqId = 1,
-                    eventName = "CustomerCreated",
-                    stepCondition = "customer.stats='new'",
-                    messageConfigs = messageConfig
-                )
-            ),
-            auditInfo = auditInfo
-        )
+        val mockData = journeyEntities[0]
         given(journeyRepository.save(mockData)).willReturn(mockData)
 
         //when API is invoked, then valid response is returned
@@ -116,19 +111,7 @@ class JourneyControllerTest {
         val givenInput = "1"
 
         // mock the database response
-        val mockData = JourneyEntity(
-            journeyId = "1",
-            journeyName = "Welcome Customer Journey",
-            journeySteps = mutableListOf(
-                JourneySteps(
-                    seqId = 1,
-                    eventName = "CustomerCreated",
-                    stepCondition = "customer.stats='new'",
-                    messageConfigs = messageConfig
-                )
-            ),
-            auditInfo = auditInfo
-        )
+        val mockData = journeyEntities[0]
         given(journeyRepository.findById(givenInput)).willReturn(Optional.of(mockData))
 
         //when API is invoked, then valid response is returned
@@ -149,44 +132,17 @@ class JourneyControllerTest {
         val pageNo = 1
         val pageSize = 1
         val sortBy = "journeyId"
-        val pagingOptions = CosmosPageRequest(pageNo, pageSize, sortBy)
 
         // mock the database response
+
         val mockData = PageImpl(
-            mutableListOf(
-                JourneyEntity(
-                    journeyId = "1",
-                    journeyName = "Welcome Customer Journey",
-                    journeySteps = mutableListOf(
-                        JourneySteps(
-                            seqId = 1,
-                            eventName = "CustomerCreated",
-                            stepCondition = "customer.stats='new'",
-                            messageConfigs = messageConfig
-                        )
-                    ),
-                    auditInfo = auditInfo
-                ),
-                JourneyEntity(
-                    journeyId = "2",
-                    journeyName = "Customer Subscription Journey",
-                    journeySteps = mutableListOf(
-                        JourneySteps(
-                            seqId = 1,
-                            eventName = "CustomerCreated",
-                            stepCondition = "customer.subscriptions.size > 0",
-                            messageConfigs = messageConfig
-                        )
-                    ),
-                    auditInfo = auditInfo
-                )
-            )
+            journeyEntities
         )
-        given(journeyRepository.findAll(any(CosmosPageRequest::class.java))).willReturn(mockData)
+        given(journeyRepository.findAll(any(Pageable::class.java))).willReturn(mockData)
 
         // when API is invoked, then return valid response
         webTestClient.get()
-            .uri("$baseUrl?pageNo=$pageNo&pageSize=$pageSize&sortBy=$sortBy")
+            .uri("$baseUrl?_start=$pageNo&_end=$pageSize&_sort=$sortBy&_order=ASC")
             .header("X-Transaction-Id", UUID.randomUUID().toString())
             .exchange()
             .expectStatus().isOk

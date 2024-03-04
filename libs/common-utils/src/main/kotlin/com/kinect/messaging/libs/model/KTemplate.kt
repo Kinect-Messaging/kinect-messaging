@@ -9,7 +9,7 @@ data class KTemplate(
     val templateType: TemplateType = CONTROL,
     val templateLanguage: TemplateLanguage = TemplateLanguage.EN,
     val templateContent: String,
-    val auditLog: Audit
+    val auditInfo: Audit
 )
 
 data class TemplatePersonalizationRequest(
