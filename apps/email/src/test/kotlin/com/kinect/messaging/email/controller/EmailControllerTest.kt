@@ -6,6 +6,7 @@ import com.kinect.messaging.libs.model.KMessage
 import com.kinect.messaging.libs.model.TargetSystem
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -22,6 +23,8 @@ class EmailControllerTest {
 
 
     private final val baseUrl = "/kinect/messaging/email"
+
+    @Value("\${app.email.azure.defaults.senderAddress}")
 
     @Autowired
     lateinit var webTestClient: WebTestClient
@@ -43,8 +46,8 @@ class EmailControllerTest {
             deliveryChannel = DeliveryChannel.EMAIL,
             targetSystem = TargetSystem.AZURE_COMMUNICATION_SERVICE,
             emailData = EmailData(
-                textTemplateId = "a53782b1-fbd5-443e-a307-1808cde12462",
-                htmlTemplateId = "\$663149e9-2fcb-4b16-94b8-a5697cbc56b9",
+                textTemplateId = "10ba0d8c-b125-41cb-8fac-03a4be3c8e04",
+                htmlTemplateId = "e498212a-4fba-4cc8-b427-6715f83ddf13",
                 subject = "Unit Test ${Math.random()}",
                 toRecipients = mutableListOf(InternetAddress("rajp.work@gmail.com", "Tester")),
                 senderAddress = "DoNotReply@d78f8366-7323-4a98-8626-6288771825fb.azurecomm.net",

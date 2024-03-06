@@ -9,6 +9,7 @@ import com.kinect.messaging.email.config.TemplateClient
 import com.kinect.messaging.libs.model.KMessage
 import com.kinect.messaging.libs.model.TemplatePersonalizationRequest
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,16 +23,10 @@ class AzureEmailService : EmailService {
 
     private val log = LoggerFactory.getLogger(this::class.java)
 
-    @Value("\${email.azure.defaults.endpoint}")
-    lateinit var endpoint: String
-
-    @Value("\${email.azure.defaults.keyCredential}")
-    lateinit var azureKeyCredential: String
-
-    @Value("\${email.azure.defaults.connectionString}")
+    @Value("\${app.email.azure.connectionString}")
     lateinit var azureConnectionString: String
 
-    @Value("\${email.azure.defaults.senderAddress}")
+    @Value("\${app.email.azure.defaults.senderAddress}")
     lateinit var senderAddress: String
 
     @Value("\${app.feature-flag.send-email}")
@@ -46,13 +41,16 @@ class AzureEmailService : EmailService {
             val ccRecipients = emailData.ccRecipients?.let { mapRecipients(it) }
             val bccRecipients = emailData.bccRecipients?.let { mapRecipients(it) }
             val subject = emailData.subject
-            val templates = templateClient.loadTemplate(
-                TemplatePersonalizationRequest(
-                    textTemplateId = emailData.textTemplateId,
-                    htmlTemplateId = emailData.htmlTemplateId,
-                    personalizationData = emailData.personalizationData
+            val templates = withContext(MDCContext()){
+                templateClient.loadTemplate(
+                    TemplatePersonalizationRequest(
+                        textTemplateId = emailData.textTemplateId,
+                        htmlTemplateId = emailData.htmlTemplateId,
+                        personalizationData = emailData.personalizationData
+                    )
                 )
-            )
+            }
+
             val plainEmailBody = templates?.first { it.templateId == emailData.textTemplateId }?.templateContent
             val htmlEmailMessage = templates?.first { it.templateId == emailData.htmlTemplateId }?.templateContent
 
