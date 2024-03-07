@@ -86,4 +86,11 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/Kinect-Messaging/kinect-messaging/libs/common-utils</url>
+        </repository>
+    </distributionManagement>
 </project>
