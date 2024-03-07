@@ -50,12 +50,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mustache</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.kinect.messaging.libs</groupId>
-            <artifactId>common-utils</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

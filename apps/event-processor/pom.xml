@@ -45,12 +45,6 @@
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-starter-keyvault</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.kinect.messaging.libs</groupId>
-            <artifactId>common-utils</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

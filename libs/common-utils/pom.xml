@@ -11,7 +11,7 @@
 
     <groupId>com.kinect.messaging.libs</groupId>
     <artifactId>common-utils</artifactId>
-    <version>1.0.0</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
