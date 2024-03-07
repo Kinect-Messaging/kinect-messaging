@@ -16,6 +16,8 @@ jobs:
       contents: read
       packages: write
 
+    env:
+      SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17
@@ -23,6 +25,8 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+        cache: 'maven'
+#        cache-dependency-path: 'sub-project/pom.xml' # optional
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
