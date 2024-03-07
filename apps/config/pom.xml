@@ -39,6 +39,10 @@
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.kinect.messaging.libs</groupId>
+            <artifactId>common-utils</artifactId>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
