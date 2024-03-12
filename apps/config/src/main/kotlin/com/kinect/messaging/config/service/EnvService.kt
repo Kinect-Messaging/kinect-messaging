@@ -32,7 +32,7 @@ class EnvService {
     fun findEnvs(pageNo: Int, pageSize: Int, sortBy: String, sortOrder: Sort.Direction): List<EnvConfig>?{
         val pageOption = PageRequest.of(pageNo, pageSize, sortOrder, sortBy)
         val pageResult = envRepository.findAll(pageOption)
-        var dbResult = pageResult.content
+        val dbResult = pageResult.content
         val result = mutableListOf<EnvConfig>()
         if (pageResult.isEmpty){
             throw InvalidInputException("${ErrorConstants.NO_DATA_FOUND_MESSAGE}page-number - $pageNo, page-size - $pageSize, sort-by - $sortBy")
