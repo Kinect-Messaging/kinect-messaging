@@ -92,6 +92,20 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<image>
+						<env>
+							<BP_JVM_VERSION>17</BP_JVM_VERSION>
+						</env>
+					</image>
+					<excludeGroupIds>com.kinect.messaging.libs</excludeGroupIds>
+					<excludes>
+						<exclude>
+							<groupId>com.kinect.messaging.libs</groupId>
+							<artifactId>common-utils</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.jetbrains.kotlin</groupId>
