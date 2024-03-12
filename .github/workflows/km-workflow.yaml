@@ -61,7 +61,7 @@ jobs:
     env:
       # Use docker.io for Docker Hub if empty
       REGISTRY: ghcr.io
-      DOCKER_HOST: ghcr.io
+      DOCKER_HOST: https://ghcr.io
       # github.repository as <account>/<repo>
       IMAGE_NAME: ${{ github.repository }}
     needs:
