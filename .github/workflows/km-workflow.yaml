@@ -103,6 +103,15 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
+      # Extract JAR contents into layered dirs
+      - name: Extract JAR layers
+        id: jar-extract
+        run: |
+          ls -ltr
+          mkdir apps/config/target/extracted
+          java -Djarmode=layertools -jar apps/config/target/*.jar extract --destination apps/config/target/extracted
+
+
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
