@@ -34,16 +34,27 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: deploy to production with artifact
-        uses: azure/spring-apps-deploy@v1
+      - name: Azure CLI Action to deploy to dev with main branch
+        uses: Azure/cli@v2
         with:
-          azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
-          action: Deploy
-          service-name: dev-kinect-spring-services
-          app-name: kinect-config
-          use-staging-deployment: false
-          package: ${{ env.ASC_PACKAGE_PATH }}/apps/config/target/*.jar
-          deployment-name: default
-          runtime-version: Java_17
-          create-new-deployment: true
-          language-framework: Spring Boot
+          inlineScript: |
+            az spring app deploy \
+            --resource-group dev-apps-rg \
+            --service dev-kinect-spring-services \
+            --name kinect-config \
+            --artifact-path ${{ env.ASC_PACKAGE_PATH }}/apps/config/**/*.jar \
+            --runtime-version Java_17 \
+
+#      - name: deploy to production with artifact
+#        uses: azure/spring-apps-deploy@v1
+#        with:
+#          azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
+#          action: Deploy
+#          service-name: dev-kinect-spring-services
+#          app-name: kinect-config
+#          use-staging-deployment: false
+#          package: ${{ env.ASC_PACKAGE_PATH }}/apps/config/target/*.jar
+#          deployment-name: default
+#          runtime-version: Java_17
+#          create-new-deployment: true
+#          language-framework: Spring Boot
