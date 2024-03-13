@@ -23,9 +23,16 @@ jobs:
     permissions:
       contents: read
       packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
 
     env:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
+      # Use docker.io for Docker Hub if empty
+      REGISTRY: ghcr.io
+      # github.repository as <account>/<repo>
+      IMAGE_NAME: ${{ github.repository }}/config
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -45,35 +52,17 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Build with Maven
-        run: mvn -B package --file pom.xml -DskipTests
+        run: | 
+          mvn -B package --file pom.xml -DskipTests
+          cd ${{ env.APP_DIR }}
+          ls -ltr
+          mkdir target/extracted
+          java -Djarmode=layertools -jar target/*.jar extract --destination target/extracted
 
       - name: Publish to GitHub Packages Apache Maven
         run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml -DskipTests
         env:
           GITHUB_TOKEN: ${{ github.token }}
-
-  docker-build:
-    if: ${{ github.ref == 'refs/heads/main' }}
-    needs:
-      - project-build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
-      id-token: write
-
-    env:
-      # Use docker.io for Docker Hub if empty
-      REGISTRY: ghcr.io
-      # github.repository as <account>/<repo>
-      IMAGE_NAME: ${{ github.repository }}/config
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
@@ -106,17 +95,6 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      # Extract JAR contents into layered dirs
-      - name: Extract JAR layers
-        id: jar-extract
-        run: |
-          mvn -B package --file pom.xml -DskipTests
-          cd ${{ env.APP_DIR }}
-          ls -ltr
-          mkdir target/extracted
-          java -Djarmode=layertools -jar target/*.jar extract --destination target/extracted
-
-
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
@@ -144,4 +122,3 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
-
