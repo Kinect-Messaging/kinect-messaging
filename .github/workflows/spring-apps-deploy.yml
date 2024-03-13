@@ -43,5 +43,6 @@ jobs:
           app-name: kinect-config
           use-staging-deployment: false
           package: ${{ env.ASC_PACKAGE_PATH }}/apps/config/target/*.jar
+          deployment-name: default
           create-new-deployment: true
           language-framework: Spring Boot
