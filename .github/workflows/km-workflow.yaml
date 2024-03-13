@@ -101,6 +101,14 @@ jobs:
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
       # environment preparation configurations omitted
+
+      # Login to Azure
+      - name: Login via Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      # Deploy to Azure Spring Apps
       - name: Deploy custom container image
         uses: Azure/spring-apps-deploy@v1
         with:
