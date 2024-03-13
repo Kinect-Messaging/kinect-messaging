@@ -52,17 +52,13 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Build with Maven
-        run: | 
-          mvn -B package --file pom.xml -DskipTests
-          cd ${{ env.APP_DIR }}
-          ls -ltr
-          mkdir target/extracted
-          java -Djarmode=layertools -jar target/*.jar extract --destination target/extracted
+        run: mvn -B package --file pom.xml -DskipTests
 
       - name: Publish to GitHub Packages Apache Maven
         run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml -DskipTests
         env:
           GITHUB_TOKEN: ${{ github.token }}
+
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
@@ -101,7 +97,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v5 # v5.0.0
         with:
-          context: "{{defaultContext}}:apps/config"
+          context: .
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
