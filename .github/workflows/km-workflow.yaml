@@ -53,6 +53,8 @@ jobs:
 
   docker-build:
     if: ${{ github.ref == 'refs/heads/main' }}
+    needs:
+      - project-build
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -107,7 +109,7 @@ jobs:
       - name: Extract JAR layers
         id: jar-extract
         run: |
-          ls -ltr
+          ls -ltr apps/config
           mkdir apps/config/target/extracted
           java -Djarmode=layertools -jar apps/config/target/*.jar extract --destination apps/config/target/extracted
 
