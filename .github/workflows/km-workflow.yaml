@@ -15,6 +15,7 @@ on:
 
 env:
   APP_NAME: config
+  APP_DIR: apps/config
 
 jobs:
   project-build:
@@ -109,9 +110,11 @@ jobs:
       - name: Extract JAR layers
         id: jar-extract
         run: |
-          ls -ltr apps/config
-          mkdir apps/config/target/extracted
-          java -Djarmode=layertools -jar apps/config/target/*.jar extract --destination apps/config/target/extracted
+          cd ${{ env.APP_DIR }}
+          ls -ltr
+          mvn -B package --file pom.xml -DskipTests
+          mkdir target/extracted
+          java -Djarmode=layertools -jar target/*.jar extract --destination target/extracted
 
 
       # Build and push Docker image with Buildx (don't push on PR)
