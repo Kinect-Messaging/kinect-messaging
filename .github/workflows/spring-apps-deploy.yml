@@ -1,4 +1,4 @@
-name: AzureSpringApps
+name: Kinect Messaging Deployment
 on:
   push:
     branches: [ main ]
@@ -44,5 +44,6 @@ jobs:
           use-staging-deployment: false
           package: ${{ env.ASC_PACKAGE_PATH }}/apps/config/target/*.jar
           deployment-name: default
+          runtime-version: Java_17
           create-new-deployment: true
           language-framework: Spring Boot
