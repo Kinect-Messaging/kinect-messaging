@@ -121,3 +121,6 @@ jobs:
           registry-username: ${{ github.actor }}
           registry-password: ${{ secrets.GITHUB_TOKEN }}
           container-image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          language-framework: Spring Boot
+          create-new-deployment: true
+
