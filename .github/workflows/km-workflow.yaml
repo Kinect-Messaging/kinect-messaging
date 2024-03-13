@@ -13,10 +13,6 @@ on:
       - 'apps/config/src/**'
 #      - '.github/workflows/app-workflow.yaml'
 
-env:
-  APP_NAME: config
-  APP_DIR: apps/config
-
 jobs:
   project-build:
     runs-on: ubuntu-latest
@@ -104,3 +100,16 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+      # environment preparation configurations omitted
+      - name: Deploy custom container image
+        uses: Azure/spring-apps-deploy@v1
+        with:
+          azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
+          action: deploy
+          service-name: dev-kinect-spring-services
+          app-name: kinect-config
+          deployment-name: default
+          container-registry: ${{ env.REGISTRY }}
+          registry-username: ${{ github.actor }}
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+          container-image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
