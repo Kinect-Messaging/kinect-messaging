@@ -110,9 +110,9 @@ jobs:
       - name: Extract JAR layers
         id: jar-extract
         run: |
+          mvn -B package --file pom.xml -DskipTests
           cd ${{ env.APP_DIR }}
           ls -ltr
-          mvn -B package --file pom.xml -DskipTests
           mkdir target/extracted
           java -Djarmode=layertools -jar target/*.jar extract --destination target/extracted
 
