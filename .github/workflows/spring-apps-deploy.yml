@@ -1,9 +1,9 @@
 name: Kinect Messaging Deployment
 on:
   push:
-    branches: [ main ]
+    branches: [ none ]
     paths:
-      - 'apps/config/src/**'
+      - 'none'
   workflow_dispatch:
 
 env:
