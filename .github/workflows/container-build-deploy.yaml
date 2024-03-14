@@ -86,6 +86,7 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Build app with pack CLI
+        id: build-and-push
         run: |
           pack build ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG_VERSION }} \
           --builder paketobuildpacks/builder:base \
