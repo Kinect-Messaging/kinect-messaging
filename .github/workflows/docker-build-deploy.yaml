@@ -103,24 +103,24 @@ jobs:
       # environment preparation configurations omitted
 
       # Login to Azure
-      - name: Login via Azure CLI
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+#      - name: Login via Azure CLI
+#        uses: azure/login@v2
+#        with:
+#          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       # Deploy to Azure Spring Apps
-      - name: Deploy custom container image
-        uses: Azure/spring-apps-deploy@v1
-        with:
-          azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
-          action: deploy
-          service-name: dev-kinect-spring-services
-          app-name: kinect-config
-          deployment-name: default
-          container-registry: ${{ env.REGISTRY }}
-          registry-username: ${{ github.actor }}
-          registry-password: ${{ secrets.GITHUB_TOKEN }}
-          container-image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          language-framework: Spring Boot
-          create-new-deployment: true
+#      - name: Deploy custom container image
+#        uses: Azure/spring-apps-deploy@v1
+#        with:
+#          azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
+#          action: deploy
+#          service-name: dev-kinect-spring-services
+#          app-name: kinect-config
+#          deployment-name: default
+#          container-registry: ${{ env.REGISTRY }}
+#          registry-username: ${{ github.actor }}
+#          registry-password: ${{ secrets.GITHUB_TOKEN }}
+#          container-image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+#          language-framework: Spring Boot
+#          create-new-deployment: true
 
