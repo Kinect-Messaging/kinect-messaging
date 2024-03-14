@@ -1,5 +1,5 @@
 
-name: Kinect Messaging Workflow
+name: Docker Build & Deploy
 on:
   workflow_dispatch:
   pull_request:
