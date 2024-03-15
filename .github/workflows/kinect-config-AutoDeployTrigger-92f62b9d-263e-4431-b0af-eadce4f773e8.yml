@@ -1,0 +1,43 @@
+name: Trigger auto deployment for kinect-config
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/kinect-config-AutoDeployTrigger-92f62b9d-263e-4431-b0af-eadce4f773e8.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.KINECTCONFIG_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: ghcr.io
+          registryUsername: ${{ secrets.KINECTCONFIG_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.KINECTCONFIG_REGISTRY_PASSWORD }}
+          containerAppName: kinect-config
+          resourceGroup: dev-apps-rg
+          imageToBuild: ghcr.io/kinect-config:${{ github.sha }}
+          
+            
+
+     
+
