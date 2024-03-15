@@ -92,7 +92,7 @@ jobs:
           --builder paketobuildpacks/builder:base \
           --env BP_MAVEN_BUILT_MODULE=apps/config \
           --cache-image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG_VERSION }} \
-          --volume "$(pwd)/appinsights:/platform/bindings/application-insights" \
+#          --volume "$(pwd)/appinsights:/platform/bindings/application-insights" \
           --publish
 
       # Sign the resulting Docker image digest except on PRs.
