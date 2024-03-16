@@ -19,14 +19,4 @@
         <module>config</module>
     </modules>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.kinect.messaging.libs</groupId>
-                <artifactId>common-utils</artifactId>
-                <version>1.0.0</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
 </project>

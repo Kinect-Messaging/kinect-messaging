@@ -79,37 +79,49 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      # Extract version information from project to use as image tag
-      - name: Set the version
-        run: |
-          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-
-      - name: Build app with pack CLI
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image
         id: build-and-push
-        run: |
-          pack build ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG_VERSION }} \
-          --builder paketobuildpacks/builder:base \
-          --env BP_MAVEN_BUILT_MODULE=apps/config \
-          --cache-image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG_VERSION }} \
-#          --volume "$(pwd)/appinsights:/platform/bindings/application-insights" \
-          --publish
+        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       # Sign the resulting Docker image digest except on PRs.
       # This will only write to the public Rekor transparency log when the Docker
       # repository is public to avoid leaking data.  If you would like to publish
       # transparency data even for private images, pass --force to cosign below.
       # https://github.com/sigstore/cosign
-#      - name: Sign the published Docker image
-#        if: ${{ github.event_name != 'pull_request' }}
-#        env:
+      - name: Sign the published Docker image
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
           # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
-#          TAGS: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG_VERSION }}
-#          DIGEST: ${{ steps.build-and-push.outputs.digest }}
+          TAGS: ${{ steps.meta.outputs.tags }}
+          DIGEST: ${{ steps.build-and-push.outputs.digest }}
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
-#        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
-      # environment preparation configurations omitted
+        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+      # Extract version information from project to use as image tag
+#      - name: Set the version
+#        run: |
+#          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+#          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+#      - name: Build app with pack CLI
+#        id: build-and-push
+#        run: |
+#          pack build ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG_VERSION }} \
+#          --builder paketobuildpacks/builder:base \
+#          --env BP_MAVEN_BUILT_MODULE=apps/config \
+#          --cache-image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG_VERSION }} \
+##          --volume "$(pwd)/appinsights:/platform/bindings/application-insights" \
+#          --publish
 
 
       # Deploy to Azure Spring Apps

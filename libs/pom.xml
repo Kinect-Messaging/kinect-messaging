@@ -6,7 +6,6 @@
         <artifactId>kinect-messaging</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>com.kinect.messaging.libs</groupId>
     <artifactId>libs</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>libs</name>
@@ -15,4 +14,11 @@
     <modules>
         <module>common-utils</module>
     </modules>
+    <distributionManagement>
+        <repository>
+            <id>github-km-libs</id>
+            <name>Kinect GitHub Packages</name>
+            <url>https://maven.pkg.github.com/Kinect-Messaging/kinect-messaging</url>
+        </repository>
+    </distributionManagement>
 </project>

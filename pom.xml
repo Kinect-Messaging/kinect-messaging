@@ -98,13 +98,6 @@
 							<BP_JVM_VERSION>17</BP_JVM_VERSION>
 						</env>
 					</image>
-					<excludeGroupIds>com.kinect.messaging.libs</excludeGroupIds>
-					<excludes>
-						<exclude>
-							<groupId>com.kinect.messaging.libs</groupId>
-							<artifactId>common-utils</artifactId>
-						</exclude>
-					</excludes>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -128,12 +121,12 @@
 			</plugin>
 		</plugins>
 	</build>
-	<distributionManagement>
+	<repositories>
 		<repository>
-			<id>github</id>
+			<id>github-km-libs</id>
 			<name>Kinect GitHub Packages</name>
 			<url>https://maven.pkg.github.com/Kinect-Messaging/kinect-messaging</url>
 		</repository>
-	</distributionManagement>
+	</repositories>
 
 </project>

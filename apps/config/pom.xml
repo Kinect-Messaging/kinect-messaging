@@ -10,7 +10,7 @@
     <artifactId>config</artifactId>
     <packaging>jar</packaging>
     <name>config</name>
-    <version>1.0.0</version>
+    <version>0.0.1-SNAPSHOT</version>
     <description>Config Service for Kinect</description>
     <properties>
         <java.version>17</java.version>
@@ -42,6 +42,7 @@
         <dependency>
             <groupId>com.kinect.messaging.libs</groupId>
             <artifactId>common-utils</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <dependencyManagement>
