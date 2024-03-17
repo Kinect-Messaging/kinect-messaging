@@ -125,7 +125,7 @@ jobs:
           registryUrl: ${{ env.REGISTRY }}
           registryUsername: ${{ github.actor }}
           registryPassword: ${{ secrets.GITHUB_TOKEN }}
-          imageToDeploy: ${{ env.IMAGE_NAME }}
+          imageToDeploy: ${{ steps.meta.outputs.tags }}
           containerAppName: kinect-config
           resourceGroup: dev-apps-rg
           containerAppEnvironment: development
