@@ -28,7 +28,7 @@ jobs:
       # Use docker.io for Docker Hub if empty
       REGISTRY: ghcr.io
       # github.repository as <account>/<repo>
-      IMAGE_NAME: kinect-messaging/config
+      IMAGE_NAME: ${{ github.repository }}/config
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
