@@ -29,7 +29,6 @@ jobs:
       REGISTRY: ghcr.io
       # github.repository as <account>/<repo>
       IMAGE_NAME: kinect-messaging/config
-      TAG_VERSION: 1.0.0
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -57,8 +56,8 @@ jobs:
         uses: docker/setup-buildx-action@v3 # v3.0.0
 
       # Setup Pack CLI for building containers using buildpack
-      - name: Install pack CLIs including pack and yq
-        uses: buildpacks/github-actions/setup-pack@v5.0.0
+#      - name: Install pack CLIs including pack and yq
+#        uses: buildpacks/github-actions/setup-pack@v5.0.0
 
 
       # Login against a Docker registry except on PR
@@ -83,7 +82,7 @@ jobs:
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
         id: build-and-push
-        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+        uses: docker/build-push-action@v5 # v5.0.0
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
@@ -107,6 +106,25 @@ jobs:
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
+      # Login to Azure
+      - name: Login via Azure CLI
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+
+      - name: Deploy to Dev Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }}
+          registryUrl: ${{ env.REGISTRY }}
+          registryUsername: ${{ github.actor }}
+          registryPassword: ${{ secrets.GITHUB_TOKEN }}
+          imageToDeploy: ${{ steps.meta.outputs.tags }}
+          containerAppName: kinect-config
+          resourceGroup: dev-apps-rg
+          containerAppEnvironment: development
+
       # Extract version information from project to use as image tag
 #      - name: Set the version
 #        run: |
@@ -123,20 +141,4 @@ jobs:
 ##          --volume "$(pwd)/appinsights:/platform/bindings/application-insights" \
 #          --publish
 
-
-      # Deploy to Azure Spring Apps
-#      - name: Deploy custom container image
-#        uses: Azure/spring-apps-deploy@v1
-#        with:
-#          azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
-#          action: deploy
-#          service-name: dev-kinect-spring-services
-#          app-name: kinect-config
-#          deployment-name: default
-#          container-registry: ${{ env.REGISTRY }}
-#          registry-username: ${{ github.actor }}
-#          registry-password: ${{ secrets.GITHUB_TOKEN }}
-#          container-image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-#          language-framework: Spring Boot
-#          create-new-deployment: true
 
