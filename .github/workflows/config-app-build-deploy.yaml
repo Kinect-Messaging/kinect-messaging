@@ -6,12 +6,12 @@ on:
     branches: [ main ]
     paths:
       - 'apps/config/src/**'
-#      - '.github/workflows/app-workflow.yaml'
+      - '.github/workflows/config-app-build-deploy.yaml'
   push:
     branches: [ main ]
     paths:
       - 'apps/config/src/**'
-#      - '.github/workflows/app-workflow.yaml'
+      - '.github/workflows/config-app-build-deploy.yaml'
 
 jobs:
   project-build:
