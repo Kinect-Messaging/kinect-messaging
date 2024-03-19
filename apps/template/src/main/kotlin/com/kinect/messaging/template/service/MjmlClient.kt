@@ -26,18 +26,15 @@ class Config{
     @Value("\${app.endpoint.mjml.url}")
     lateinit var url: String
 
-    @Value("\${app.endpoint.mjml.username}")
-    lateinit var userName: String
-
-    @Value("\${app.endpoint.mjml.password}")
-    lateinit var password: String
+    @Value("\${app.endpoint.mjml.api-key}")
+    lateinit var apiKey: String
 
     @Bean
     fun webClient(builder: Builder): WebClient =
         builder
             .baseUrl(url)
-//            .defaultHeaders { httpHeaders ->
-//                httpHeaders.setBasicAuth(userName,password)
-//            }
+            .defaultHeaders { httpHeaders ->
+                httpHeaders.add("Ocp-Apim-Subscription-Key", apiKey)
+            }
             .build()
 }
