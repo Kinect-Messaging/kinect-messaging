@@ -113,7 +113,7 @@ jobs:
         with:
           context: .
           file: Dockerfile
-          build-args: |
+          build-args: | 
             APP_NAME=${{ env.APP_NAME }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
