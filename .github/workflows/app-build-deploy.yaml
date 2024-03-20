@@ -34,18 +34,12 @@ jobs:
           filters: |
             config:
               - 'apps/config/src/**'
-            template:
-              - 'apps/template/src/**'
             email:
               - 'apps/email/src/**'
       - name: Set up config env variables
         if: steps.filter.outputs.config == 'true'
         run: |
           echo "APP_NAME=config" >> $GITHUB_ENV
-      - name: Set up template env variables
-        if: steps.filter.outputs.template == 'true'
-        run: |
-          echo "APP_NAME=template" >> $GITHUB_ENV
       - name: Set up email env variables
         if: steps.filter.outputs.email == 'true'
         run: |
