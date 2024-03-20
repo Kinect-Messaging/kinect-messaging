@@ -1,4 +1,4 @@
-package com.kinect.messaging.template.model
+package com.kinect.messaging.config.model
 
 import com.kinect.messaging.libs.model.Audit
 import com.kinect.messaging.libs.model.TemplateLanguage
@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 
-@Document(collection = "templates")
+@Document(collection = "template-config")
 data class TemplateEntity(
     @Id
     val templateId: String,

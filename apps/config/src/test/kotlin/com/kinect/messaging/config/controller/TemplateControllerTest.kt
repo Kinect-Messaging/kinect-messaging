@@ -1,9 +1,8 @@
-package com.kinect.messaging.template.controller
+package com.kinect.messaging.config.controller
 
+import com.kinect.messaging.config.model.TemplateEntity
+import com.kinect.messaging.config.repository.TemplateRepository
 import com.kinect.messaging.libs.model.*
-import com.kinect.messaging.template.model.TemplateEntity
-import com.kinect.messaging.template.repository.TemplateRepository
-import com.kinect.messaging.template.service.TemplateService
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.BDDMockito.anyString

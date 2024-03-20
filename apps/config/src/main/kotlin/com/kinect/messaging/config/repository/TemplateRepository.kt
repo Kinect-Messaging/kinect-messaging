@@ -1,6 +1,6 @@
-package com.kinect.messaging.template.repository
+package com.kinect.messaging.config.repository
 
-import com.kinect.messaging.template.model.TemplateEntity
+import com.kinect.messaging.config.model.TemplateEntity
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
 

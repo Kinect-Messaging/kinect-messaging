@@ -5,3 +5,8 @@ spring:
       database: ${AZURE_COSMOS_MONGO_DATABASE}
 #server:
 #  port: 8081
+app:
+  client:
+    mjml:
+      url: "https://dev-kinect-apim-service.azure-api.net/mjml/v1/mjml2html"
+      api-key: ${AZURE_APIM_KEY}

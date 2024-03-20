@@ -1,4 +1,4 @@
-package com.kinect.messaging.template.model
+package com.kinect.messaging.config.model
 
 import java.util.*
 

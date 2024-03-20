@@ -1,5 +1,6 @@
-package com.kinect.messaging.template.controller
+package com.kinect.messaging.config.controller
 
+import com.kinect.messaging.config.service.TemplateService
 import com.kinect.messaging.libs.common.Defaults
 import com.kinect.messaging.libs.common.ErrorConstants
 import com.kinect.messaging.libs.common.LogConstants
@@ -8,7 +9,6 @@ import com.kinect.messaging.libs.logging.MDCHelper
 import com.kinect.messaging.libs.logging.MDCHelper.addMDC
 import com.kinect.messaging.libs.model.KTemplate
 import com.kinect.messaging.libs.model.TemplatePersonalizationRequest
-import com.kinect.messaging.template.service.TemplateService
 import net.logstash.logback.argument.StructuredArguments.kv
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 @RestController
-@RequestMapping("/kinect/messaging/template")
+@RequestMapping("/kinect/messaging/config/template")
 class TemplateController {
 
     private val log = LoggerFactory.getLogger(this::class.java)

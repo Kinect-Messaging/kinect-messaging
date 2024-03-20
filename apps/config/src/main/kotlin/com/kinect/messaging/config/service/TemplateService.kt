@@ -1,12 +1,13 @@
-package com.kinect.messaging.template.service
+package com.kinect.messaging.config.service
 
+import com.kinect.messaging.config.client.MjmlClient
+import com.kinect.messaging.config.model.MjmlRequest
+import com.kinect.messaging.config.model.TemplateEntity
+import com.kinect.messaging.config.repository.TemplateRepository
 import com.kinect.messaging.libs.common.ErrorConstants
 import com.kinect.messaging.libs.exception.InvalidInputException
 import com.kinect.messaging.libs.model.KTemplate
 import com.kinect.messaging.libs.model.TemplatePersonalizationRequest
-import com.kinect.messaging.template.model.MjmlRequest
-import com.kinect.messaging.template.model.TemplateEntity
-import com.kinect.messaging.template.repository.TemplateRepository
 import com.samskivert.mustache.Mustache
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest

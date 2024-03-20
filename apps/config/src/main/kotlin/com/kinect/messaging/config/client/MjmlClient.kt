@@ -1,6 +1,6 @@
-package com.kinect.messaging.template.service
+package com.kinect.messaging.config.client
 
-import com.kinect.messaging.template.model.MjmlRequest
+import com.kinect.messaging.config.model.MjmlRequest
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -23,10 +23,10 @@ class MjmlClient (private val webClient: WebClient){
 @Configuration
 class Config{
 
-    @Value("\${app.endpoint.mjml.url}")
+    @Value("\${app.client.mjml.url}")
     lateinit var url: String
 
-    @Value("\${app.endpoint.mjml.api-key}")
+    @Value("\${app.client.mjml.api-key}")
     lateinit var apiKey: String
 
     @Bean
