@@ -5,7 +5,7 @@ import com.azure.communication.email.models.EmailAddress
 import com.azure.communication.email.models.EmailMessage
 import com.azure.communication.email.models.EmailSendResult
 import com.azure.core.util.polling.SyncPoller
-import com.kinect.messaging.email.config.TemplateClient
+import com.kinect.messaging.email.client.TemplateClient
 import com.kinect.messaging.libs.model.KMessage
 import com.kinect.messaging.libs.model.TemplatePersonalizationRequest
 import kotlinx.coroutines.Dispatchers

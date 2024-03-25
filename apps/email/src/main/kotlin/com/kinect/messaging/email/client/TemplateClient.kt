@@ -1,4 +1,4 @@
-package com.kinect.messaging.email.config
+package com.kinect.messaging.email.client
 
 import com.kinect.messaging.libs.common.Defaults
 import com.kinect.messaging.libs.model.KTemplate
@@ -26,21 +26,18 @@ class TemplateClient (private val webClient: WebClient) {
 @Configuration
 class Config{
 
-    @Value("\${app.endpoint.template.url}")
+    @Value("\${app.client.template.url}")
     lateinit var url: String
 
-    @Value("\${app.endpoint.template.username}")
-    lateinit var userName: String
-
-    @Value("\${app.endpoint.template.password}")
-    lateinit var password: String
+    @Value("\${app.client.template.apiKey}")
+    lateinit var apiKey: String
 
     @Bean
     fun webClient(builder: WebClient.Builder): WebClient =
         builder
             .baseUrl(url)
             .defaultHeaders { httpHeaders ->
-//                httpHeaders.setBasicAuth(userName,password)
+                httpHeaders.add("Ocp-Apim-Subscription-Key", apiKey)
             }
             .build()
 }
