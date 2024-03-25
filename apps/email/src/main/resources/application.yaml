@@ -1,14 +1,6 @@
-#server:
-#  port: 8082
-app:
-  feature-flag:
-    send-email: true
-  client:
-    template:
-      url: https://dev-kinect-apim-service.azure-api.net/config/v1/kinect/messaging/template/personalize
-      apiKey: ${AZURE_APIM_KEY}
-  email:
-    azure:
-      connectionString: ${AZURE_EMAIL_CONNECTION}
-      defaults:
-        senderAddress: DoNotReply@kinectmessaging.com
+spring:
+  application:
+    name: email
+  cloud:
+    config:
+      uri: https://kinect-config-server-app.internal.braveground-5c0f9c31.westus.azurecontainerapps.io
