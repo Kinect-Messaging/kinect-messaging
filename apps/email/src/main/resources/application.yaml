@@ -5,7 +5,7 @@ app:
     send-email: true
   client:
     template:
-      url: https://dev-kinect-apim-service.azure-api.net/config/v1/kinect/messaging/template/personalize
+      url: https://dev-kinect-apim-service.azure-api.net/config/v1/kinect/messaging/config/template/personalize
       apiKey: ${AZURE_APIM_KEY}
   email:
     azure:
@@ -16,3 +16,9 @@ spring:
   cloud:
     config:
       enabled: false
+#logging:
+#  level:
+#    reactor:
+#      netty:
+#        http:
+#          client: DEBUG
