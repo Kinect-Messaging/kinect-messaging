@@ -12,3 +12,7 @@ app:
       connectionString: ${AZURE_EMAIL_CONNECTION}
       defaults:
         senderAddress: DoNotReply@kinectmessaging.com
+spring:
+  cloud:
+    config:
+      enabled: false
