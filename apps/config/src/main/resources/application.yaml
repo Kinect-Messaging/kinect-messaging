@@ -3,6 +3,9 @@ spring:
     mongodb:
       uri: ${AZURE_COSMOS_MONGO_CONNECTION_STRING}
       database: ${AZURE_COSMOS_MONGO_DATABASE}
+  cloud:
+    config:
+      enabled: false
 #server:
 #  port: 8081
 app:
