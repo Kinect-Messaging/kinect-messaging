@@ -13,166 +13,62 @@ import {
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-// const API_BASE_URL = process.env.REACT_APP_POSTMAN_MOCK_URL
-// const API_BASE_URL = 'https://f3e508e8-3cf8-4ee6-90b5-391b84fb9fef.mock.pstmn.io'
+import { v4 as uuidv4 } from 'uuid';
 
-// Setup the Axios instance
-// const api = axios.create({
-//     baseURL: API_BASE_URL,
-// });
-
-interface ChangeLogEntry {
+interface ChangeLog {
     user: string;
     time: string;
     comment: string;
 }
 
-interface JourneyReference {
-    journeyId: string;
-    messageIds: string[];
-}
-
-interface Env {
-    id: string;
+interface Environment {
+    envId: string;
     envName: string;
-    journeys: JourneyReference[];
-    changeLog: ChangeLogEntry[];
-}
-
-// interface Journey {
-//     journeyId: string;
-//     journeyName: string;
-//     journeySteps: [];
-//     auditInfo: [];
-// }
-
-
-// Jounrey Interfaces
-interface JourneyStep {
-    seqId: number;
+    journeyId: string;
+    messageId: string;
     eventName: string;
-    stepCondition: string;
-    messageIds: string[];
+    changeLog: ChangeLog[];
 }
 
-interface AuditInfo {
-    createdBy: string;
-    createdTime: string;
-    updatedBy: string;
-    updatedTime: string;
-}
+// const API_BASE_URL = process.env.REACT_APP_POSTMAN_MOCK_URL
+const API_BASE_URL = 'https://ab3b979f-80e3-4626-aeee-0236b00bad7e.mock.pstmn.io'
+const ENV_ENDPOINT = '/kinect/messaging/config/env';
 
-interface Journey {
-    id: string;
-    journeyName: string;
-    journeySteps: JourneyStep[];
-    auditInfo: AuditInfo;
-}
+// Setup the Axios instance
+const api = axios.create({
+    baseURL: API_BASE_URL,
+    // headers: {
+    //     'Ocp-Apim-Subscription-Key': process.env.REACT_APP_AZURE_KEY,
+    //     'X-Transaction-Id': uuidv4()
+    // }
+});
 
 export const EnvList: React.FC<IResourceComponentsProps> = () => {
 
-    const hardcodedEnvs: Env[] = [
-            {
-                "id": "env_1",
-                "envName": "Development",
-                "journeys": [
-                    {
-                        "journeyId": "1",
-                        "messageIds": [
-                            "1",
-                            "2"
-                        ]
-                    }
-                ],
-                "changeLog": [
-                    {
-                        "user": "Developer",
-                        "time": "2024-03-04T00:18:57Z",
-                        "comment": "Setup development environment"
-                    }
-                ]
-            },
-            {
-                "id": "env_2",
-                "envName": "Production",
-                "journeys": [
-                    {
-                        "journeyId": "1",
-                        "messageIds": [
-                            "1",
-                            "2"
-                        ]
-                    }
-                ],
-                "changeLog": [
-                    {
-                        "user": "Ops",
-                        "time": "2024-04-01T11:00:00Z",
-                        "comment": "Deployed User Onboarding journey to production"
-                    }
-                ]
-            }
-    ];
-
-    const hardcodedJourneys: Journey[] = [
-        {
-            "id": "1",
-            "journeyName": "User Onboarding",
-            "journeySteps": [
-                {
-                    "seqId": 1,
-                    "eventName": "SignUpComplete",
-                    "stepCondition": "user.sign_up_complete=true",
-                    "messageIds": ["1"]
-                },
-                {
-                    "seqId": 2,
-                    "eventName": "FirstLogin",
-                    "stepCondition": "user.first_login=true",
-                    "messageIds": ["2"]
-                }
-            ],
-            "auditInfo": {
-                "createdBy": "Unit Test 1",
-                "createdTime": "2024-01-01T08:00:00Z",
-                "updatedBy": "Unit Test 2",
-                "updatedTime": "2024-01-01T09:00:00Z"
-            }
-        }
-    ];
-
-    // Set the hardcoded data as your initial state
-    const [envs] = useState<Env[]>(hardcodedEnvs);
-
-    // Set the hardcoded data as your initial state
-    const [journeys] = useState<Journey[]>(hardcodedJourneys);
-
-    // const [journeys, setJourneys] = useState<Journey[]>([]);
-    // const [envs, setEnvs] = useState<Env[]>([]);
+    const [environments, setEnvironments] = useState<Environment[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
+    const [error, setError] = useState<string | null>(null);
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const responseJourney = await api.get<Journey[]>('/kinect/messaging/config/journey');
-    //             setJourneys(responseJourney.data);
-    //             const responseEnv = await api.get<Env[]>('/kinect/messaging/config/env');
-    //             setEnvs(responseEnv.data)
-    //         } catch (err) {
-    //             setError('Failed to fetch journeys');
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
+    useEffect(() => {
+        const fetchEnvironments = async () => {
+            try {
+                // const response = await api.get<Environment[]>(ENV_ENDPOINT);
+                setEnvironments(response.data);
+            } catch (err) {
+                setError('Failed to fetch environments');
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    //     fetchData();
-    // }, []);
+        fetchEnvironments();
+    }, []);
 
     const columns: GridColDef[] = React.useMemo(
         () => [
             {
-                field: 'id',
+                field: 'envId',
                 headerName: 'Env ID',
                 width: 100
             },
@@ -182,22 +78,14 @@ export const EnvList: React.FC<IResourceComponentsProps> = () => {
                 width: 150
             },
             {
-                field: 'journeyName',
-                headerName: 'Journey Name',
+                field: 'journeyId',
+                headerName: 'Journey ID',
                 width: 200,
-                valueGetter: (params) => {
-                    // This function should retrieve the journey name using the journey ID
-                    // For instance, you could use a state that contains all journeys' information
-                    const journeyId = params.row.journeys[0]?.journeyId;
-                    const journey = journeys.find((j) => j.id === journeyId);
-                    return journey?.journeyName || '';
-                }
             },
             {
-                field: 'changeLog',
-                headerName: 'Change Log Comment',
+                field: 'messageId',
+                headerName: 'Message ID',
                 width: 300,
-                valueGetter: (params) => params.row.changeLog[0]?.comment,
             },
             {
                 field: "actions",
@@ -217,13 +105,14 @@ export const EnvList: React.FC<IResourceComponentsProps> = () => {
                 minWidth: 80,
             },
         ],
-        [journeys]
+        []
+        // [journeys]
     );
 
-    const getJourneyNameById = (journeyId: string) => {
-        const journey = journeys.find(j => j.id === journeyId);
-        return journey ? journey.journeyName : '';
-    };
+    // const getJourneyNameById = (journeyId: string) => {
+    //     const journey = journeys.find(j => j.id === journeyId);
+    //     return journey ? journey.journeyName : '';
+    // };
 
     // if (loading) return <div>Loading...</div>;
     // if (error) return <div>Error: {error}</div>;
@@ -233,10 +122,11 @@ export const EnvList: React.FC<IResourceComponentsProps> = () => {
             <div>
                 <List>
                     <DataGrid
-                        rows={envs}
+                        rows={environments}
                         columns={columns}
+                        loading={loading}
+                        getRowId={(row) => row.envId}
                         autoHeight
-                        getRowId={(row) => row.id}
                     />
                 </List>
             </div>

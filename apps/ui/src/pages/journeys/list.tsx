@@ -13,20 +13,13 @@ import {
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-// const API_BASE_URL = process.env.REACT_APP_POSTMAN_MOCK_URL
-// const API_BASE_URL = 'https://f3e508e8-3cf8-4ee6-90b5-391b84fb9fef.mock.pstmn.io'
-
-// Setup the Axios instance
-// const api = axios.create({
-//     baseURL: API_BASE_URL,
-// });
-
+import { v4 as uuidv4 } from 'uuid';
 
 interface JourneyStep {
     seqId: number;
     eventName: string;
     stepCondition: string;
-    messageIds: string[];
+    messageConfigs: Record<string, string>;
 }
 
 interface AuditInfo {
@@ -37,69 +30,78 @@ interface AuditInfo {
 }
 
 interface Journey {
-    id: string;
+    journeyId: string;
     journeyName: string;
     journeySteps: JourneyStep[];
     auditInfo: AuditInfo;
 }
 
+// const API_BASE_URL = process.env.REACT_APP_POSTMAN_MOCK_URL
+// const API_BASE_URL = 'https://ab3b979f-80e3-4626-aeee-0236b00bad7e.mock.pstmn.io'
+const API_BASE_URL = 'https://dev-kinect-apim-service.azure-api.net/config/v1'
+const JRNY_ENDPOINT = '/kinect/messaging/config/journey';
+
+
+// Setup the Axios instance
+const api = axios.create({
+    baseURL: API_BASE_URL,
+    headers: {
+        'Ocp-Apim-Subscription-Key': process.env.REACT_APP_AZURE_KEY,
+        'X-Transaction-Id': uuidv4()
+    }
+});
+
+
+
 export const JourneyList: React.FC<IResourceComponentsProps> = () => {
 
-    const hardcodedJourneys: Journey[] = [
-        {
-            "id": "1",
-            "journeyName": "User Onboarding",
-            "journeySteps": [
-                {
-                    "seqId": 1,
-                    "eventName": "SignUpComplete",
-                    "stepCondition": "user.sign_up_complete=true",
-                    "messageIds": ["1"]
-                },
-                {
-                    "seqId": 2,
-                    "eventName": "FirstLogin",
-                    "stepCondition": "user.first_login=true",
-                    "messageIds": ["2"]
-                }
-            ],
-            "auditInfo": {
-                "createdBy": "Unit Test 1",
-                "createdTime": "2024-01-01T08:00:00Z",
-                "updatedBy": "Unit Test 2",
-                "updatedTime": "2024-01-01T09:00:00Z"
-            }
-        }
-    ];
 
-    // Set the hardcoded data as your initial state
-    const [journeys] = useState<Journey[]>(hardcodedJourneys);
+
+    const [journeys, setJourneys] = useState<Journey[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchJourneys = async () => {
+            try {
+                const response = await api.get<Journey[]>(JRNY_ENDPOINT);
+                // console.log(response)
+                setJourneys(response.data);
+            } catch (err) {
+                setError('Failed to fetch journeys');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchJourneys();
+    }, []);
 
     const columns: GridColDef[] = React.useMemo(
         () => [
             {
-                field: "id",
+                field: "journeyId",
                 headerName: "Journey ID",
                 type: "number",
-                minWidth: 150,
+                minWidth: 200,
             },
             {
                 field: "journeyName",
                 headerName: "Journey Name",
                 minWidth: 200,
                 flex: 1,
-            }, 
+            },
             {
                 field: "journeySteps",
                 headerName: "Journey Steps",
                 type: "number",
-                minWidth: 200,
+                // minWidth: 200,
                 valueGetter: ({ row }) => row.journeySteps.length,
             },
             {
-                field: "createdAt",
+                field: "createdTime",
                 headerName: "Created Date",
-                minWidth: 200,
+                minWidth: 400,
                 valueGetter: ({ row }) => row.auditInfo.createdTime,
                 renderCell: (params) => <DateField value={params.value} />,
             },
@@ -110,8 +112,8 @@ export const JourneyList: React.FC<IResourceComponentsProps> = () => {
                 renderCell: function render({ row }) {
                     return (
                         <>
-                            <EditButton hideText recordItemId={row.id} />
-                            <ShowButton hideText recordItemId={row.id} />
+                            <EditButton hideText recordItemId={row.journeyId} />
+                            <ShowButton hideText recordItemId={row.journeyId} />
                             {/* {console.log(row.journeyId)} */}
                             {/* <DeleteButton hideText recordItemId={row.id} /> */}
                         </>
@@ -125,28 +127,8 @@ export const JourneyList: React.FC<IResourceComponentsProps> = () => {
         []
     );
 
-
-    // const [journeys, setJourneys] = useState<Journey[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
-
-    // useEffect(() => {
-    //     const fetchJourneys = async () => {
-    //         try {
-    //             const response = await api.get<Journey[]>('/kinect/messaging/config/journey');
-    //             setJourneys(response.data);
-    //         } catch (err) {
-    //             setError('Failed to fetch journeys');
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-
-    //     fetchJourneys();
-    // }, []);
-
-    // if (loading) return <div>Loading...</div>;
     // if (error) return <div>Error: {error}</div>;
+    // if (loading) return <div>Loading...</div>;
 
     return (
         <div>
@@ -155,8 +137,9 @@ export const JourneyList: React.FC<IResourceComponentsProps> = () => {
                     <DataGrid
                         rows={journeys}
                         columns={columns}
+                        loading={loading}
+                        getRowId={(row) => row.journeyId}
                         autoHeight
-                        getRowId={(row) => row.id}
                     />
                 </List>
             </div>

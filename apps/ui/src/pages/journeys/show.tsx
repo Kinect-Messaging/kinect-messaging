@@ -8,69 +8,50 @@ import {
   Show,
   TextFieldComponent as TextField,
 } from "@refinedev/mui";
-import React from "react";
+import React, { useEffect, useState } from 'react';
+import axios from "axios";
 
-interface JourneyStep {
-  seqId: number;
-  eventName: string;
-  stepCondition: string;
-  messageIds: string[];
-}
+const API_BASE_URL = 'https://ab3b979f-80e3-4626-aeee-0236b00bad7e.mock.pstmn.io';
+const JRNY_ENDPOINT = '/kinect/messaging/config/journey';
 
-interface AuditInfo {
-  createdBy: string;
-  createdTime: string;
-  updatedBy: string;
-  updatedTime: string;
-}
-
-interface Journey {
-  id: string;
-  journeyName: string;
-  journeySteps: JourneyStep[];
-  auditInfo: AuditInfo;
-}
-
-
-const hardcodedJourneys: Journey[] = [
-  {
-    "id": "1",
-    "journeyName": "User Onboarding",
-    "journeySteps": [
-      {
-        "seqId": 1,
-        "eventName": "SignUpComplete",
-        "stepCondition": "user.sign_up_complete=true",
-        "messageIds": ["1"]
-      },
-      {
-        "seqId": 2,
-        "eventName": "FirstLogin",
-        "stepCondition": "user.first_login=true",
-        "messageIds": ["2"]
-      }
-    ],
-    "auditInfo": {
-      "createdBy": "Unit Test 1",
-      "createdTime": "2024-01-01T08:00:00Z",
-      "updatedBy": "Unit Test 2",
-      "updatedTime": "2024-01-01T09:00:00Z"
-    }
-  }
-];
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  // Add headers if needed for your API requests
+});
 
 export const JourneyShow: React.FC = () => {
-  const { id } = useParams<"id">(); // Get journeyId from URL
-  console.log(`Journey ID from URL:`, id);
 
-  // Find the journey that matches the journeyId from the hardcoded data
-  const journey = hardcodedJourneys.find(j => j.id === id);
-  console.log(journey)
+  const { id } = useParams<{ id: string }>(); // Ensuring you get the "id" param as defined in the route
+  const [journey, setJourney] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // If the journey does not exist, you can return a not found message or component
-  if (!journey) {
-    return <div>Journey not found</div>;
-  }
+  useEffect(() => {
+    const fetchJourney = async () => {
+      try {
+        const response = await api.get(`${JRNY_ENDPOINT}/${id}`);
+        setJourney(response.data);
+      } catch (err) {
+        setError('Failed to fetch journey details.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJourney();
+  }, [id]);
+
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
+
+  // if (error) {
+  //   return <div>Error: {error}</div>;
+  // }
+
+  // if (!journey) {
+  //   return <div>Journey not found</div>;
+  // }
 
   return (
     <Show>
@@ -80,44 +61,9 @@ export const JourneyShow: React.FC = () => {
         </Typography>
 
         <Typography variant="body1" fontWeight="bold">
-          {"Journey ID"}
-        </Typography>
-        <Typography variant="body2">{journey.id}</Typography>
-
-        <Typography variant="body1" fontWeight="bold">
           {"Journey Name"}
         </Typography>
         <Typography variant="body2">{journey.journeyName}</Typography>
-
-        {/* Iterate over journeySteps and display each one */}
-        {journey.journeySteps.map(step => (
-          <React.Fragment key={step.seqId}>
-            <Typography variant="body1" fontWeight="bold">
-              {`Step ${step.seqId}: ${step.eventName}`}
-            </Typography>
-            <Typography variant="body2">{step.stepCondition}</Typography>
-          </React.Fragment>
-        ))}
-
-        <Typography variant="body1" fontWeight="bold">
-          {"Created By"}
-        </Typography>
-        <Typography variant="body2">{journey.auditInfo.createdBy}</Typography>
-
-        <Typography variant="body1" fontWeight="bold">
-          {"Created Date"}
-        </Typography>
-        <Typography variant="body2">{journey.auditInfo.createdTime}</Typography>
-
-        <Typography variant="body1" fontWeight="bold">
-          {"Updated By"}
-        </Typography>
-        <Typography variant="body2">{journey.auditInfo.updatedBy}</Typography>
-
-        <Typography variant="body1" fontWeight="bold">
-          {"Updated Date"}
-        </Typography>
-        <Typography variant="body2">{journey.auditInfo.updatedTime}</Typography>
       </Stack>
     </Show>
   );

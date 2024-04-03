@@ -12,41 +12,12 @@ import {
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
-// const API_BASE_URL = process.env.REACT_APP_POSTMAN_MOCK_URL
-// const API_BASE_URL = 'https://f3e508e8-3cf8-4ee6-90b5-391b84fb9fef.mock.pstmn.io'
-
-// Setup the Axios instance
-// const api = axios.create({
-//     baseURL: API_BASE_URL,
-// });
+import { v4 as uuidv4 } from 'uuid';
 
 interface EmailConfig {
+    targetSystem: string;
     senderAddress: string;
     subject: string;
-}
-
-interface Message {
-    id: string;
-    messageName: string;
-    journeyId: string;
-    messageCondition: string;
-    messageStatus: string;
-    emailConfig: EmailConfig;
-}
-
-// interface Journey {
-//     journeyId: string;
-//     journeyName: string;
-//     journeySteps: [];
-//     auditInfo: [];
-// }
-
-interface JourneyStep {
-    seqId: number;
-    eventName: string;
-    stepCondition: string;
-    messageIds: string[];
 }
 
 interface AuditInfo {
@@ -56,99 +27,60 @@ interface AuditInfo {
     updatedTime: string;
 }
 
-interface Journey {
-    id: string;
-    journeyName: string;
-    journeySteps: JourneyStep[];
-    auditInfo: AuditInfo;
+interface Message {
+    messageId: string;
+    messageName: string;
+    messageVersion: number;
+    emailConfig: EmailConfig[];
+    journeyId: string;
+    auditInfo: AuditInfo[];
 }
+
+
+// const API_BASE_URL = process.env.REACT_APP_POSTMAN_MOCK_URL
+const API_BASE_URL = 'https://ab3b979f-80e3-4626-aeee-0236b00bad7e.mock.pstmn.io'
+const MESSAGE_ENDPOINT = '/kinect/messaging/config/message';
+
+// Setup the Axios instance
+const api = axios.create({
+    baseURL: API_BASE_URL,
+    headers: {
+        'Ocp-Apim-Subscription-Key': process.env.REACT_APP_AZURE_KEY,
+        'X-Transaction-Id': uuidv4()
+    }
+});
 
 export const MessageList: React.FC<IResourceComponentsProps> = () => {
 
-    const hardcodedMessages: Message[] = [
-        {
-            "id": "1",
-            "messageName": "Welcome Email",
-            "journeyId": "1",
-            "messageCondition": "user.signup_complete == true",
-            "messageStatus": "Active",
-            "emailConfig": {
-                "senderAddress": "welcome@example.com",
-                "subject": "Welcome to Our Service!"
-            }
-        },
-        {
-            "id": "2",
-            "messageName": "Feedback Request",
-            "journeyId": "1",
-            "messageCondition": "user.first_login == true",
-            "messageStatus": "Active",
-            "emailConfig": {
-                "senderAddress": "feedback@example.com",
-                "subject": "We Value Your Feedback!"
-            }
-        }
-    ];
-
-    const hardcodedJourneys: Journey[] = [
-        {
-            "id": "1",
-            "journeyName": "User Onboarding",
-            "journeySteps": [
-                {
-                    "seqId": 1,
-                    "eventName": "SignUpComplete",
-                    "stepCondition": "user.sign_up_complete=true",
-                    "messageIds": ["1"]
-                },
-                {
-                    "seqId": 2,
-                    "eventName": "FirstLogin",
-                    "stepCondition": "user.first_login=true",
-                    "messageIds": ["2"]
-                }
-            ],
-            "auditInfo": {
-                "createdBy": "Unit Test 1",
-                "createdTime": "2024-01-01T08:00:00Z",
-                "updatedBy": "Unit Test 2",
-                "updatedTime": "2024-01-01T09:00:00Z"
-            }
-        }
-    ];
-
-    // Set the hardcoded data as your initial state
-    const [messages] = useState<Message[]>(hardcodedMessages);
-
-    // Set the hardcoded data as your initial state
-    const [journeys] = useState<Journey[]>(hardcodedJourneys);
-
-    // const [journeys, setJourneys] = useState<Journey[]>([]);
-    // const [messages, setMessages] = useState<Message[]>([]);
+    const [messages, setMessages] = useState<Message[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string>('');
+    const [error, setError] = useState<string | null>(null);
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const responseJourney = await api.get<Journey[]>('/kinect/messaging/config/journey');
-    //             setJourneys(responseJourney.data);
-    //             const responseMessage = await api.get<Message[]>('/kinect/messaging/config/message');
-    //             setMessages(responseMessage.data)
-    //         } catch (err) {
-    //             setError('Failed to fetch journeys');
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
+    useEffect(() => {
+        const fetchMessages = async () => {
+            try {
+                // const response = await api.get<Message[]>(MESSAGE_ENDPOINT);
+                // console.log(response.data)
+                setMessages(response.data);
+            } catch (err) {
+                setError('Failed to fetch messages');
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    //     fetchData();
-    // }, []);
+        fetchMessages();
+    }, []);
+
+    // const getJourneyNameById = (journeyId: string) => {
+    //     const journey = journeys.find(j => j.id === journeyId);
+    //     return journey ? journey.journeyName : '';
+    // };
 
     const columns: GridColDef[] = React.useMemo(
         () => [
             {
-                field: 'id',
+                field: 'messageId',
                 headerName: 'Message ID',
                 width: 120,
                 type: 'number',
@@ -159,18 +91,18 @@ export const MessageList: React.FC<IResourceComponentsProps> = () => {
                 width: 200,
             },
             {
-                field: 'journeyName',
-                headerName: 'Journey Name',
+                field: 'journeyId',
+                headerName: 'Journey ID',
                 width: 200,
-                valueGetter: (params) => {
-                    return getJourneyNameById(params.row.journeyId);
-                }
+                // valueGetter: (params) => {
+                //     return getJourneyNameById(params.row.journeyId);
+                // }
             },
             {
                 field: 'emailSubject',
                 headerName: 'Email Subject',
                 width: 250,
-                valueGetter: (params) => params.row.emailConfig.subject,
+                valueGetter: (params) => params.row.emailConfig[0].subject,
             },
             {
                 field: "actions",
@@ -190,16 +122,12 @@ export const MessageList: React.FC<IResourceComponentsProps> = () => {
                 minWidth: 80,
             },
         ],
-        [journeys]
+        []
+        // [journeys]
     );
 
-    const getJourneyNameById = (journeyId: string) => {
-        const journey = journeys.find(j => j.id === journeyId);
-        return journey ? journey.journeyName : '';
-    };
-
-    // if (loading) return <div>Loading...</div>;
     // if (error) return <div>Error: {error}</div>;
+    // if (loading) return <div>Loading...</div>;
 
     return (
         <div>
@@ -208,8 +136,9 @@ export const MessageList: React.FC<IResourceComponentsProps> = () => {
                     <DataGrid
                         rows={messages}
                         columns={columns}
+                        loading={loading}
+                        getRowId={(row) => row.messageId}
                         autoHeight
-                        getRowId={(row) => row.id}
                     />
                 </List>
             </div>
