@@ -19,9 +19,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import kotlin.io.encoding.ExperimentalEncodingApi
 
-@CrossOrigin(
-    value = ["http://localhost:5173"]
-)
 @RestController
 @RequestMapping("/kinect/messaging/config/template")
 class TemplateController {

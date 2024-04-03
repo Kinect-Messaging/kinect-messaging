@@ -19,9 +19,6 @@ import org.springframework.web.bind.annotation.*
 
 private const val DEFAULT_SORT = "messageName"
 
-@CrossOrigin(
-    value = ["http://localhost:5173"]
-)
 @RestController()
 @RequestMapping("/kinect/messaging/config/message")
 class MessageController {
