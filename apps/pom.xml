@@ -10,12 +10,26 @@
     </parent>
     <artifactId>apps</artifactId>
     <name>apps</name>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-cosmos</artifactId>
+            <version>4.53.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.kinect.messaging.libs</groupId>
+            <artifactId>common-utils</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
     <packaging>pom</packaging>
 
     <modules>
         <module>email</module>
         <module>event-processor</module>
         <module>config</module>
+        <module>ch</module>
     </modules>
 
 </project>

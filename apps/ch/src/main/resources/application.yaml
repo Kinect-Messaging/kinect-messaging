@@ -1,0 +1,7 @@
+spring:
+  data:
+    mongodb:
+      uri: ${AZURE_COSMOS_MONGO_CONNECTION_STRING}
+      database: ${AZURE_COSMOS_MONGO_DATABASE}
+#server:
+#  port: 8081
