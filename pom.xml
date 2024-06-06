@@ -15,7 +15,6 @@
 	<name>kinect-messaging</name>
 	<description>Parent project which contains messaging capabilities</description>
 	<modules>
-		<module>libs</module>
 		<module>apps</module>
 	</modules>
 	<properties>
