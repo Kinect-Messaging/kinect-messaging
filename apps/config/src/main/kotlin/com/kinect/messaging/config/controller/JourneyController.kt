@@ -31,7 +31,7 @@ class JourneyController {
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun createJourney(
         @RequestBody journeyConfig: JourneyConfig,
-        @RequestHeader(name = "X-Transaction-Id") transactionId: String
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ): ResponseEntity<JourneyConfig> {
         val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
         headerMap["journey-id"] = journeyConfig.journeyId
@@ -66,7 +66,7 @@ class JourneyController {
         @RequestParam(name = "_end", required = false) pageSize: Int? = Defaults.PAGE_SIZE,
         @RequestParam(name = "_sort", required = false) sortBy: String? = DEFAULT_SORT,
         @RequestParam(name = "_order", required = false) sortOrder: Sort.Direction = Sort.Direction.ASC,
-        @RequestHeader(name = "X-Transaction-Id") transactionId: String
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ): ResponseEntity<List<JourneyConfig>?> {
         val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
         headerMap["method"] = object {}.javaClass.enclosingMethod.name

@@ -4,6 +4,7 @@ import com.azure.communication.email.EmailClientBuilder
 import com.azure.communication.email.models.EmailAddress
 import com.azure.communication.email.models.EmailMessage
 import com.azure.communication.email.models.EmailSendResult
+import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.core.util.polling.SyncPoller
 import com.kinect.messaging.email.client.TemplateClient
 import com.kinect.messaging.libs.model.KMessage
@@ -82,8 +83,15 @@ class AzureEmailService : EmailService {
                     .buildClient()
                 val poller: SyncPoller<EmailSendResult, EmailSendResult> = emailClient.beginSend(message, null)
                 val result = poller.waitForCompletion()
-                log.info("Result from Azure Email Service - ${result.status}")
-                return@withContext result.status.toString()
+                if (result.status == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED){
+                    val emailResult = result.value
+                    log.info("Result from Azure Email Service - ${emailResult.status} for id - ${emailResult.id}")
+                    return@withContext emailResult.status.toString()
+                } else {
+                    log.error("Result from Azure Email Service - ${result.status}")
+                    return@withContext result.status.toString()
+                }
+
             }
             return result
 

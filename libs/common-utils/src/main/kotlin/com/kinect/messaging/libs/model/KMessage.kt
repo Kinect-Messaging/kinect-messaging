@@ -37,10 +37,6 @@ data class Attachment (
     val content: MimeBodyPart
 )
 
-enum class DeliveryChannel {
-    EMAIL, SMS
-}
 
-enum class TargetSystem {
-    AZURE_COMMUNICATION_SERVICE, AWS_SIMPLE_EMAIL_SERVICE
-}
+
+
