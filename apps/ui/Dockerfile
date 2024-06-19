@@ -1,9 +1,8 @@
-# This Dockerfile uses `serve` npm package to serve the static files with node process.
-# You can find the Dockerfile for nginx in the following link:
-# https://github.com/refinedev/dockerfiles/blob/main/vite/Dockerfile.nginx
 FROM refinedev/node:18 AS base
 
-FROM base as deps
+FROM base AS deps
+
+RUN apk add --no-cache libc6-compat
 
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
 
@@ -14,9 +13,7 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-FROM base as builder
-
-ENV NODE_ENV production
+FROM base AS builder
 
 COPY --from=deps /app/refine/node_modules ./node_modules
 
@@ -24,14 +21,23 @@ COPY . .
 
 RUN npm run build
 
-FROM base as runner
+FROM base AS runner
 
 ENV NODE_ENV production
 
-RUN npm install -g serve
+COPY --from=builder /app/refine/public ./public
 
-COPY --from=builder /app/refine/dist ./
+RUN mkdir .next
+RUN chown refine:nodejs .next
+
+COPY --from=builder --chown=refine:nodejs /app/refine/.next/standalone ./
+COPY --from=builder --chown=refine:nodejs /app/refine/.next/static ./.next/static
 
 USER refine
 
-CMD ["serve"]
+EXPOSE 3000
+
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+
+CMD ["node", "server.js"]

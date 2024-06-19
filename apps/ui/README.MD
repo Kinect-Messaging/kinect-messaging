@@ -41,7 +41,6 @@ To learn more about **Refine**, please check out the [Documentation](https://ref
 
 - **REST Data Provider** [Docs](https://refine.dev/docs/core/providers/data-provider/#overview)
 - **Material UI** [Docs](https://refine.dev/docs/ui-frameworks/mui/tutorial/)
-- **React Router** [Docs](https://refine.dev/docs/core/providers/router-provider/)
 
 ## License
 

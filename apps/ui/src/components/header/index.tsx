@@ -1,3 +1,6 @@
+"use client";
+
+import { ColorModeContext } from "@contexts/color-mode";
 import DarkModeOutlined from "@mui/icons-material/DarkModeOutlined";
 import LightModeOutlined from "@mui/icons-material/LightModeOutlined";
 import AppBar from "@mui/material/AppBar";
@@ -9,7 +12,6 @@ import Typography from "@mui/material/Typography";
 import { useGetIdentity } from "@refinedev/core";
 import { HamburgerMenu, RefineThemedLayoutV2HeaderProps } from "@refinedev/mui";
 import React, { useContext } from "react";
-import { ColorModeContext } from "../../contexts/color-mode";
 
 type IUser = {
   id: number;
