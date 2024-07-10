@@ -20,7 +20,7 @@
         <dependency>
             <groupId>com.kinect.messaging.libs</groupId>
             <artifactId>common-utils</artifactId>
-            <version>1.0.0</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <packaging>pom</packaging>
