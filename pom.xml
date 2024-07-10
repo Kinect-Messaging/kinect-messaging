@@ -138,9 +138,9 @@
 	</build>
 	<repositories>
 		<repository>
-			<id>github-km-libs</id>
+			<id>github</id>
 			<name>Kinect GitHub Packages</name>
-			<url>https://maven.pkg.github.com/Kinect-Messaging/kinect-messaging</url>
+			<url>https://maven.pkg.github.com/Kinect-Messaging/kinect-libs</url>
 		</repository>
 	</repositories>
 
