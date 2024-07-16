@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-alpine as build
+FROM eclipse-temurin:17-jdk-alpine AS build
 WORKDIR /workspace/app
 
 ARG APP_NAME=$APP_NAME
@@ -6,7 +6,6 @@ ARG APP_NAME=$APP_NAME
 COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
-COPY libs libs/
 COPY apps apps/
 
 RUN ./mvnw install -DskipTests
@@ -24,7 +23,7 @@ USER duser
 
 ARG APP_NAME=$APP_NAME
 ARG EXTRACTED=/workspace/app/apps/$APP_NAME/target/extracted
-ARG DESCRIPTION="Template Container for Kinect Messaging"
+ARG DESCRIPTION="$APP_NAME Container for Kinect Messaging"
 LABEL org.opencontainers.image.description = ${DESCRIPTION}
 COPY --from=build ${EXTRACTED}/dependencies/ ./
 COPY --from=build ${EXTRACTED}/spring-boot-loader/ ./
