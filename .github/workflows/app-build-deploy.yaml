@@ -68,9 +68,7 @@ jobs:
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
         if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@v3.3.0
-        with:
-          cosign-release: 'v2.1.1'
+        uses: sigstore/cosign-installer@v3.6.0
 
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache
@@ -134,7 +132,14 @@ jobs:
           DIGEST: ${{ steps.build-and-push.outputs.digest }}
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
-        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+#        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+        run: |
+          echo "${TAGS}" 
+          images=""
+          for tag in ${TAGS}; do
+            images+="${tag}@${DIGEST} "
+          done
+          cosign sign --yes ${images}
 
   deploy:
     needs: build
