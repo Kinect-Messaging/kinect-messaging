@@ -2,18 +2,24 @@
 name: Build & Deploy App
 on:
   workflow_dispatch:
-  pull_request:
-    branches: [ main ]
-    paths:
-      - 'apps/**/src/**'
-      - '.github/workflows/app-build-deploy.yaml'
-  push:
-    branches: [ main ]
-    paths:
-      - 'apps/**/src/**'
-      - '.github/workflows/app-build-deploy.yaml'
+    inputs:
+      name:
+        type: choice
+        description: Select the app to deploy
+        options:
+          - email
+          - config
+          - contact history
+#  pull_request:
+#    branches: [ main ]
+#    paths:
+#      - 'apps/**/src/**'
+#  push:
+#    branches: [ main ]
+#    paths:
+#      - 'apps/**/src/**'
 jobs:
-  project-build:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -26,22 +32,26 @@ jobs:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
       # Use docker.io for Docker Hub if empty
       REGISTRY: ghcr.io
+    outputs:
+      docker-tag: ${{ steps.meta.outputs.tags }}
     steps:
       - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            config:
-              - 'apps/config/src/**'
-            email:
-              - 'apps/email/src/**'
+#      - uses: dorny/paths-filter@v3
+#        id: filter
+#        with:
+#          filters: |
+#            config:
+#              - 'apps/config/src/**'
+#            email:
+#              - 'apps/email/src/**'
       - name: Set up config env variables
-        if: steps.filter.outputs.config == 'true'
+#        if: steps.filter.outputs.config == 'true'
+        if: github.event.inputs.name == 'config'
         run: |
           echo "APP_NAME=config" >> $GITHUB_ENV
       - name: Set up email env variables
-        if: steps.filter.outputs.email == 'true'
+#        if: steps.filter.outputs.email == 'true'
+        if: github.event.inputs.name == 'email'
         run: |
           echo "APP_NAME=email" >> $GITHUB_ENV
       - name: Set up JDK 17
@@ -67,10 +77,6 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3 # v3.0.0
-
-      # Setup Pack CLI for building containers using buildpack
-#      - name: Install pack CLIs including pack and yq
-#        uses: buildpacks/github-actions/setup-pack@v5.0.0
 
 
       # Login against a Docker registry except on PR
@@ -130,12 +136,26 @@ jobs:
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+
+    env:
+      SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
+      # Use docker.io for Docker Hub if empty
+      REGISTRY: ghcr.io
+    steps:
       # Login to Azure
       - name: Login via Azure CLI
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
 
       - name: Deploy to Dev Container App
         uses: azure/container-apps-deploy-action@v2
@@ -143,23 +163,7 @@ jobs:
           registryUrl: ${{ env.REGISTRY }}
           registryUsername: ${{ github.actor }}
           registryPassword: ${{ secrets.GITHUB_TOKEN }}
-          imageToDeploy: ${{ steps.meta.outputs.tags }}
-          containerAppName: kinect-${{ env.APP_NAME }}
+          imageToDeploy: ${{ needs.build.outputs.docker-tag }}
+          containerAppName: ${{ env.APP_NAME }}
           resourceGroup: dev-apps-rg
           containerAppEnvironment: development
-
-      # Extract version information from project to use as image tag
-#      - name: Set the version
-#        run: |
-#          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-#          echo "VERSION=$VERSION" >> $GITHUB_ENV
-
-#      - name: Build app with pack CLI
-#        id: build-and-push
-#        run: |
-#          pack build ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG_VERSION }} \
-#          --builder paketobuildpacks/builder:base \
-#          --env BP_MAVEN_BUILT_MODULE=apps/config \
-#          --cache-image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG_VERSION }} \
-##          --volume "$(pwd)/appinsights:/platform/bindings/application-insights" \
-#          --publish
