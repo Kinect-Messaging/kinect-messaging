@@ -150,4 +150,26 @@ class JourneyControllerTest {
             .jsonPath("\$[1].journeyName").isEqualTo("Customer Subscription Journey")
 
     }
+
+    @Test
+    fun getJourneysByEventName() {
+
+        // given
+        val eventName = "TestEvent"
+
+        // mock the database response
+
+        given(journeyRepository.findAllByJourneySteps_EventName(eventName)).willReturn(journeyEntities)
+
+        // when API is invoked, then return valid response
+        webTestClient.get()
+            .uri("$baseUrl/?eventName=$eventName")
+            .header("X-Transaction-Id", UUID.randomUUID().toString())
+            .exchange()
+            .expectStatus().isOk
+            .expectBody()
+            .jsonPath("\$[0].journeyName").isEqualTo("Welcome Customer Journey")
+            .jsonPath("\$[1].journeyName").isEqualTo("Customer Subscription Journey")
+
+    }
 }

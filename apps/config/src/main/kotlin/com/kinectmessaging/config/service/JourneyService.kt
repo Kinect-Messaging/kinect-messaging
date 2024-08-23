@@ -36,11 +36,12 @@ class JourneyService {
     fun findJourneys(pageNo: Int, pageSize: Int, sortBy: String, sortOrder: Sort.Direction): List<JourneyConfig>?{
         val pageOption = PageRequest.of(pageNo, pageSize, sortOrder, sortBy)
         val pageResult = journeyRepository.findAll(pageOption)
-        var dbResult = pageResult.content
-        val result = mutableListOf<JourneyConfig>()
         if (pageResult.isEmpty){
             throw InvalidInputException("${ErrorConstants.NO_DATA_FOUND_MESSAGE}, page-number - $pageNo, page-size - $pageSize, sort-by - $sortBy")
         }
+        var dbResult = pageResult.content
+        val result = mutableListOf<JourneyConfig>()
+
         // no need to iterate all pages
         /*while (pageResult.hasNext()) {
             val nextPageable = pageResult.nextPageable()
@@ -48,6 +49,15 @@ class JourneyService {
             dbResult = page.content
         }*/
         dbResult.forEach {
+            result.add(it.toJourneyConfig())
+        }
+        return result
+    }
+
+    fun findJourneyByEventName(eventName: String): List<JourneyConfig> {
+        val result = mutableListOf<JourneyConfig>()
+        val dbResult = journeyRepository.findAllByJourneySteps_EventName(eventName)
+        dbResult?.forEach {
             result.add(it.toJourneyConfig())
         }
         return result
@@ -66,4 +76,6 @@ class JourneyService {
         journeySteps = journeySteps,
         auditInfo = auditInfo
     )
+
+
 }

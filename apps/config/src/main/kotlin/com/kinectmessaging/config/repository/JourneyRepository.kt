@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface JourneyRepository: MongoRepository<JourneyEntity, String> {
 
+    fun findAllByJourneySteps_EventName(eventName: String): List<JourneyEntity>?
+
 }

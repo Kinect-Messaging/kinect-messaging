@@ -44,6 +44,22 @@ class JourneyController {
         return ResponseEntity(result, HttpStatus.OK)
     }
 
+    @GetMapping("/")
+    fun getJourneyByEventName(
+        @RequestParam("eventName") eventName: String,
+        @RequestHeader(name = "X-Transaction-Id") transactionId: String
+    ): ResponseEntity<List<JourneyConfig>?> {
+        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+        headerMap["event-name"] = eventName
+        headerMap["method"] = object {}.javaClass.enclosingMethod.name
+        addMDC(headerMap)
+        log.info("${LogConstants.SERVICE_START} {}", kv("request", eventName))
+        val result = journeyService.findJourneyByEventName(eventName)
+        log.info(LogConstants.SERVICE_END, kv("response", result))
+        MDCHelper.clearMDC()
+        return ResponseEntity(result, HttpStatus.OK)
+    }
+
     @GetMapping("/{journeyId}")
     fun getJourneyById(
         @PathVariable journeyId: String,
