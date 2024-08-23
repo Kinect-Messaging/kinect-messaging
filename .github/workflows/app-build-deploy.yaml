@@ -172,4 +172,5 @@ jobs:
           imageToDeploy: ${{ needs.build.outputs.docker-tag }}
           containerAppName: ${{ env.CONTAINER_NAME }}
           resourceGroup: dev-apps-rg
-          containerAppEnvironment: development
+#          containerAppEnvironment: development
+          disableTelemetry: true
