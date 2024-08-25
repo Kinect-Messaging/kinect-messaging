@@ -47,7 +47,7 @@ class JourneyController {
     @GetMapping("/")
     fun getJourneyByEventName(
         @RequestParam("eventName") eventName: String,
-        @RequestHeader(name = "X-Transaction-Id") transactionId: String
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ): ResponseEntity<List<JourneyConfig>?> {
         val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
         headerMap["event-name"] = eventName
