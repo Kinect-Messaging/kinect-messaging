@@ -1,12 +1,3 @@
 spring:
-  data:
-    mongodb:
-      uri: ${AZURE_COSMOS_MONGO_CONNECTION_STRING}
-      database: ${AZURE_COSMOS_MONGO_DATABASE}
-#server:
-#  port: 8081
-app:
-  client:
-    mjml:
-      url: "https://dev-kinect-apim-service.azure-api.net/mjml/v1/mjml2html"
-      api-key: ${AZURE_APIM_KEY}
+  config:
+    import: "optional:configserver:https://kinect-config-server--guh0su4.braveground-5c0f9c31.westus.azurecontainerapps.io"
