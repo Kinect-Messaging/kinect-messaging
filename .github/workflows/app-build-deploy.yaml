@@ -174,3 +174,4 @@ jobs:
           resourceGroup: dev-apps-rg
           containerAppEnvironment: development
           disableTelemetry: true
+          targetPort: 8080

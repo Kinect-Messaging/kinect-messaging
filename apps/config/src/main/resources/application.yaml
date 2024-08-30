@@ -1,3 +1,5 @@
 spring:
+  application:
+    name: kinect-config-app
   config:
     import: "optional:configserver:https://kinect-config-server--guh0su4.braveground-5c0f9c31.westus.azurecontainerapps.io"
