@@ -175,3 +175,5 @@ jobs:
           containerAppEnvironment: development
           disableTelemetry: true
           targetPort: 8080
+          environmentVariables: |
+            "AZURE-APIM-KEY=secretref:https://dev-kinect-app-secrets.vault.azure.net/secrets/AZURE-APIM-KEY/a71ce3e5dc194975991cda077c25626f" "AZURE-EMAIL-CONNECTION=https://dev-kinect-app-secrets.vault.azure.net/secrets/AZURE-EMAIL-CONNECTION/ca4c0c42bec245919d7234210e4f768f"
