@@ -164,13 +164,17 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Read env vars
+        run: |
+          echo "ENV_PATH=${APP_ENV_PATH^^}" >>${GITHUB_ENV}
+
       # Deploy using AZ CLI
       - name: Azure CLI script
         uses: azure/cli@v2
         with:
           azcliversion: latest
           inlineScript: |
-            az containerapp up -n ${{ env.CONTAINER_NAME }} -g dev-apps-rg --registry-server ghcr.io --registry-username ${{ github.actor }} --registry-password ${{ secrets.KINECTCONFIG_REGISTRY_PASSWORD }} --env-vars ${{env.APP_ENV_PATH}} -i ${{ needs.build.outputs.docker-tag }} --target-port 8080
+            az containerapp up -n ${{ env.CONTAINER_NAME }} -g dev-apps-rg --registry-server ghcr.io --registry-username ${{ github.actor }} --registry-password ${{ secrets.KINECTCONFIG_REGISTRY_PASSWORD }} --env-vars ${{ env.ENV_PATH }} -i ${{ needs.build.outputs.docker-tag }} --target-port 8080
 
 #      - name: Deploy to Dev Container App
 #        uses: azure/container-apps-deploy-action@v2
