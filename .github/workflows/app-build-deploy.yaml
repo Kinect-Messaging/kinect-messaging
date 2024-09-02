@@ -168,7 +168,7 @@ jobs:
       - name: Read env vars
         run: |
           echo "APP_ENV_PATH=${APP_NAME^^}_ENV_VARS"
-          echo "ENV_PATH=${APP_ENV_PATH}" >>${GITHUB_ENV}
+          echo "ENV_PATH=${{ env.${APP_ENV_PATH} }}" >>${GITHUB_ENV}
 
       # Deploy using AZ CLI
       - name: Azure CLI script
