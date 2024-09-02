@@ -156,6 +156,7 @@ jobs:
       # Use docker.io for Docker Hub if empty
       REGISTRY: ghcr.io
       CONTAINER_NAME: kinect-${{ github.event.inputs.name }}-app
+      APP_ENV_PATH: ${{ github.event.inputs.name }}_ENV_VARS
     steps:
       # Login to Azure
       - name: Login via Azure CLI
@@ -169,7 +170,7 @@ jobs:
         with:
           azcliversion: latest
           inlineScript: |
-            az containerapp up -n ${{ env.CONTAINER_NAME }} -g dev-apps-rg --registry-server ghcr.io --registry-username ${{ github.actor }} --registry-password ${{ secrets.KINECTCONFIG_REGISTRY_PASSWORD }} --env-vars ${{env.${{ github.event.inputs.name }}_ENV_VARS}} -i ${{ needs.build.outputs.docker-tag }} --target-port 8080
+            az containerapp up -n ${{ env.CONTAINER_NAME }} -g dev-apps-rg --registry-server ghcr.io --registry-username ${{ github.actor }} --registry-password ${{ secrets.KINECTCONFIG_REGISTRY_PASSWORD }} --env-vars ${{env.APP_ENV_PATH}} -i ${{ needs.build.outputs.docker-tag }} --target-port 8080
 
 #      - name: Deploy to Dev Container App
 #        uses: azure/container-apps-deploy-action@v2
