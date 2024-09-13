@@ -1,5 +1,7 @@
 
 name: Build & Deploy App
+env:
+  REGISTRY: ghcr.io
 on:
   workflow_dispatch:
     inputs:
@@ -21,6 +23,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment:
+      name: dev
     permissions:
       contents: read
       packages: write
@@ -37,24 +41,6 @@ jobs:
       docker-tag: ${{ steps.meta.outputs.tags }}
     steps:
       - uses: actions/checkout@v4
-#      - uses: dorny/paths-filter@v3
-#        id: filter
-#        with:
-#          filters: |
-#            config:
-#              - 'apps/config/src/**'
-#            email:
-#              - 'apps/email/src/**'
-#      - name: Set up config env variables
-##        if: steps.filter.outputs.config == 'true'
-#        if: github.event.inputs.name == 'config'
-#        run: |
-#          echo "APP_NAME=config" >> $GITHUB_ENV
-#      - name: Set up email env variables
-##        if: steps.filter.outputs.email == 'true'
-#        if: github.event.inputs.name == 'email'
-#        run: |
-#          echo "APP_NAME=email" >> $GITHUB_ENV
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -141,54 +127,127 @@ jobs:
           done
           cosign sign --yes ${images}
 
-  deploy:
-    needs: build
+  # This job is used for linting the bicep files
+  lint:
+    needs: [ build ]
     runs-on: ubuntu-latest
-    environment: dev
+    name: Lint bicep files
+    environment:
+      name: dev
+    steps:
+      - uses: actions/checkout@v4
+      - name: Perform linting
+        run: az bicep build --f deploy/main.bicep
+
+  # This job creates the resource group if it does not exist and validates the bicep template
+  validate:
+    runs-on: ubuntu-latest
+    name: Create RG and Validate bicep template
+    needs: [ build, lint ]
+    environment:
+      name: dev
     permissions:
-      contents: read
-      packages: write
       # This is used to complete the identity challenge
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
-
     env:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
-      # Use docker.io for Docker Hub if empty
-      REGISTRY: ghcr.io
       CONTAINER_NAME: kinect-${{ github.event.inputs.name }}-app
-      APP_NAME: ${{ github.event.inputs.name }}
     steps:
-      # Login to Azure
-      - name: Login via Azure CLI
+      - uses: actions/checkout@v4
+      - name: Azure login
         uses: azure/login@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Read env vars
-        run: |
-          echo "APP_ENV_PATH=${APP_NAME^^}_ENV_VARS"
-          echo "ENV_PATH=${APP_ENV_PATH}" >>${GITHUB_ENV}
-
-      # Deploy using AZ CLI
-      - name: Azure CLI script
-        uses: azure/cli@v2
+      - name: Create Resource Group if does not exist
+        uses: azure/CLI@v2
         with:
-          azcliversion: latest
           inlineScript: |
-            az containerapp up -n ${{ env.CONTAINER_NAME }} -g dev-apps-rg --registry-server ghcr.io --registry-username ${{ github.actor }} --registry-password ${{ secrets.KINECTCONFIG_REGISTRY_PASSWORD }} --env-vars ${{ env.ENV_PATH }} -i ${{ needs.build.outputs.docker-tag }} --target-port 8080
+            if [[ $(az group exists -n ${{ vars.RESOURCE_GROUP }}) == true ]]
+            then
+              echo "Resource group already exists in the subscription"
+            else
+              az group create  --name ${{ vars.RESOURCE_GROUP }} --location ${{ vars.LOCATION }}
+              echo "Resource group created"
+            fi
 
-#      - name: Deploy to Dev Container App
-#        uses: azure/container-apps-deploy-action@v2
-#        with:
-#          registryUrl: ${{ env.REGISTRY }}
-#          registryUsername: ${{ github.actor }}
-#          registryPassword: ${{ secrets.KINECTCONFIG_REGISTRY_PASSWORD }}
-#          imageToDeploy: ${{ needs.build.outputs.docker-tag }}
-#          containerAppName: ${{ env.CONTAINER_NAME }}
-#          resourceGroup: dev-apps-rg
-#          containerAppEnvironment: development
-#          disableTelemetry: true
-#          targetPort: 8080
-#          environmentVariables: |
-#            "AZURE-APIM-KEY=secretref:https://dev-kinect-app-secrets.vault.azure.net/secrets/AZURE-APIM-KEY/a71ce3e5dc194975991cda077c25626f" "AZURE-EMAIL-CONNECTION=https://dev-kinect-app-secrets.vault.azure.net/secrets/AZURE-EMAIL-CONNECTION/ca4c0c42bec245919d7234210e4f768f"
+      - uses: azure/arm-deploy@v2
+        name: Run validation
+        with:
+          deploymentName: ${{ github.run_number }}
+          resourceGroupName: ${{ vars.RESOURCE_GROUP }}
+          region: ${{ vars.LOCATION }}
+          template: ./deploy/main.bicep
+          parameters: ./deploy/main.parameters.json containerName=${{ env.CONTAINER_NAME }} containerImage=${{ needs.build.outputs.docker-tag }} containerRegistryUsername=${{ secrets.REGISTRY_USER }} containerRegistryPassword=${{ secrets.REGISTRY_PASSWORD }}
+          deploymentMode: Validate
+
+  # This job run what-if on the bicep template
+  preview:
+    runs-on: ubuntu-latest
+    needs: [ build, validate ]
+    name: Run what-if on the bicep template
+    environment:
+      name: dev
+    permissions:
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+    env:
+      SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
+      CONTAINER_NAME: kinect-${{ github.event.inputs.name }}-app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/login@v2
+        name: Sign in to Azure
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - uses: azure/arm-deploy@v2
+        name: Run what-if
+        with:
+          resourceGroupName: ${{ vars.RESOURCE_GROUP }}
+          template: ./deploy/main.bicep
+          parameters: ./deploy/main.parameters.json containerName=${{ env.CONTAINER_NAME }} containerImage=${{ needs.build.outputs.docker-tag }} containerRegistryUsername=${{ secrets.REGISTRY_USER }} containerRegistryPassword=${{ secrets.REGISTRY_PASSWORD }}
+          additionalArguments: "--what-if --rollback-on-error --what-if-exclude-change-types  Ignore"
+
+  # This job deploys the bicep template to Azure subscription using GitHub Container Registry images
+  deploy-with-ghcr-images:
+    runs-on: ubuntu-latest
+    needs: [ build, preview ]
+    name: Deploy to Azure subscription with GHCR
+    environment:
+      name: dev
+    permissions:
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+    env:
+      SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
+      CONTAINER_NAME: kinect-${{ github.event.inputs.name }}-app
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate Bicep param
+        id: generate-bicep-param
+        run: |
+          echo "PARAM=${{ github.event.inputs.name^^ }}_PARAMS" >> $GITHUB_ENV
+          echo ${{ secrets[env.PARAM] }} | base64 -d > deploy/main.parameters.json
+      - uses: azure/login@v2
+        name: Sign in to Azure
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - uses: azure/arm-deploy@v2
+        id: deployment-with-ghcr-images
+        name: Deploy to Azure subscription
+        with:
+          deploymentName: ${{ env.CONTAINER_NAME }}
+          resourceGroupName: ${{ vars.RESOURCE_GROUP }}
+          region: ${{ vars.LOCATION }}
+          template: ./deploy/main.bicep
+          parameters: ./deploy/main.parameters.json containerName=${{ env.CONTAINER_NAME }} containerImage=${{ needs.build.outputs.docker-tag }} containerRegistryUsername=${{ secrets.REGISTRY_USER }} containerRegistryPassword=${{ secrets.REGISTRY_PASSWORD }}
+          failOnStdErr: false

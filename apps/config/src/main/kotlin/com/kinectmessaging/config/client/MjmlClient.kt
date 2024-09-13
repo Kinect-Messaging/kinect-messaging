@@ -26,15 +26,9 @@ class Config{
     @Value("\${app.client.mjml.url}")
     lateinit var url: String
 
-    @Value("\${app.client.mjml.api-key}")
-    lateinit var apiKey: String
-
     @Bean
     fun webClient(builder: Builder): WebClient =
         builder
             .baseUrl(url)
-            .defaultHeaders { httpHeaders ->
-                httpHeaders.add("Ocp-Apim-Subscription-Key", apiKey)
-            }
             .build()
 }

@@ -1,0 +1,7 @@
+deploy/Dockerfile
+.dockerignore
+
+# Not needed as we are bundling the whole app
+.idea
+# Log files
+.git
