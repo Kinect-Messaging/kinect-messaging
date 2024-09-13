@@ -160,7 +160,9 @@ jobs:
         id: generate-bicep-param
         run: |
           echo "PARAM=${APP_NAME@U}_PARAMS" >> $GITHUB_ENV
-          echo ${{ secrets[env.PARAM] }} | base64 -d > ./deploy/main.parameters.json
+          PARAM_VAL="${{ secrets[env.PARAM] }}"
+          echo $PARAM_VAL
+          echo $PARAM_VAL | base64 -d > ./deploy/main.parameters.json
           ls -ltr ./deploy
       - name: Azure login
         uses: azure/login@v2
