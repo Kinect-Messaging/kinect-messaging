@@ -6,6 +6,10 @@ target/
 
 ### Kinect Messaging ###
 **/azure-client-secrets.json
+deploy/modules/*.parameters.json
+apps/**/src/test/resources
+**/application-*.yaml
+**/federatedIdentityCredentials.json
 
 ### STS ###
 .apt_generated

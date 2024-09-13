@@ -20,7 +20,7 @@ CONTAINERAPPS_ENV_ID=$(az containerapp env show -g dev-apps-rg -n development --
 
 2. Create Federated Identity credential for Azure AD application
 ```shell
-cat <<EOF > body.json
+cat <<EOF > federatedIdentityCredentials.json
 {
     "name": "dev-github-kinect-messaging-cicd-federated-identity",
     "issuer": "https://token.actions.githubusercontent.com",
@@ -32,7 +32,7 @@ cat <<EOF > body.json
 }
 EOF
 
-az rest --method POST --uri "https://graph.microsoft.com/beta/applications/$OBJECT_ID/federatedIdentityCredentials" --body @body.json
+az rest --method POST --uri "https://graph.microsoft.com/beta/applications/$OBJECT_ID/federatedIdentityCredentials" --body @federatedIdentityCredentials.json
 ```
 3. Assign roles for the Azure AD application to access the subscription
 ```shell

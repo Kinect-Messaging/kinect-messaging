@@ -4,9 +4,14 @@ targetScope = 'resourceGroup'
 //    PARAMETERS
 // ------------------
 
+@description('The location where the resources will be created.')
+param location string = resourceGroup().location
+
+@description('The tags to be assigned to the created resources.')
+param tags object = {}
+
 @description('The name of the container apps environment.')
 param containerAppsEnvironmentName string
-
 
 @description('The name of the container for the service. The name is use as Dapr App ID.')
 param containerName string
@@ -66,6 +71,8 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' 
 module configContainerApp 'modules/config.bicep' = {
   name: 'configContainerApp--${uniqueString(resourceGroup().id)}'
   params: {
+    location: location
+    tags: tags
     containerAppsEnvironmentId: containerAppEnvironment.id
     containerImage: containerImage
     containerName: containerName
