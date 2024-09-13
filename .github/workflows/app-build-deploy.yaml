@@ -161,6 +161,7 @@ jobs:
         run: |
           echo "PARAM=${APP_NAME@U}_PARAMS" >> $GITHUB_ENV
           echo ${{ secrets[env.PARAM] }} | base64 -d > ./deploy/main.parameters.json
+          ls -ltr ./deploy
       - name: Azure login
         uses: azure/login@v2
         with:
@@ -248,6 +249,7 @@ jobs:
         run: |
           echo "PARAM=${APP_NAME@U}_PARAMS" >> $GITHUB_ENV
           echo ${{ secrets[env.PARAM] }} | base64 -d > ./deploy/main.parameters.json
+          ls -ltr ./deploy
       - uses: azure/login@v2
         name: Sign in to Azure
         with:
