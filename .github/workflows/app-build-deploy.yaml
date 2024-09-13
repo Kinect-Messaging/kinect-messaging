@@ -233,7 +233,7 @@ jobs:
       - name: Generate Bicep param
         id: generate-bicep-param
         run: |
-          echo "PARAM=${{ github.event.inputs.name^^ }}_PARAMS" >> $GITHUB_ENV
+          echo "PARAM=${{ github.event.inputs.name@U }}_PARAMS" >> $GITHUB_ENV
           echo ${{ secrets[env.PARAM] }} | base64 -d > deploy/main.parameters.json
       - uses: azure/login@v2
         name: Sign in to Azure
