@@ -22,9 +22,9 @@ CONTAINERAPPS_ENV_ID=$(az containerapp env show -g dev-apps-rg -n development --
 ```shell
 cat <<EOF > body.json
 {
-    "name": "dev-github-kinect-config-app-cicd-federated-identity",
+    "name": "dev-github-kinect-messaging-cicd-federated-identity",
     "issuer": "https://token.actions.githubusercontent.com",
-    "subject": "repo:Kinect-Messaging/kinect-config-app:environment:dev",
+    "subject": "repo:Kinect-Messaging/kinect-messaging:environment:dev",
     "description": "GitHub Kinect App Repo",
     "audiences": [
         "api://AzureADTokenExchange"

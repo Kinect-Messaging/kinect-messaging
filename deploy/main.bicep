@@ -4,12 +4,6 @@ targetScope = 'resourceGroup'
 //    PARAMETERS
 // ------------------
 
-@description('The location where the resources will be created.')
-param location string = resourceGroup().location
-
-@description('Optional. The tags to be assigned to the created resources.')
-param tags object = {}
-
 @description('The name of the container apps environment.')
 param containerAppsEnvironmentName string
 

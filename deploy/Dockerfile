@@ -3,10 +3,10 @@ WORKDIR /workspace/app
 
 ARG APP_NAME=$APP_NAME
 
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom.xml .
-COPY apps apps/
+COPY ../mvnw .
+COPY ../.mvn .mvn
+COPY ../pom.xml .
+COPY ../apps apps/
 
 RUN ./mvnw install -DskipTests
 
