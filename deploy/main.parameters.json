@@ -39,7 +39,7 @@
       "value": 1
     },
     "keyVaultUserAssignedIdentityId": {
-      "value": ""
+      "value": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}"
     },
     "springDataMongoDBURIKeyVaultUrl": {
       "value": ""

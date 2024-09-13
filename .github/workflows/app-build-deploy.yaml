@@ -153,8 +153,14 @@ jobs:
     env:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
       CONTAINER_NAME: kinect-${{ github.event.inputs.name }}-app
+      APP_NAME: ${{ github.event.inputs.name }}
     steps:
       - uses: actions/checkout@v4
+      - name: Generate Bicep param
+        id: generate-bicep-param
+        run: |
+          echo "PARAM=${APP_NAME@U}_PARAMS" >> $GITHUB_ENV
+          echo ${{ secrets[env.PARAM] }} | base64 -d > deploy/main.parameters.json
       - name: Azure login
         uses: azure/login@v2
         with:
@@ -198,8 +204,14 @@ jobs:
     env:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
       CONTAINER_NAME: kinect-${{ github.event.inputs.name }}-app
+      APP_NAME: ${{ github.event.inputs.name }}
     steps:
       - uses: actions/checkout@v4
+      - name: Generate Bicep param
+        id: generate-bicep-param
+        run: |
+          echo "PARAM=${APP_NAME@U}_PARAMS" >> $GITHUB_ENV
+          echo ${{ secrets[env.PARAM] }} | base64 -d > deploy/main.parameters.json
       - uses: azure/login@v2
         name: Sign in to Azure
         with:
@@ -228,7 +240,7 @@ jobs:
     env:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
       CONTAINER_NAME: kinect-${{ github.event.inputs.name }}-app
-      APP_NAM#: ${{ github.event.inputs.name }}
+      APP_NAME: ${{ github.event.inputs.name }}
     steps:
       - uses: actions/checkout@v4
       - name: Generate Bicep param
