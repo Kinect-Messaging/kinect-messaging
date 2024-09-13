@@ -88,14 +88,14 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
         external: true
         targetPort: portNumber
       }
-//      dapr: {
-//        enabled: true
-//        appId: containerName
-//        appProtocol: 'http'
-//        appPort: portNumber
-//        logLevel: 'info'
-//        enableApiLogging: true
-//      }
+      dapr: {
+        enabled: true
+        appId: containerName
+        appProtocol: 'http'
+        appPort: portNumber
+        logLevel: 'info'
+        enableApiLogging: true
+      }
       secrets: [
         {
           name: 'ghcr-password'
