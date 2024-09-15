@@ -57,6 +57,15 @@ param springDataMongoDBURIKeyVaultUrl string
 @description('The key vault url for Spring Data Mongo DB name.')
 param springDataMongoDBNameKeyVaultUrl string
 
+@description('The key vault url for Azure Email Connection.')
+param azureEmailConnectionKeyVaultUrl string
+
+// Deploy Flags
+@description('Deploy Flag for config container app.')
+param configDeployFlag bool
+
+@description('Deploy Flag for email container app.')
+param emailDeployFlag bool
 
 // ------------------
 // RESOURCES
@@ -68,7 +77,7 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' 
 }
 
 // Module for Config ContainerApp
-module configContainerApp 'modules/config.bicep' = {
+module configContainerApp 'modules/config.bicep' = if(configDeployFlag) {
   name: 'configContainerApp--${uniqueString(resourceGroup().id)}'
   params: {
     location: location
@@ -87,6 +96,28 @@ module configContainerApp 'modules/config.bicep' = {
     portNumber: portNumber
     springDataMongoDBNameKeyVaultUrl: springDataMongoDBNameKeyVaultUrl
     springDataMongoDBURIKeyVaultUrl: springDataMongoDBURIKeyVaultUrl
+  }
+}
+
+// Module for Email ContainerApp
+module emailContainerApp 'modules/email.bicep' = if(emailDeployFlag) {
+  name: 'emailContainerApp--${uniqueString(resourceGroup().id)}'
+  params: {
+    location: location
+    tags: tags
+    containerAppsEnvironmentId: containerAppEnvironment.id
+    containerImage: containerImage
+    containerName: containerName
+    containerRegistryName: containerRegistryName
+    containerRegistryPassword: containerRegistryPassword
+    containerRegistryUsername: containerRegistryUsername
+    cpu: cpu
+    keyVaultUserAssignedIdentityId: keyVaultUserAssignedIdentityId
+    maxInstance: maxInstance
+    memory: memory
+    minInstance: minInstance
+    portNumber: portNumber
+    azureEmailConnectionKeyVaultUrl: azureEmailConnectionKeyVaultUrl
   }
 }
 

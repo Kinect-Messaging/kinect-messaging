@@ -153,7 +153,7 @@ jobs:
     env:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
       CONTAINER_NAME: kinect-${{ github.event.inputs.name }}-app
-      APP_NAME: ${{ github.event.inputs.name }}
+      ENV_NAME: dev
     steps:
       - uses: actions/checkout@v4
       - name: Generate Bicep param
@@ -204,7 +204,7 @@ jobs:
     env:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
       CONTAINER_NAME: kinect-${{ github.event.inputs.name }}-app
-      APP_NAME: ${{ github.event.inputs.name }}
+      ENV_NAME: dev
     steps:
       - uses: actions/checkout@v4
       - name: Generate Bicep param
@@ -240,7 +240,7 @@ jobs:
     env:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
       CONTAINER_NAME: kinect-${{ github.event.inputs.name }}-app
-      APP_NAME: ${{ github.event.inputs.name }}
+      ENV_NAME: dev
     steps:
       - uses: actions/checkout@v4
       - name: Generate Bicep param
