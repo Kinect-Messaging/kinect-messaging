@@ -22,13 +22,11 @@ var httpClient = HttpClient
 
 @Component
 class TemplateClient (private val webClient: WebClient) {
-    @Value("\${app.client.template.apiKey}")
-    lateinit var apiKey: String
+
     suspend fun loadTemplate(personalizationRequest: TemplatePersonalizationRequest): List<KTemplate>? =
         webClient
             .post()
             .header(Defaults.TRANSACTION_ID_HEADER, MDC.get("transaction-id") ?: UUID.randomUUID().toString())
-            .header("Ocp-Apim-Subscription-Key", apiKey)
             .bodyValue(personalizationRequest)
             .retrieve()
             .awaitBody<List<KTemplate>>()
