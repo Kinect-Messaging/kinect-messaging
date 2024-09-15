@@ -101,7 +101,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
         {
             identity: keyVaultUserAssignedIdentityId
             keyVaultUrl: azureEmailConnectionKeyVaultUrl
-            name: 'app-email-azure-connectionString'
+            name: 'app-email-azure-connectionstring'
         }
       ]
       registries: !empty(containerRegistryName) ? [
@@ -129,7 +129,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
 //            }
             {
               name: 'app.email.azure.connectionString'
-              secretRef: 'app-email-azure-connectionString'
+              secretRef: 'app-email-azure-connectionstring'
             }
           ]
         }
