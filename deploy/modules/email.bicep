@@ -82,7 +82,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
     configuration: {
       activeRevisionsMode: 'single'
       ingress: {
-        external: true
+        external: false
         targetPort: portNumber
       }
       dapr: {
