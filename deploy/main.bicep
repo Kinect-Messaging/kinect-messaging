@@ -129,4 +129,4 @@ module emailContainerApp 'modules/email.bicep' = if(emailDeployFlag) {
 output configContainerAppName string = configContainerApp.outputs.containerAppName
 
 @description('The FQDN of the config service.')
-output containerAppFQDN string = configContainerApp.outputs.containerAppFQDN
+output configContainerAppFQDN string = configContainerApp.outputs.containerAppFQDN
