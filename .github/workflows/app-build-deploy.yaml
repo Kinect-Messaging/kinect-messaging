@@ -136,16 +136,16 @@ jobs:
     environment:
       name: dev
     outputs:
-      app-name: ${{ env.APP_NAME }}
+      app-name: ${{ steps.assign-app-name.outputs.APP_NAME }}
     steps:
       - uses: actions/checkout@v4
       - uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: "5.38"
-      - run: |
+      - id: assign-app-name
+        run: |
           perl -v
-          export APP_NAME="$(echo ${{ github.event.inputs.name }} | perl -pe 's/-(.)/\u$1/g')"
-          echo $APP_NAME
+          echo APP_NAME="$(echo ${{ github.event.inputs.name }} | perl -pe 's/-(.)/\u$1/g')" >> "$GITHUB_OUTPUT"
 
   # This job is used for linting the bicep files
   lint:
