@@ -11,7 +11,8 @@ on:
         options:
           - email
           - config
-          - contact history
+          - contact-history
+          - event-processor
 #  pull_request:
 #    branches: [ main ]
 #    paths:

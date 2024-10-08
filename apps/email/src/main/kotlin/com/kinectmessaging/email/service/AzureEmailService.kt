@@ -54,6 +54,7 @@ class AzureEmailService : EmailService {
 
             val plainEmailBody = templates?.first { it.templateId == emailData.textTemplateId }?.templateContent
             val htmlEmailMessage = templates?.first { it.templateId == emailData.htmlTemplateId }?.templateContent
+            kMessage.emailData?.senderAddress?.let { senderAddress = it }
 
             if (plainEmailBody?.isNotBlank() == true || htmlEmailMessage?.isNotBlank() == true) {
                 val message = EmailMessage()

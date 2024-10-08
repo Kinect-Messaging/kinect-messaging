@@ -81,6 +81,7 @@ class EnvController {
             envService.findEnvs(pageNo, pageSize, sortBy, sortOrder)
         } else {
             MDCHelper.clearMDC()
+            log.error("${ErrorConstants.NO_DATA_FOUND_MESSAGE}, page-number : $pageNo, page-size : $pageSize, sort-by : $sortBy")
             throw InvalidInputException("${ErrorConstants.NO_DATA_FOUND_MESSAGE}, page-number : $pageNo, page-size : $pageSize, sort-by : $sortBy")
         }
         log.info(LogConstants.SERVICE_END, kv("response", result))

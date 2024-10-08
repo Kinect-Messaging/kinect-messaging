@@ -8,16 +8,13 @@
     </parent>
     <groupId>com.kinectmessaging.apps</groupId>
     <artifactId>event-processor</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <name>event-processor</name>
+    <version>0.0.1-SNAPSHOT</version>
     <description>Module which processes incoming events</description>
-
     <properties>
         <java.version>17</java.version>
-        <kotlin.version>1.9.20</kotlin.version>
-        <spring-cloud-azure.version>5.8.0</spring-cloud-azure.version>
-        <spring-cloud.version>2023.0.0</spring-cloud.version>
+        <kotlin.version>1.9.21</kotlin.version>
     </properties>
     <dependencies>
         <dependency>
@@ -25,54 +22,16 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.azure.spring</groupId>
-            <artifactId>spring-cloud-azure-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.azure.spring</groupId>
-            <artifactId>spring-cloud-azure-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.azure.spring</groupId>
-            <artifactId>spring-cloud-azure-starter-data-cosmos</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.azure.spring</groupId>
-            <artifactId>spring-cloud-azure-starter-keyvault</artifactId>
+            <groupId>com.dashjoin</groupId>
+            <artifactId>jsonata</artifactId>
+            <version>0.9.7</version>
         </dependency>
     </dependencies>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.azure.spring</groupId>
-                <artifactId>spring-cloud-azure-dependencies</artifactId>
-                <version>${spring-cloud-azure.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
         <testSourceDirectory>src/test/kotlin</testSourceDirectory>
         <plugins>
-            <plugin>
-                <groupId>org.graalvm.buildtools</groupId>
-                <artifactId>native-maven-plugin</artifactId>
-            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -95,33 +54,6 @@
                         <version>${kotlin.version}</version>
                     </dependency>
                 </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>com.microsoft.azure</groupId>
-                <artifactId>azure-spring-apps-maven-plugin</artifactId>
-                <version>1.19.0</version>
-                <configuration>
-                    <subscriptionId>8f38c0b4-ddbc-4a7b-99de-675e5a87000e</subscriptionId>
-                    <resourceGroup>Dev-Spring</resourceGroup>
-                    <clusterName>spring-apps-dev</clusterName>
-                    <sku>Consumption</sku>
-                    <appName>kinect-template</appName>
-                    <isPublic>true</isPublic>
-                    <deployment>
-                        <cpu>0.5</cpu>
-                        <memoryInGB>1.0</memoryInGB>
-                        <instanceCount>1</instanceCount>
-                        <runtimeVersion>Java_17</runtimeVersion>
-                        <resources>
-                            <resource>
-                                <directory>${project.basedir}/target</directory>
-                                <includes>
-                                    <include>*.jar</include>
-                                </includes>
-                            </resource>
-                        </resources>
-                    </deployment>
-                </configuration>
             </plugin>
         </plugins>
     </build>

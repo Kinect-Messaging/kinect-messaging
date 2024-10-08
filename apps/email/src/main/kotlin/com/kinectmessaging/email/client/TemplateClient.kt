@@ -15,7 +15,7 @@ import reactor.netty.http.client.HttpClient
 import java.util.*
 
 
-var httpClient = HttpClient
+var httpClient: HttpClient = HttpClient
     .create()
 //    .wiretap("reactor.netty.http.client.HttpClient",
 //        LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL)
