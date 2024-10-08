@@ -67,6 +67,9 @@ param configDeployFlag bool
 @description('Deploy Flag for email container app.')
 param emailDeployFlag bool
 
+@description('Deploy Flag for event processor container app.')
+param eventProcessorDeployFlag bool
+
 // ------------------
 // RESOURCES
 // ------------------
@@ -121,6 +124,26 @@ module emailContainerApp 'modules/email.bicep' = if(emailDeployFlag) {
   }
 }
 
+// Module for Event Processor ContainerApp
+module eventProcessorContainerApp 'modules/event-processor.bicep' = if(eventProcessorDeployFlag) {
+  name: 'eventProcessorContainerApp--${uniqueString(resourceGroup().id)}'
+  params: {
+    location: location
+    tags: tags
+    containerAppsEnvironmentId: containerAppEnvironment.id
+    containerImage: containerImage
+    containerName: containerName
+    containerRegistryName: containerRegistryName
+    containerRegistryPassword: containerRegistryPassword
+    containerRegistryUsername: containerRegistryUsername
+    cpu: cpu
+    keyVaultUserAssignedIdentityId: keyVaultUserAssignedIdentityId
+    maxInstance: maxInstance
+    memory: memory
+    minInstance: minInstance
+    portNumber: portNumber
+  }
+}
 // ------------------
 // OUTPUTS
 // ------------------
