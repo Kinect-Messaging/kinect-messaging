@@ -68,7 +68,7 @@ param configDeployFlag bool
 param emailDeployFlag bool
 
 @description('Deploy Flag for event processor container app.')
-param event-processorDeployFlag bool
+param eventProcessorDeployFlag bool
 
 // ------------------
 // RESOURCES

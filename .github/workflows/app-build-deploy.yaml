@@ -128,6 +128,20 @@ jobs:
           done
           cosign sign --yes ${images}
 
+  # Convert App Name to Pascal case
+  setup:
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    name: Prepare workflow variables
+    environment:
+      name: dev
+    outputs:
+      app-name: ${{ env.APP_NAME }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          export APP_NAME="$(echo ${{ github.event.inputs.name }} | perl -pe 's/-(.)/\u$1/g')"
+
   # This job is used for linting the bicep files
   lint:
     needs: [ build ]
@@ -144,7 +158,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     name: Create RG and Validate bicep template
-    needs: [ build, lint ]
+    needs: [ build, lint, setup ]
     environment:
       name: dev
     permissions:
@@ -189,13 +203,13 @@ jobs:
           resourceGroupName: ${{ vars.RESOURCE_GROUP }}
           region: ${{ vars.LOCATION }}
           template: ./deploy/main.bicep
-          parameters: ./deploy/main.parameters.json ${{ env.APP_NAME }}DeployFlag=true containerName=${{ env.CONTAINER_NAME }} containerImage=${{ needs.build.outputs.docker-tag }} containerRegistryUsername=${{ secrets.REGISTRY_USER }} containerRegistryPassword=${{ secrets.REGISTRY_PASSWORD }}
+          parameters: ./deploy/main.parameters.json ${{ needs.setup.outputs.app-name }}DeployFlag=true containerName=${{ env.CONTAINER_NAME }} containerImage=${{ needs.build.outputs.docker-tag }} containerRegistryUsername=${{ secrets.REGISTRY_USER }} containerRegistryPassword=${{ secrets.REGISTRY_PASSWORD }}
           deploymentMode: Validate
 
   # This job run what-if on the bicep template
   preview:
     runs-on: ubuntu-latest
-    needs: [ build, validate ]
+    needs: [ build, validate, setup ]
     name: Run what-if on the bicep template
     environment:
       name: dev
@@ -226,13 +240,13 @@ jobs:
         with:
           resourceGroupName: ${{ vars.RESOURCE_GROUP }}
           template: ./deploy/main.bicep
-          parameters: ./deploy/main.parameters.json ${{ env.APP_NAME }}DeployFlag=true containerName=${{ env.CONTAINER_NAME }} containerImage=${{ needs.build.outputs.docker-tag }} containerRegistryUsername=${{ secrets.REGISTRY_USER }} containerRegistryPassword=${{ secrets.REGISTRY_PASSWORD }}
+          parameters: ./deploy/main.parameters.json ${{ needs.setup.outputs.app-name }}DeployFlag=true containerName=${{ env.CONTAINER_NAME }} containerImage=${{ needs.build.outputs.docker-tag }} containerRegistryUsername=${{ secrets.REGISTRY_USER }} containerRegistryPassword=${{ secrets.REGISTRY_PASSWORD }}
           additionalArguments: "--what-if --rollback-on-error --what-if-exclude-change-types  Ignore"
 
   # This job deploys the bicep template to Azure subscription using GitHub Container Registry images
   deploy-with-ghcr-images:
     runs-on: ubuntu-latest
-    needs: [ build, preview ]
+    needs: [ build, setup, preview ]
     name: Deploy to Azure subscription with GHCR
     environment:
       name: dev
@@ -266,5 +280,5 @@ jobs:
           resourceGroupName: ${{ vars.RESOURCE_GROUP }}
           region: ${{ vars.LOCATION }}
           template: ./deploy/main.bicep
-          parameters: ./deploy/main.parameters.json ${{ env.APP_NAME }}DeployFlag=true containerName=${{ env.CONTAINER_NAME }} containerImage=${{ needs.build.outputs.docker-tag }} containerRegistryUsername=${{ secrets.REGISTRY_USER }} containerRegistryPassword=${{ secrets.REGISTRY_PASSWORD }}
+          parameters: ./deploy/main.parameters.json ${{ needs.setup.outputs.app-name }}DeployFlag=true containerName=${{ env.CONTAINER_NAME }} containerImage=${{ needs.build.outputs.docker-tag }} containerRegistryUsername=${{ secrets.REGISTRY_USER }} containerRegistryPassword=${{ secrets.REGISTRY_PASSWORD }}
           failOnStdErr: false
