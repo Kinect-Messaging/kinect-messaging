@@ -174,9 +174,10 @@ jobs:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
       CONTAINER_NAME: kinect-${{ github.event.inputs.name }}-app
       ENV_NAME: dev
-      APP_NAME: ${{ github.event.inputs.name }}
+      APP_NAME: ${{ needs.setup.outputs.app-name }}
     steps:
       - uses: actions/checkout@v4
+      - run: echo $APP_NAME
       - name: Generate Bicep param
         id: generate-bicep-param
         env:
@@ -208,7 +209,7 @@ jobs:
           resourceGroupName: ${{ vars.RESOURCE_GROUP }}
           region: ${{ vars.LOCATION }}
           template: ./deploy/main.bicep
-          parameters: ./deploy/main.parameters.json ${{ needs.setup.outputs.app-name }}DeployFlag=true containerName=${{ env.CONTAINER_NAME }} containerImage=${{ needs.build.outputs.docker-tag }} containerRegistryUsername=${{ secrets.REGISTRY_USER }} containerRegistryPassword=${{ secrets.REGISTRY_PASSWORD }}
+          parameters: ./deploy/main.parameters.json ${{ env.APP_NAME }}DeployFlag=true containerName=${{ env.CONTAINER_NAME }} containerImage=${{ needs.build.outputs.docker-tag }} containerRegistryUsername=${{ secrets.REGISTRY_USER }} containerRegistryPassword=${{ secrets.REGISTRY_PASSWORD }}
           deploymentMode: Validate
 
   # This job run what-if on the bicep template
@@ -226,7 +227,7 @@ jobs:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
       CONTAINER_NAME: kinect-${{ github.event.inputs.name }}-app
       ENV_NAME: dev
-      APP_NAME: ${{ github.event.inputs.name }}
+      APP_NAME: ${{ needs.setup.outputs.app-name }}
     steps:
       - uses: actions/checkout@v4
       - name: Generate Bicep param
@@ -263,7 +264,7 @@ jobs:
       SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
       CONTAINER_NAME: kinect-${{ github.event.inputs.name }}-app
       ENV_NAME: dev
-      APP_NAME: ${{ github.event.inputs.name }}
+      APP_NAME: ${{ needs.setup.outputs.app-name }}
     steps:
       - uses: actions/checkout@v4
       - name: Generate Bicep param
