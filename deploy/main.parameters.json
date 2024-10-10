@@ -1,0 +1,51 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "tags": {
+      "value": {}
+    },
+    "containerAppsEnvironmentName": {
+      "value": "development"
+    },
+    "containerName": {
+      "value": "container-name"
+    },
+    "containerRegistryName": {
+      "value": "ghcr.io"
+    },
+    "containerRegistryUsername": {
+      "value": ""
+    },
+    "containerRegistryPassword": {
+      "value": ""
+    },
+    "containerImage": {
+      "value": ""
+    },
+    "portNumber": {
+      "value": 8080
+    },
+    "cpu": {
+      "value": "0.25"
+    },
+    "memory": {
+      "value": "0.5Gi"
+    },
+    "minInstance": {
+      "value": 1
+    },
+    "maxInstance": {
+      "value": 1
+    },
+    "keyVaultUserAssignedIdentityId": {
+      "value": "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}"
+    },
+    "springDataMongoDBURIKeyVaultUrl": {
+      "value": ""
+    },
+    "springDataMongoDBNameKeyVaultUrl": {
+      "value": ""
+    }
+  }
+}

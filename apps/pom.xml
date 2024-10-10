@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.kinect.messaging</groupId>
+        <groupId>com.kinectmessaging</groupId>
         <artifactId>kinect-messaging</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
@@ -18,9 +18,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.kinect.messaging.libs</groupId>
+            <groupId>com.kinectmessaging.libs</groupId>
             <artifactId>common-utils</artifactId>
-            <version>1.0.0</version>
+            <version>[1.0.0, 2.0.0)</version>
         </dependency>
     </dependencies>
     <packaging>pom</packaging>
