@@ -20,6 +20,11 @@ class EventProcessorService {
     @Autowired
     lateinit var apiClient: ApiClient
 
+    /**
+     * @author Raj Palanisamy
+     * Function to process the incoming event and convert to a list of notifications to be sent via different channels. Upon successful invocation of each target, returns a count of notifications processed.
+     * @return Total number of notifications processed.
+     */
     suspend fun processEvent(event: KEvent): String{
         val result: String
 
@@ -73,10 +78,14 @@ class EventProcessorService {
                         val htmlTemplateId = emailConfig.templateConfig.filterValues { it == "html" }.keys.first()
                         val senderAddress = emailConfig.senderAddress ?: ""
                         val subject = jsonata(emailConfig.subject).evaluate(payload).toString()
-                        val toRecipients = evaluateEmailRecipients(emailConfig.toRecipients, payload)
-                        val ccRecipients = evaluateEmailRecipients(emailConfig.ccRecipients, payload)
-                        val bccRecipients = evaluateEmailRecipients(emailConfig.bccRecipients, payload)
-                        val replyTo = evaluateEmailRecipients(emailConfig.replyTo, payload)
+                        val toRecipients = if (event.recipients?.isNotEmpty() == true){
+                            evaluateEmailRecipientsFromPayload(event.recipients, payload)
+                        } else {
+                            evaluateEmailRecipientsFromEmailConfig(emailConfig.toRecipients, payload)
+                        }
+                        val ccRecipients = evaluateEmailRecipientsFromEmailConfig(emailConfig.ccRecipients, payload)
+                        val bccRecipients = evaluateEmailRecipientsFromEmailConfig(emailConfig.bccRecipients, payload)
+                        val replyTo = evaluateEmailRecipientsFromEmailConfig(emailConfig.replyTo, payload)
                         val personalizationData = evaluatePersonalizationData(emailConfig.personalizationData, payload)
                         val notificationMessage = KMessage(
                             id = UUID.randomUUID().toString(),
@@ -107,11 +116,17 @@ class EventProcessorService {
         notificationMessages.forEach { notificationMessage ->
             apiClient.sendEmail(notificationMessage)
         }
-        result = "Total notifications sent ${notificationMessages.size}"
+        result = "Total notifications sent - ${notificationMessages.size}"
         return result
     }
 
-    private fun evaluateEmailRecipients(recipientConfigs: List<EmailRecipientConfig>?, payload: Map<String, Any>?): List<InternetAddress>{
+
+    /**
+     * @author Raj Palanisamy
+     * Function to parse the recipients of each email configurations per message configuration and evaluate the recipients. Uses Jsonata evaluation to convert the configurations to actual values and maps to a list of InternetAddress.
+     * @return List<InternetAddress>
+     */
+    private fun evaluateEmailRecipientsFromEmailConfig(recipientConfigs: List<EmailRecipientConfig>?, payload: Map<String, Any>?): List<InternetAddress>{
         val recipients = mutableListOf<InternetAddress>()
         recipientConfigs?.forEach { recipientConfig ->
             val emailAddress = recipientConfig.emailAddress
@@ -128,6 +143,34 @@ class EventProcessorService {
         return recipients
     }
 
+    /**
+     * @author Raj Palanisamy
+     * Function to retrieve the recipients from payload and convert to a list of InternetAddress.
+     * @return List<InternetAddress>
+     */
+    private fun evaluateEmailRecipientsFromPayload(recipientConfigs: List<Person>?, payload: Map<String, Any>?): List<InternetAddress>{
+        val recipients = mutableListOf<InternetAddress>()
+        recipientConfigs?.forEach { recipientConfig ->
+            recipientConfig.contacts?.forEach { contact ->
+                val emailAddress = contact.email
+                if (emailAddress?.isNotBlank() == true) {
+                    recipients.add(
+                        InternetAddress(
+                            emailAddress,
+                            recipientConfig.lastName?.let { recipientConfig.firstName + ", " + recipientConfig.lastName } ?: recipientConfig.firstName
+                        )
+                    )
+                }
+            }
+        }
+        return recipients
+    }
+
+    /**
+     * @author Raj Palanisamy
+     * Function to parse the data from payload that would be required to personalize the notifications. Uses Jsonata evaluation to convert the configurations to actual values and returns a map of a map of attributes.
+     * @return Map<String, Map<String, String?>?>
+     */
     private fun evaluatePersonalizationData(personalizationData: Map<String, Map<String, String?>?>?, payload: Map<String, Any>?): Map<String, Map<String, String?>?>{
         val resultPersonalizationData = mutableMapOf<String, MutableMap<String, String?>?>()
         personalizationData?.forEach { (objectName, attributesMap) ->

@@ -28,7 +28,7 @@ class EmailController {
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     suspend fun sendEmail(@RequestBody kMessage: KMessage, @RequestHeader(Defaults.TRANSACTION_ID_HEADER) transactionId: String): ResponseEntity<String>{
         var result = "No email sent."
-        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+            val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
         headerMap["message-id"] = kMessage.id
         headerMap["event-id"] = kMessage.sourceId
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
