@@ -58,7 +58,6 @@ class TemplateService {
         return result
     }
 
-    @OptIn(ExperimentalEncodingApi::class)
     suspend fun personalizeTemplate(templatePersonalizationRequest: TemplatePersonalizationRequest): List<KTemplate> {
         val result = mutableListOf<KTemplate>()
         templatePersonalizationRequest.textTemplateId?.let { id ->
@@ -69,9 +68,7 @@ class TemplateService {
         }
         templatePersonalizationRequest.htmlTemplateId?.let { id ->
             getTemplateAndApplyPersonalization(id, templatePersonalizationRequest.personalizationData)?.let {
-                val htmlTemplate = renderMjmlTemplate(
-                    Base64.encode(it.templateContent.encodeToByteArray())
-                )
+                val htmlTemplate = renderMjmlTemplate(it.templateContent)
                 result.add(it.copy(templateContent = htmlTemplate))
             }
         }
@@ -98,9 +95,10 @@ class TemplateService {
         return result
     }
 
+    @OptIn(ExperimentalEncodingApi::class)
     private suspend fun renderMjmlTemplate(template: String): String {
-        val htmlContent = mjmlClient.renderMjmlToHtml(MjmlRequest(template))
-        return htmlContent
+        val htmlContent = mjmlClient.renderMjmlToHtml(MjmlRequest(Base64.encode(template.encodeToByteArray())))
+        return String(Base64.decode(htmlContent))
     }
 
     fun KTemplate.toTemplateEntity() = TemplateEntity(
