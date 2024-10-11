@@ -67,7 +67,14 @@ class TemplateService {
             getTemplateAndApplyPersonalization(
                 id,
                 templatePersonalizationRequest.personalizationData
-            )?.let { result.add(it) }
+            )?.let {
+                val textTemplate = if (it.templateContent.contains("<mjml>")){
+                    renderMjmlTemplate(it.templateContent)
+                } else {
+                    it.templateContent
+                }
+                result.add(it.copy(templateContent = textTemplate))
+            }
         }
         templatePersonalizationRequest.htmlTemplateId?.let { id ->
             getTemplateAndApplyPersonalization(id, templatePersonalizationRequest.personalizationData)?.let {
