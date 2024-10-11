@@ -1,6 +1,7 @@
 package com.kinectmessaging.config.client
 
 import com.kinectmessaging.config.model.MjmlRequest
+import com.kinectmessaging.config.model.MjmlResponse
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -11,12 +12,12 @@ import org.springframework.web.reactive.function.client.awaitBody
 
 @Component
 class MjmlClient (private val webClient: WebClient){
-     suspend fun renderMjmlToHtml(mjmlRequest: MjmlRequest): String =
+     suspend fun renderMjmlToHtml(mjmlRequest: MjmlRequest): MjmlResponse =
         webClient
             .post()
             .bodyValue(mjmlRequest)
             .retrieve()
-            .awaitBody<String>()
+            .awaitBody<MjmlResponse>()
 
 }
 
