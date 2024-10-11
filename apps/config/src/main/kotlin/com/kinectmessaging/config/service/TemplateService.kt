@@ -104,7 +104,8 @@ class TemplateService {
     @OptIn(ExperimentalEncodingApi::class)
     private suspend fun renderMjmlTemplate(template: String): String {
         val response = mjmlClient.renderMjmlToHtml(MjmlRequest(Base64.encode(template.encodeToByteArray())))
-        return String(Base64.decode(response.html))
+        val htmlContent = String(Base64.decode(response.html))
+        return htmlContent
     }
 
     fun KTemplate.toTemplateEntity() = TemplateEntity(
