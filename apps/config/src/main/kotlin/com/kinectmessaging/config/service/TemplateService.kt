@@ -9,6 +9,7 @@ import com.kinectmessaging.libs.exception.InvalidInputException
 import com.kinectmessaging.libs.model.KTemplate
 import com.kinectmessaging.libs.model.TemplatePersonalizationRequest
 import com.samskivert.mustache.Mustache
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -20,6 +21,8 @@ import kotlin.jvm.optionals.getOrNull
 
 @Service
 class TemplateService {
+
+    private val log = LoggerFactory.getLogger(this::class.java)
 
     @Autowired
     lateinit var mjmlClient: MjmlClient
@@ -64,11 +67,19 @@ class TemplateService {
             getTemplateAndApplyPersonalization(
                 id,
                 templatePersonalizationRequest.personalizationData
-            )?.let { result.add(it) }
+            )?.let {
+                val textTemplate = if (it.templateContent.contains("<mjml>")){
+                    renderMjmlTemplate(it.templateContent)
+                } else {
+                    it.templateContent
+                }
+                result.add(it.copy(templateContent = textTemplate))
+            }
         }
         templatePersonalizationRequest.htmlTemplateId?.let { id ->
             getTemplateAndApplyPersonalization(id, templatePersonalizationRequest.personalizationData)?.let {
                 val htmlTemplate = renderMjmlTemplate(it.templateContent)
+                log.debug("Template after applying Mjml - $htmlTemplate" )
                 result.add(it.copy(templateContent = htmlTemplate))
             }
         }
@@ -83,7 +94,9 @@ class TemplateService {
         val templateFromDb = findTemplateById(id)
         templateFromDb?.let {
             val decodedContent = String(Base64.decode(it.templateContent))
+            log.debug("Template before applying Mustache - $decodedContent" )
             val template = renderMustacheTemplate(decodedContent, contextData)
+            log.debug("Template after applying Mustache - $decodedContent" )
             return templateFromDb.copy(templateContent = template)
         }
         return null
@@ -95,8 +108,10 @@ class TemplateService {
         return result
     }
 
+    @OptIn(ExperimentalEncodingApi::class)
     private suspend fun renderMjmlTemplate(template: String): String {
-        val htmlContent = mjmlClient.renderMjmlToHtml(MjmlRequest(template))
+        val response = mjmlClient.renderMjmlToHtml(MjmlRequest(Base64.encode(template.encodeToByteArray())))
+        val htmlContent = String(Base64.decode(response.html))
         return htmlContent
     }
 

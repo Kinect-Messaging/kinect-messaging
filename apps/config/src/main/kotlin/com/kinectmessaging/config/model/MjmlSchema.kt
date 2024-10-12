@@ -9,7 +9,7 @@ data class MjmlRequest(
 
 data class MjmlResponse(
     val html: String,
-    val json: String,
+    val json: String?,
     val errors: List<String>?
 )
 
