@@ -7,6 +7,7 @@ import com.azure.communication.email.models.EmailSendResult
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.core.util.polling.SyncPoller
 import com.kinectmessaging.email.client.TemplateClient
+import com.kinectmessaging.libs.common.EmailUtils
 import com.kinectmessaging.libs.model.KMessage
 import com.kinectmessaging.libs.model.TemplatePersonalizationRequest
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +55,9 @@ class AzureEmailService : EmailService {
 
             val plainEmailBody = templates?.first { it.templateId == emailData.textTemplateId }?.templateContent
             val htmlEmailMessage = templates?.first { it.templateId == emailData.htmlTemplateId }?.templateContent
-            kMessage.emailData?.senderAddress?.let { senderAddress = it }
+            if (EmailUtils.isEmailValid(emailData.senderAddress)){
+                senderAddress = emailData.senderAddress
+            }
 
             if (plainEmailBody?.isNotBlank() == true || htmlEmailMessage?.isNotBlank() == true) {
                 val message = EmailMessage()
@@ -111,5 +114,4 @@ class AzureEmailService : EmailService {
         }
         return azureRecipients
     }
-
 }
