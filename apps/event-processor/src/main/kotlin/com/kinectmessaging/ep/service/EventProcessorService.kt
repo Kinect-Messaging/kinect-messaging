@@ -7,6 +7,7 @@ import com.kinectmessaging.ep.client.ApiClient
 import com.kinectmessaging.libs.exception.InvalidInputException
 import com.kinectmessaging.libs.model.*
 import net.logstash.logback.argument.StructuredArguments
+import net.logstash.logback.argument.StructuredArguments.kv
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -63,6 +64,7 @@ class EventProcessorService {
                 }
             }
 
+            log.debug("Fetched Message configs for event ${event.eventName} with id ${event.eventId}", kv("Message Configs", messageConfigs))
             // Create relevant notification from configs
             messageConfigs.forEach { messageConfig ->
                 // verify if message condition exists and evaluates to true
@@ -142,6 +144,7 @@ class EventProcessorService {
         }
 
 
+        log.debug("Publishing notification messages to delivery channels for event ${event.eventName} with id ${event.eventId}.", kv("Notification Messages", notificationMessages))
         // Invoke the relevant target service for each notification
         notificationMessages.forEach { notificationMessage ->
             when(notificationMessage.deliveryChannel){
@@ -149,12 +152,13 @@ class EventProcessorService {
                     apiClient.sendEmail(notificationMessage)
                 }
                 else -> {
-                    log.warn("No valid delivery channel found in notification message.", StructuredArguments.kv("Notification Message", notificationMessage))
+                    log.warn("No valid delivery channel found in notification message for event ${event.eventName} with id ${event.eventId}.", kv("Notification Message", notificationMessage))
                 }
             }
 
         }
 
+        log.debug("Updating Contact History records for event ${event.eventName} with id ${event.eventId}. ", kv("Contact History", contactHistoryList))
         // Publish contact history records
         contactHistoryList.forEach { contactHistory ->
             apiClient.createContactHistory(contactHistory)
