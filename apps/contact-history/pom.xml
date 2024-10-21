@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <groupId>com.kinectmessaging.apps</groupId>
-    <artifactId>ch</artifactId>
+    <artifactId>contact-history</artifactId>
     <packaging>jar</packaging>
     <name>ch</name>
     <properties>
