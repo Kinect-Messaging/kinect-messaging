@@ -70,6 +70,9 @@ param emailDeployFlag bool
 @description('Deploy Flag for event processor container app.')
 param eventProcessorDeployFlag bool
 
+@description('Deploy Flag for contact history container app.')
+param contactHistoryDeployFlag bool
+
 // ------------------
 // RESOURCES
 // ------------------
