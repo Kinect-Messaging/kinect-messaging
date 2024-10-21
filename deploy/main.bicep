@@ -147,6 +147,30 @@ module eventProcessorContainerApp 'modules/event-processor.bicep' = if(eventProc
     portNumber: portNumber
   }
 }
+
+// Module for Contact History ContainerApp
+module contactHistoryContainerApp 'modules/contact-history.bicep' = if(contactHistoryDeployFlag) {
+  name: 'contactHistoryContainerApp--${uniqueString(resourceGroup().id)}'
+  params: {
+    location: location
+    tags: tags
+    containerAppsEnvironmentId: containerAppEnvironment.id
+    containerImage: containerImage
+    containerName: containerName
+    containerRegistryName: containerRegistryName
+    containerRegistryPassword: containerRegistryPassword
+    containerRegistryUsername: containerRegistryUsername
+    cpu: cpu
+    keyVaultUserAssignedIdentityId: keyVaultUserAssignedIdentityId
+    maxInstance: maxInstance
+    memory: memory
+    minInstance: minInstance
+    portNumber: portNumber
+    springDataMongoDBNameKeyVaultUrl: springDataMongoDBNameKeyVaultUrl
+    springDataMongoDBURIKeyVaultUrl: springDataMongoDBURIKeyVaultUrl
+  }
+}
+
 // ------------------
 // OUTPUTS
 // ------------------
