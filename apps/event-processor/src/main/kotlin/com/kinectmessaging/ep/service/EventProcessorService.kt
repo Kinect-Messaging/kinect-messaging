@@ -6,6 +6,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.kinectmessaging.ep.client.ApiClient
 import com.kinectmessaging.libs.exception.InvalidInputException
 import com.kinectmessaging.libs.model.*
+import net.logstash.logback.argument.StructuredArguments
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -35,11 +36,13 @@ class EventProcessorService {
 
         // Get matching configurations for the event
         val notificationMessages = mutableListOf<KMessage>()
+        val contactHistoryList = mutableListOf<KContactHistory>()
         val matchingJourneys = apiClient.getJourneyConfigsByEventName(eventName = event.eventName)
         val payload = event.payload?.let { jacksonObjectMapper().convertValue<Map<String, Any>>(it) }
 
         matchingJourneys?.forEach { journeyConfig ->
             val messageConfigs = mutableListOf<MessageConfig>()
+            val journeyTransactionId = UUID.randomUUID().toString()
             val journeySteps = journeyConfig.journeySteps
             journeySteps?.filter { it.eventName == event.eventName }?.forEach { journeyStep ->
 
@@ -106,16 +109,57 @@ class EventProcessorService {
                                 personalizationData = personalizationData
                             )
                         )
+                        
+                        // Add Contact History record
+                        toRecipients.forEach { recipient ->
+                            contactHistoryList.add(KContactHistory(
+                                id = UUID.randomUUID().toString(),
+                                journeyTransactionId = journeyTransactionId,
+                                journeyName = journeyConfig.journeyName,
+                                messages = ContactMessages(
+                                    messageId = notificationMessage.id,
+                                    deliveryTrackingId = null,
+                                    deliveryChannel = notificationMessage.deliveryChannel,
+                                    contactAddress = recipient.address,
+                                    deliveryStatus = mutableListOf(
+                                        DeliveryStatus(
+                                            statusTime = Calendar.getInstance().time,
+                                            status = "CREATED",
+                                            statusMessage = null,
+                                            originalStatus = null,
+                                        )
+                                    ),
+                                    engagementStatus = null,
+                                ),
+                            )
+                            )
+                        }
+
                         notificationMessages.add(notificationMessage)
                     }
                 }
             }
         }
 
+
         // Invoke the relevant target service for each notification
         notificationMessages.forEach { notificationMessage ->
-            apiClient.sendEmail(notificationMessage)
+            when(notificationMessage.deliveryChannel){
+                DeliveryChannel.EMAIL -> {
+                    apiClient.sendEmail(notificationMessage)
+                }
+                else -> {
+                    log.warn("No valid delivery channel found in notification message.", StructuredArguments.kv("Notification Message", notificationMessage))
+                }
+            }
+
         }
+
+        // Publish contact history records
+        contactHistoryList.forEach { contactHistory ->
+            apiClient.createContactHistory(contactHistory)
+        }
+
         result = "Total notifications sent - ${notificationMessages.size}"
         return result
     }

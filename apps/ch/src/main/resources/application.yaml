@@ -1,7 +1,5 @@
 spring:
-  data:
-    mongodb:
-      uri: ${AZURE_COSMOS_MONGO_CONNECTION_STRING}
-      database: ${AZURE_COSMOS_MONGO_DATABASE}
-#server:
-#  port: 8081
+  application:
+    name: kinect-contact-history-app
+  config:
+    import: "optional:configserver:http://kinect-config-server"

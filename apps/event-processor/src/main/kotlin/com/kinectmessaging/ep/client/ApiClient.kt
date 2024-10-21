@@ -2,6 +2,7 @@ package com.kinectmessaging.ep.client
 
 import com.kinectmessaging.libs.common.Defaults
 import com.kinectmessaging.libs.model.JourneyConfig
+import com.kinectmessaging.libs.model.KContactHistory
 import com.kinectmessaging.libs.model.KMessage
 import com.kinectmessaging.libs.model.MessageConfig
 import org.slf4j.MDC
@@ -33,6 +34,9 @@ class ApiClient () {
     @Autowired
     lateinit var emailWebClient: WebClient
 
+    @Autowired
+    lateinit var contactHistoryWebClient: WebClient
+
     suspend fun getJourneyConfigsByEventName(eventName: String): List<JourneyConfig>? =
         journeyWebClient
             .get()
@@ -56,6 +60,14 @@ class ApiClient () {
             .bodyValue(emailData)
             .retrieve()
             .awaitBody<String>()
+
+    suspend fun createContactHistory(contactHistory: KContactHistory): String =
+        contactHistoryWebClient
+            .post()
+            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get("transaction-id") ?: UUID.randomUUID().toString())
+            .bodyValue(contactHistory)
+            .retrieve()
+            .awaitBody<String>()
 }
 
 @Configuration
@@ -67,6 +79,8 @@ class Config{
     lateinit var messageUrl: String
     @Value("\${app.client.email.url}")
     lateinit var emailUrl: String
+    @Value("\${app.client.contact-history.url}")
+    lateinit var contactHistoryUrl: String
 
     @Bean
     fun journeyWebClient(builder: WebClient.Builder): WebClient =
@@ -90,5 +104,13 @@ class Config{
             .clone()
             .clientConnector(ReactorClientHttpConnector(httpClient))
             .baseUrl(emailUrl)
+            .build()
+
+    @Bean
+    fun contactHistoryWebClient(builder: WebClient.Builder): WebClient =
+        builder
+            .clone()
+            .clientConnector(ReactorClientHttpConnector(httpClient))
+            .baseUrl(contactHistoryUrl)
             .build()
 }
