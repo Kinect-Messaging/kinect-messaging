@@ -11,12 +11,12 @@
     <groupId>com.kinectmessaging.apps</groupId>
     <artifactId>contact-history</artifactId>
     <packaging>jar</packaging>
-    <name>ch</name>
+    <name>contact-history</name>
     <properties>
         <java.version>17</java.version>
         <kotlin.version>1.9.21</kotlin.version>
-        <spring-cloud-azure.version>5.8.0</spring-cloud-azure.version>
-        <spring-cloud.version>2023.0.0</spring-cloud.version>
+<!--        <spring-cloud-azure.version>5.8.0</spring-cloud-azure.version>-->
+<!--        <spring-cloud.version>2023.0.0</spring-cloud.version>-->
     </properties>
     <dependencies>
         <dependency>
@@ -24,20 +24,8 @@
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.azure.spring</groupId>
-            <artifactId>spring-cloud-azure-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.azure.spring</groupId>
-            <artifactId>spring-cloud-azure-starter-keyvault</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.azure.spring</groupId>
-            <artifactId>spring-cloud-azure-starter</artifactId>
         </dependency>
     </dependencies>
     <dependencyManagement>
@@ -46,13 +34,6 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.azure.spring</groupId>
-                <artifactId>spring-cloud-azure-dependencies</artifactId>
-                <version>${spring-cloud-azure.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
