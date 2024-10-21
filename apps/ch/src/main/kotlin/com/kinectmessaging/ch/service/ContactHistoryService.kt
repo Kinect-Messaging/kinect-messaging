@@ -1,5 +1,6 @@
 package com.kinectmessaging.ch.service
 
+import com.kinectmessaging.ch.model.AzureEmailDeliveryReport
 import com.kinectmessaging.ch.model.ContactHistoryEntity
 import com.kinectmessaging.ch.repository.ContactHistoryRepository
 import com.kinectmessaging.libs.common.ErrorConstants
@@ -21,8 +22,8 @@ class ContactHistoryService {
     lateinit var contactHistoryRepository: ContactHistoryRepository
     fun saveContactHistory(contactHistory: KContactHistory): String {
         val chEntity = contactHistory.toContactHistoryEntity()
-        val result = contactHistoryRepository.save(chEntity)
-        return "Contact History updated successfully"
+        contactHistoryRepository.save(chEntity)
+        return "Contact History ${contactHistory.id} updated successfully"
     }
 
     fun findContactHistoryById(id: String): KContactHistory{
@@ -35,7 +36,7 @@ class ContactHistoryService {
     fun findContactHistory(pageNo: Int, pageSize: Int, sortBy: String, sortOrder: Sort.Direction): List<KContactHistory>?{
         val pageOption = PageRequest.of(pageNo, pageSize, sortOrder, sortBy)
         val pageResult = contactHistoryRepository.findAll(pageOption)
-        var dbResult = pageResult.content
+        val dbResult = pageResult.content
         val result = mutableListOf<KContactHistory>()
         if (pageResult.isEmpty){
             throw InvalidInputException("${ErrorConstants.NO_DATA_FOUND_MESSAGE}, page-number - $pageNo, page-size - $pageSize, sort-by - $sortBy")
@@ -46,7 +47,12 @@ class ContactHistoryService {
         return result
     }
 
+    fun processAzureEmailEvents(azureEmailDeliveryReport: AzureEmailDeliveryReport): KContactHistory {
+        log.debug("Updating Email Status from Azure : {}", azureEmailDeliveryReport)
+        val existingData = findContactHistoryById(azureEmailDeliveryReport.data.messageId)
 
+        return existingData
+    }
 
     fun KContactHistory.toContactHistoryEntity() = ContactHistoryEntity(
         id = id,
@@ -61,4 +67,5 @@ class ContactHistoryService {
         journeyName = journeyName,
         messages = messages
     )
+
 }
