@@ -5,17 +5,21 @@ import com.kinectmessaging.libs.model.JourneyConfig
 import com.kinectmessaging.libs.model.KContactHistory
 import com.kinectmessaging.libs.model.KMessage
 import com.kinectmessaging.libs.model.MessageConfig
+import io.netty.handler.logging.LogLevel
 import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.ResponseEntity
 import org.springframework.http.client.reactive.ReactorClientHttpConnector
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
+import org.springframework.web.reactive.function.client.awaitBodilessEntity
 import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.reactive.function.client.awaitBodyOrNull
 import reactor.netty.http.client.HttpClient
+import reactor.netty.transport.logging.AdvancedByteBufFormat
 import java.util.*
 
 var httpClient: HttpClient = HttpClient
@@ -61,13 +65,13 @@ class ApiClient () {
             .retrieve()
             .awaitBody<String>()
 
-    suspend fun createContactHistory(contactHistory: KContactHistory): String =
+    suspend fun createContactHistory(contactHistory: KContactHistory): ResponseEntity<Void> =
         contactHistoryWebClient
             .post()
             .header(Defaults.TRANSACTION_ID_HEADER, MDC.get("transaction-id") ?: UUID.randomUUID().toString())
             .bodyValue(contactHistory)
             .retrieve()
-            .awaitBody<String>()
+            .awaitBodilessEntity()
 }
 
 @Configuration

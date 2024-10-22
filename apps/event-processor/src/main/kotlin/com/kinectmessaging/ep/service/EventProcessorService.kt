@@ -6,7 +6,6 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.kinectmessaging.ep.client.ApiClient
 import com.kinectmessaging.libs.exception.InvalidInputException
 import com.kinectmessaging.libs.model.*
-import net.logstash.logback.argument.StructuredArguments
 import net.logstash.logback.argument.StructuredArguments.kv
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -161,6 +160,7 @@ class EventProcessorService {
         log.debug("Updating Contact History records for event ${event.eventName} with id ${event.eventId}. ", kv("Contact History", contactHistoryList))
         // Publish contact history records
         contactHistoryList.forEach { contactHistory ->
+            log.debug("Updating Contact History ${contactHistory.id}")
             apiClient.createContactHistory(contactHistory)
         }
 
