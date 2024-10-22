@@ -26,7 +26,7 @@ class ContactHistoryController {
     @Autowired
     lateinit var contactHistoryService: ContactHistoryService
 
-    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun createContactHistory(
         @RequestBody contactHistory: KContactHistory,
         @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
