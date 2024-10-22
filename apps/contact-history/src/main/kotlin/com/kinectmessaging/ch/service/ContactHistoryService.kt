@@ -54,14 +54,14 @@ class ContactHistoryService {
         return existingData
     }
 
-    fun KContactHistory.toContactHistoryEntity() = ContactHistoryEntity(
+    private fun KContactHistory.toContactHistoryEntity() = ContactHistoryEntity(
         id = id,
         journeyTransactionId = journeyTransactionId,
         journeyName = journeyName,
         messages = messages
     )
 
-    fun ContactHistoryEntity.toContactHistory() = KContactHistory(
+    private fun ContactHistoryEntity.toContactHistory() = KContactHistory(
         id = id,
         journeyTransactionId = journeyTransactionId,
         journeyName = journeyName,
