@@ -125,7 +125,7 @@ class EventProcessorService {
                                     deliveryStatus = mutableListOf(
                                         DeliveryStatus(
                                             statusTime = Calendar.getInstance().time,
-                                            status = "CREATED",
+                                            status = HistoryStatusCodes.CREATED,
                                             statusMessage = null,
                                             originalStatus = null,
                                         )

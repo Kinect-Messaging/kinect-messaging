@@ -5,6 +5,9 @@ import com.kinectmessaging.ch.model.ContactHistoryEntity
 import com.kinectmessaging.ch.repository.ContactHistoryRepository
 import com.kinectmessaging.libs.common.ErrorConstants
 import com.kinectmessaging.libs.exception.InvalidInputException
+import com.kinectmessaging.libs.model.ContactMessages
+import com.kinectmessaging.libs.model.DeliveryStatus
+import com.kinectmessaging.libs.model.EngagementStatus
 import com.kinectmessaging.libs.model.KContactHistory
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,6 +27,25 @@ class ContactHistoryService {
         val chEntity = contactHistory.toContactHistoryEntity()
         contactHistoryRepository.save(chEntity)
         return "Contact History ${contactHistory.id} updated successfully"
+    }
+
+
+    fun updateContactMessageByMessageId(contactMessage: ContactMessages) {
+        val existingContactHistoryEntity = contactHistoryRepository.findByContactMessages_MessageId(contactMessage.messageId)
+        existingContactHistoryEntity?.messages?.let { currentMessage ->
+            currentMessage.deliveryTrackingId = contactMessage.deliveryTrackingId
+            val deliveryStatuses = mutableListOf<DeliveryStatus>()
+            deliveryStatuses.addAll(currentMessage.deliveryStatus)
+            deliveryStatuses.addAll(contactMessage.deliveryStatus)
+            currentMessage.deliveryStatus = deliveryStatuses
+
+            val engagementStatuses = mutableListOf<EngagementStatus>()
+            currentMessage.engagementStatus?.let { engagementStatuses.addAll(it) }
+            contactMessage.engagementStatus?.let { engagementStatuses.addAll(it) }
+            currentMessage.engagementStatus = engagementStatuses
+            contactHistoryRepository.save(existingContactHistoryEntity)
+        }
+
     }
 
     fun findContactHistoryById(id: String): KContactHistory{
@@ -47,13 +69,6 @@ class ContactHistoryService {
         return result
     }
 
-    fun processAzureEmailEvents(azureEmailDeliveryReport: AzureEmailDeliveryReport): KContactHistory {
-        log.debug("Updating Email Status from Azure : {}", azureEmailDeliveryReport)
-        val existingData = findContactHistoryById(azureEmailDeliveryReport.data.messageId)
-
-        return existingData
-    }
-
     private fun KContactHistory.toContactHistoryEntity() = ContactHistoryEntity(
         id = id,
         journeyTransactionId = journeyTransactionId,
@@ -67,5 +82,6 @@ class ContactHistoryService {
         journeyName = journeyName,
         messages = messages
     )
+
 
 }
