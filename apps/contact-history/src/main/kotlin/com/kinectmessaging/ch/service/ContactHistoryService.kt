@@ -1,6 +1,5 @@
 package com.kinectmessaging.ch.service
 
-import com.kinectmessaging.ch.model.AzureEmailDeliveryReport
 import com.kinectmessaging.ch.model.ContactHistoryEntity
 import com.kinectmessaging.ch.repository.ContactHistoryRepository
 import com.kinectmessaging.libs.common.ErrorConstants
@@ -31,7 +30,7 @@ class ContactHistoryService {
 
 
     fun updateContactMessageByMessageId(contactMessage: ContactMessages) {
-        val existingContactHistoryEntity = contactHistoryRepository.findByContactMessages_MessageId(contactMessage.messageId)
+        val existingContactHistoryEntity = contactHistoryRepository.findByMessages_MessageId(contactMessage.messageId)
         existingContactHistoryEntity?.messages?.let { currentMessage ->
             currentMessage.deliveryTrackingId = contactMessage.deliveryTrackingId
             val deliveryStatuses = mutableListOf<DeliveryStatus>()
