@@ -17,7 +17,7 @@ data class DeliveryData (
     val messageId: String,
     val status: AzureEmailDeliveryStatus,
     val deliveryStatusDetails: DeliveryStatusDetails,
-    val deliveryAttemptTimeStamp: String
+    val deliveryAttemptTimestamp: String?
 )
 
 data class DeliveryStatusDetails (

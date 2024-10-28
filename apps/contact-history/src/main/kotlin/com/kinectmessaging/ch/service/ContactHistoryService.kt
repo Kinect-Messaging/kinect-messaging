@@ -34,11 +34,18 @@ class ContactHistoryService {
         existingContactHistoryEntity?.messages?.let { currentMessage ->
             val deliveryStatuses = mutableListOf<DeliveryStatus>()
             deliveryStatuses.addAll(currentMessage.deliveryStatus)
-            deliveryStatuses.addAll(contactMessage.deliveryStatus)
+            if (deliveryStatuses.firstOrNull { it.status ==  contactMessage.deliveryStatus.firstOrNull()?.status} == null){
+                deliveryStatuses.addAll(contactMessage.deliveryStatus)
+            }
 
             val engagementStatuses = mutableListOf<EngagementStatus>()
             currentMessage.engagementStatus?.let { engagementStatuses.addAll(it) }
-            contactMessage.engagementStatus?.let { engagementStatuses.addAll(it) }
+            contactMessage.engagementStatus?.let { newStatus ->
+                if (engagementStatuses.firstOrNull { it.engagementType ==  newStatus.firstOrNull()?.engagementType} == null){
+                    engagementStatuses.addAll(newStatus)
+                }
+            }
+
 
             val updatedContactMessage = currentMessage.copy(
                 deliveryTrackingId = contactMessage.deliveryTrackingId,
@@ -58,11 +65,19 @@ class ContactHistoryService {
         existingContactHistoryEntity?.messages?.let { currentMessage ->
             val deliveryStatuses = mutableListOf<DeliveryStatus>()
             deliveryStatuses.addAll(currentMessage.deliveryStatus)
-            deliveryStatus?.let { deliveryStatuses.add(it) }
+            deliveryStatus?.let { newStatus ->
+                if (deliveryStatuses.firstOrNull { it.status ==  newStatus.status} == null){
+                    deliveryStatuses.add(newStatus)
+                }
+            }
 
             val engagementStatuses = mutableListOf<EngagementStatus>()
             currentMessage.engagementStatus?.let { engagementStatuses.addAll(it) }
-            engagementStatus?.let { engagementStatuses.add(it) }
+            engagementStatus?.let { newStatus ->
+                if (engagementStatuses.firstOrNull { it.engagementType ==  newStatus.engagementType} == null) {
+                    engagementStatuses.add(newStatus)
+                }
+            }
 
             val updatedContactMessage = currentMessage.copy(
                 deliveryTrackingId = deliveryTrackingId,

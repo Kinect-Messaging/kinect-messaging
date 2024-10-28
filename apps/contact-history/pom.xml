@@ -28,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>com.azure.spring</groupId>
-            <artifactId>spring-cloud-azure-starter-storage-queue</artifactId>
+            <artifactId>spring-cloud-azure-starter-integration-storage-queue</artifactId>
         </dependency>
     </dependencies>
     <dependencyManagement>
