@@ -32,17 +32,23 @@ class ContactHistoryService {
     fun updateContactMessageByMessageId(contactMessage: ContactMessages) {
         val existingContactHistoryEntity = contactHistoryRepository.findByMessages_MessageId(contactMessage.messageId)
         existingContactHistoryEntity?.messages?.let { currentMessage ->
-            currentMessage.deliveryTrackingId = contactMessage.deliveryTrackingId
             val deliveryStatuses = mutableListOf<DeliveryStatus>()
             deliveryStatuses.addAll(currentMessage.deliveryStatus)
             deliveryStatuses.addAll(contactMessage.deliveryStatus)
-            currentMessage.deliveryStatus = deliveryStatuses
 
             val engagementStatuses = mutableListOf<EngagementStatus>()
             currentMessage.engagementStatus?.let { engagementStatuses.addAll(it) }
             contactMessage.engagementStatus?.let { engagementStatuses.addAll(it) }
-            currentMessage.engagementStatus = engagementStatuses
-            contactHistoryRepository.save(existingContactHistoryEntity)
+
+            val updatedContactMessage = currentMessage.copy(
+                deliveryTrackingId = contactMessage.deliveryTrackingId,
+                deliveryStatus = deliveryStatuses,
+                engagementStatus = engagementStatuses
+            )
+            val updatedContactHistoryEntity = existingContactHistoryEntity.copy(
+                messages = updatedContactMessage
+            )
+            contactHistoryRepository.save(updatedContactHistoryEntity)
         }
 
     }

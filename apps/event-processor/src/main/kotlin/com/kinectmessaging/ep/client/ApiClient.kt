@@ -5,7 +5,6 @@ import com.kinectmessaging.libs.model.JourneyConfig
 import com.kinectmessaging.libs.model.KContactHistory
 import com.kinectmessaging.libs.model.KMessage
 import com.kinectmessaging.libs.model.MessageConfig
-import io.netty.handler.logging.LogLevel
 import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -19,7 +18,6 @@ import org.springframework.web.reactive.function.client.awaitBodilessEntity
 import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.reactive.function.client.awaitBodyOrNull
 import reactor.netty.http.client.HttpClient
-import reactor.netty.transport.logging.AdvancedByteBufFormat
 import java.util.*
 
 var httpClient: HttpClient = HttpClient

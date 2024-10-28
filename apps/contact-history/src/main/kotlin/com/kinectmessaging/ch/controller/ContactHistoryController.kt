@@ -8,7 +8,6 @@ import com.kinectmessaging.libs.exception.InvalidInputException
 import com.kinectmessaging.libs.logging.MDCHelper
 import com.kinectmessaging.libs.model.ContactMessages
 import com.kinectmessaging.libs.model.KContactHistory
-import com.kinectmessaging.libs.model.KMessage
 import net.logstash.logback.argument.StructuredArguments
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,7 +17,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-const val DEFAULT_SORT = "journey-name"
+const val DEFAULT_SORT = "journeyName"
 @RestController()
 @RequestMapping("/kinect/messaging/contact-history")
 class ContactHistoryController {
