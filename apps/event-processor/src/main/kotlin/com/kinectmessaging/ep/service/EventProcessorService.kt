@@ -143,6 +143,13 @@ class EventProcessorService {
         }
 
 
+        log.debug("Updating Contact History records for event ${event.eventName} with id ${event.eventId}. ", kv("Contact History", contactHistoryList))
+        // Publish contact history records
+        contactHistoryList.forEach { contactHistory ->
+            log.debug("Updating Contact History ${contactHistory.id}")
+            apiClient.createContactHistory(contactHistory)
+        }
+
         log.debug("Publishing notification messages to delivery channels for event ${event.eventName} with id ${event.eventId}.", kv("Notification Messages", notificationMessages))
         // Invoke the relevant target service for each notification
         notificationMessages.forEach { notificationMessage ->
@@ -155,13 +162,6 @@ class EventProcessorService {
                 }
             }
 
-        }
-
-        log.debug("Updating Contact History records for event ${event.eventName} with id ${event.eventId}. ", kv("Contact History", contactHistoryList))
-        // Publish contact history records
-        contactHistoryList.forEach { contactHistory ->
-            log.debug("Updating Contact History ${contactHistory.id}")
-            apiClient.createContactHistory(contactHistory)
         }
 
         result = "Total notifications sent - ${notificationMessages.size}"
