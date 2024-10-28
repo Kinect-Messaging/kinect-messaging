@@ -60,6 +60,9 @@ param springDataMongoDBNameKeyVaultUrl string
 @description('The key vault url for Azure Email Connection.')
 param azureEmailConnectionKeyVaultUrl string
 
+@description('The key vault url for Spring Cloud Azure Storage Queue Access Key.')
+param springCloudAzureStorageQueueAccessKey string
+
 // Deploy Flags
 @description('Deploy Flag for config container app.')
 param configDeployFlag bool
@@ -168,6 +171,7 @@ module contactHistoryContainerApp 'modules/contact-history.bicep' = if(contactHi
     portNumber: portNumber
     springDataMongoDBNameKeyVaultUrl: springDataMongoDBNameKeyVaultUrl
     springDataMongoDBURIKeyVaultUrl: springDataMongoDBURIKeyVaultUrl
+    springCloudAzureStorageQueueAccessKey: springCloudAzureStorageQueueAccessKey
   }
 }
 

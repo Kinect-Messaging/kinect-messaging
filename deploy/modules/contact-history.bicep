@@ -58,6 +58,9 @@ param springDataMongoDBURIKeyVaultUrl string
 @description('The key vault url for Spring Data Mongo DB name.')
 param springDataMongoDBNameKeyVaultUrl string
 
+@description('The key vault url for Spring Cloud Azure Storage Queue Access Key.')
+param springCloudAzureStorageQueueAccessKey string
+
 
 //@secure()
 //@description('The Application Insights Instrumentation.')
@@ -111,6 +114,11 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
           keyVaultUrl: springDataMongoDBNameKeyVaultUrl
           name: 'spring-data-mongodb-database'
         }
+        {
+          identity: keyVaultUserAssignedIdentityId
+          keyVaultUrl: springCloudAzureStorageQueueAccessKey
+          name: 'azure-storage-queue-key'
+        }
       ]
       registries: !empty(containerRegistryName) ? [
         {
@@ -142,6 +150,10 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
             {
               name: 'spring.data.mongodb.database'
               secretRef: 'spring-data-mongodb-database'
+            }
+            {
+              name: 'spring.cloud.azure.storage.queue.account-key'
+              secretRef: 'azure-storage-queue-key'
             }
           ]
         }
