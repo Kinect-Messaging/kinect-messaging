@@ -49,7 +49,7 @@ class ContactHistoryService {
                 messages = updatedContactMessage
             )
             contactHistoryRepository.save(updatedContactHistoryEntity)
-        }
+        } ?: log.error("No Contact History record for contact message id - ${contactMessage.messageId}")
 
     }
 
