@@ -106,6 +106,7 @@ class AzureEmailService : EmailService {
                         engagementStatus = null
                     )
                     apiClient.updateContactMessages(contactMessages)
+                    log.info("Updating contact history from Azure Email Service for id - ${contactMessages.messageId}")
                     return@withContext emailResult.status.toString()
                 } else {
                     log.error("Result from Azure Email Service - ${result.status}")
