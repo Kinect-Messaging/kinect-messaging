@@ -53,6 +53,30 @@ class ContactHistoryService {
 
     }
 
+    fun updateContactMessageByDeliveryTrackingId(deliveryTrackingId: String, deliveryStatus: DeliveryStatus?, engagementStatus: EngagementStatus?) {
+        val existingContactHistoryEntity = contactHistoryRepository.findByMessages_DeliveryTrackingId(deliveryTrackingId)
+        existingContactHistoryEntity?.messages?.let { currentMessage ->
+            val deliveryStatuses = mutableListOf<DeliveryStatus>()
+            deliveryStatuses.addAll(currentMessage.deliveryStatus)
+            deliveryStatus?.let { deliveryStatuses.add(it) }
+
+            val engagementStatuses = mutableListOf<EngagementStatus>()
+            currentMessage.engagementStatus?.let { engagementStatuses.addAll(it) }
+            engagementStatus?.let { engagementStatuses.add(it) }
+
+            val updatedContactMessage = currentMessage.copy(
+                deliveryTrackingId = deliveryTrackingId,
+                deliveryStatus = deliveryStatuses,
+                engagementStatus = engagementStatuses
+            )
+            val updatedContactHistoryEntity = existingContactHistoryEntity.copy(
+                messages = updatedContactMessage
+            )
+            contactHistoryRepository.save(updatedContactHistoryEntity)
+        } ?: log.error("No Contact History record for delivery tracking id - $deliveryTrackingId")
+
+    }
+
     fun findContactHistoryById(id: String): KContactHistory{
         val result = contactHistoryRepository.findById(id)
             .getOrNull()?.toContactHistory()

@@ -10,6 +10,7 @@ import net.logstash.logback.argument.StructuredArguments.kv
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import java.util.*
 import javax.mail.internet.InternetAddress
 
@@ -124,7 +125,7 @@ class EventProcessorService {
                                     contactAddress = recipient.address,
                                     deliveryStatus = mutableListOf(
                                         DeliveryStatus(
-                                            statusTime = Calendar.getInstance().time,
+                                            statusTime = LocalDateTime.now(),
                                             status = HistoryStatusCodes.CREATED,
                                             statusMessage = null,
                                             originalStatus = null,

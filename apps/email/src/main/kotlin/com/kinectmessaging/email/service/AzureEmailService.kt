@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import java.util.*
+import java.time.LocalDateTime
 import javax.mail.internet.InternetAddress
 
 
@@ -97,7 +97,7 @@ class AzureEmailService : EmailService {
                         contactAddress = message.toRecipients[0].address,
                         deliveryStatus = listOf(
                             DeliveryStatus(
-                                statusTime = Calendar.getInstance().time,
+                                statusTime = LocalDateTime.now(),
                                 status = HistoryStatusCodes.SENT,
                                 statusMessage = null,
                                 originalStatus = null

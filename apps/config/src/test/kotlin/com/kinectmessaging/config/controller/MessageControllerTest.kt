@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
+import java.time.LocalDateTime
 import java.util.*
 
 @AutoConfigureMockMvc
@@ -32,9 +33,9 @@ class MessageControllerTest {
 
     private final val auditInfo = Audit(
         createdBy = "Unit Test 1",
-        createdTime = Calendar.getInstance().time.toString(),
+        createdTime = LocalDateTime.now().toString(),
         updatedBy = "Unit Test 1",
-        updatedTime = Calendar.getInstance().time.toString()
+        updatedTime = LocalDateTime.now().toString()
     )
 
     val messageConfig = mutableListOf(

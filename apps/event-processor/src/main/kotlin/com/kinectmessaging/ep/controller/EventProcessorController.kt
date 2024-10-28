@@ -1,7 +1,6 @@
 package com.kinectmessaging.ep.controller
 
 import com.kinectmessaging.ep.service.EventProcessorService
-import com.kinectmessaging.libs.common.DateUtils
 import com.kinectmessaging.libs.common.LogConstants
 import com.kinectmessaging.libs.logging.MDCHelper.addMDC
 import com.kinectmessaging.libs.model.KEvent
@@ -25,7 +24,7 @@ class EventProcessorController {
         val headerMap = headers.filter { it.key.startsWith("X-") }.toMutableMap()
         headerMap["event-id"] = event.eventId
         headerMap["event-name"] = event.eventName
-        headerMap["event-time"] = DateUtils.toIsoDateTimeFormat(event.eventTime)
+        headerMap["event-time"] = event.eventTime.toString()
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         addMDC(headerMap)
         log.info("${LogConstants.SERVICE_START} {}", kv("request", event))
