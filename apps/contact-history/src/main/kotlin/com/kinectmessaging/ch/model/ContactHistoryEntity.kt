@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 data class ContactHistoryEntity(
     @Id
     val id: String,
+    val sourceEventId: String,
     val journeyTransactionId: String,
     @Indexed
     val journeyName: String,

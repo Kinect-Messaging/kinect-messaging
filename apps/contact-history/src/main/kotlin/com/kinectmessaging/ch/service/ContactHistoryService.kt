@@ -115,6 +115,7 @@ class ContactHistoryService {
 
     private fun KContactHistory.toContactHistoryEntity() = ContactHistoryEntity(
         id = id,
+        sourceEventId = sourceEventId,
         journeyTransactionId = journeyTransactionId,
         journeyName = journeyName,
         messages = messages
@@ -122,6 +123,7 @@ class ContactHistoryService {
 
     private fun ContactHistoryEntity.toContactHistory() = KContactHistory(
         id = id,
+        sourceEventId = sourceEventId,
         journeyTransactionId = journeyTransactionId,
         journeyName = journeyName,
         messages = messages
