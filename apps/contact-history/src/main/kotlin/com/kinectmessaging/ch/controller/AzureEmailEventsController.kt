@@ -1,6 +1,7 @@
 package com.kinectmessaging.ch.controller
 
 import com.kinectmessaging.ch.model.AzureEmailDeliveryReport
+import com.kinectmessaging.ch.service.AzureDeliveryEventService
 import com.kinectmessaging.ch.service.ContactHistoryService
 import com.kinectmessaging.libs.common.Defaults
 import com.kinectmessaging.libs.common.LogConstants
@@ -21,18 +22,18 @@ class AzureEmailEventsController {
     private val log = LoggerFactory.getLogger(this::class.java)
 
     @Autowired
-    lateinit var contactHistoryService: ContactHistoryService
+    lateinit var azureDeliveryEventService: AzureDeliveryEventService
 
-    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun consumeEmailEvents(
+    @PostMapping(value = ["/delivery"], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    fun consumeEmailDeliveryEvents(
         @RequestBody azureEmailDeliveryReport: AzureEmailDeliveryReport
     ) {
         val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, azureEmailDeliveryReport.id))
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         MDCHelper.addMDC(headerMap)
         log.info("${LogConstants.SERVICE_START} {}", StructuredArguments.kv("request", azureEmailDeliveryReport))
-//        val result = contactHistoryService.processAzureEmailEvents(azureEmailDeliveryReport)
-//        log.info(LogConstants.SERVICE_END, StructuredArguments.kv("response", result))
+        val result = azureDeliveryEventService.emailDeliveryEventProcessor(azureEmailDeliveryReport)
+        log.info("${LogConstants.SERVICE_END} {}", StructuredArguments.kv("response", result))
         MDCHelper.clearMDC()
     }
 

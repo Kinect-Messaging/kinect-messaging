@@ -55,7 +55,10 @@ param keyVaultUserAssignedIdentityId string
 param springDataMongoDBURIKeyVaultUrl string
 
 @description('The key vault url for Spring Data Mongo DB name.')
-param springDataMongoDBNameKeyVaultUrl string
+param springDataConfigDBNameKeyVaultUrl string
+
+@description('The key vault url for Spring Data Mongo DB name.')
+param springDataContactHistoryDBNameKeyVaultUrl string
 
 @description('The key vault url for Azure Email Connection.')
 param azureEmailConnectionKeyVaultUrl string
@@ -103,7 +106,7 @@ module configContainerApp 'modules/config.bicep' = if(configDeployFlag) {
     memory: memory
     minInstance: minInstance
     portNumber: portNumber
-    springDataMongoDBNameKeyVaultUrl: springDataMongoDBNameKeyVaultUrl
+    springDataConfigDBNameKeyVaultUrl: springDataConfigDBNameKeyVaultUrl
     springDataMongoDBURIKeyVaultUrl: springDataMongoDBURIKeyVaultUrl
   }
 }
@@ -169,7 +172,7 @@ module contactHistoryContainerApp 'modules/contact-history.bicep' = if(contactHi
     memory: memory
     minInstance: minInstance
     portNumber: portNumber
-    springDataMongoDBNameKeyVaultUrl: springDataMongoDBNameKeyVaultUrl
+    springDataContactHistoryDBNameKeyVaultUrl: springDataContactHistoryDBNameKeyVaultUrl
     springDataMongoDBURIKeyVaultUrl: springDataMongoDBURIKeyVaultUrl
     springCloudAzureStorageQueueAccessKey: springCloudAzureStorageQueueAccessKey
   }

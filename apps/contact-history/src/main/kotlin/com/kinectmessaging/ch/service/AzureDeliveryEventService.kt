@@ -31,9 +31,6 @@ const val DEFAULT_MAX_EVENTS = 10
 class AzureDeliveryEventService {
 
     @Autowired
-    lateinit var queueClient: QueueClient
-
-    @Autowired
     lateinit var contactHistoryService: ContactHistoryService
 
     private val log = LoggerFactory.getLogger(this::class.java)
@@ -45,30 +42,31 @@ class AzureDeliveryEventService {
      * This message receiver binding with [StorageQueueMessageSource]
      * via [MessageChannel] has name {@value INPUT_CHANNEL}
      */
-    @ServiceActivator(inputChannel = INPUT_CHANNEL)
-    fun messageReceiver(payload: ByteArray?, @Header(AzureHeaders.CHECKPOINTER) checkpointer: Checkpointer?) {
-        val message = String(payload!!)
-        log.info("Received Email Event Delivery message: {}", message)
-        emailDeliveryEventProcessor(payload)
-        checkpointer?.success()
-            ?.doOnError { t -> log.error("Unable to checkpoint message. Error: {}", t.message)}
-            ?.doOnSuccess { log.info("Message '{}' successfully checkpointed", message) }
-            ?.block()
-    }
+//    @ServiceActivator(inputChannel = INPUT_CHANNEL)
+//    fun messageReceiver(payload: ByteArray?, @Header(AzureHeaders.CHECKPOINTER) checkpointer: Checkpointer?) {
+//        val message = String(payload!!)
+//        log.info("Received Email Event Delivery message: {}", message)
+//        emailDeliveryEventProcessor(payload)
+//        checkpointer?.success()
+//            ?.doOnError { t -> log.error("Unable to checkpoint message. Error: {}", t.message)}
+//            ?.doOnSuccess { log.info("Message '{}' successfully checkpointed", message) }
+//            ?.block()
+//    }
 
 
     @OptIn(ExperimentalEncodingApi::class)
-    fun emailDeliveryEventProcessor(queueMessage: ByteArray?){
+    fun emailDeliveryEventProcessor(queueMessage: ByteArray?) {
         queueMessage?.let { message ->
             val messageBody = String(Base64.decode(message))
             log.info("${LogConstants.SERVICE_START} {}", kv("request", messageBody))
-            val emailEvent : AzureEmailDeliveryReport = jacksonObjectMapper().readValue(messageBody)
+            val emailEvent: AzureEmailDeliveryReport = jacksonObjectMapper().readValue(messageBody)
             emailEvent.data.let { deliveryData ->
                 val status =
-                    when(deliveryData.status){
+                    when (deliveryData.status) {
                         AzureEmailDeliveryStatus.Delivered, AzureEmailDeliveryStatus.Expanded -> {
                             HistoryStatusCodes.DELIVERED
                         }
+
                         else -> {
                             HistoryStatusCodes.FAILED
                         }
@@ -76,15 +74,55 @@ class AzureDeliveryEventService {
                 contactHistoryService.updateContactMessageByDeliveryTrackingId(
                     deliveryTrackingId = deliveryData.messageId,
                     deliveryStatus = DeliveryStatus(
-                        statusTime = deliveryData.deliveryAttemptTimestamp?.let { LocalDateTime.parse(it, DateTimeFormatter.ISO_ZONED_DATE_TIME) } ?: LocalDateTime.now(),
+                        statusTime = deliveryData.deliveryAttemptTimestamp?.let {
+                            LocalDateTime.parse(
+                                it,
+                                DateTimeFormatter.ISO_ZONED_DATE_TIME
+                            )
+                        } ?: LocalDateTime.now(),
                         status = status,
                         statusMessage = deliveryData.deliveryStatusDetails.statusMessage,
                         originalStatus = null
                     ),
                     engagementStatus = null
                 )
-                log.info("${LogConstants.SERVICE_END} {} {}", kv("response", "Updated status $status for id ${deliveryData.messageId}"), kv("originalStatus", deliveryData.status))
+                log.info(
+                    "${LogConstants.SERVICE_END} {} {}",
+                    kv("response", "Updated status $status for id ${deliveryData.messageId}"),
+                    kv("originalStatus", deliveryData.status)
+                )
             }
+        }
+    }
+
+    fun emailDeliveryEventProcessor(azureEmailDeliveryReport: AzureEmailDeliveryReport): String {
+        azureEmailDeliveryReport.data.let { deliveryData ->
+            val status =
+                when (deliveryData.status) {
+                    AzureEmailDeliveryStatus.Delivered, AzureEmailDeliveryStatus.Expanded -> {
+                        HistoryStatusCodes.DELIVERED
+                    }
+
+                    else -> {
+                        HistoryStatusCodes.FAILED
+                    }
+                }
+            contactHistoryService.updateContactMessageByDeliveryTrackingId(
+                deliveryTrackingId = deliveryData.messageId,
+                deliveryStatus = DeliveryStatus(
+                    statusTime = deliveryData.deliveryAttemptTimestamp?.let {
+                        LocalDateTime.parse(
+                            it,
+                            DateTimeFormatter.ISO_ZONED_DATE_TIME
+                        )
+                    } ?: LocalDateTime.now(),
+                    status = status,
+                    statusMessage = deliveryData.deliveryStatusDetails.statusMessage,
+                    originalStatus = null
+                ),
+                engagementStatus = null
+            )
+            return "Updated status $status for id ${deliveryData.messageId}"
         }
     }
 
