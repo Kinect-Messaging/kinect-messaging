@@ -6,6 +6,7 @@ import com.kinectmessaging.libs.common.ErrorConstants
 import com.kinectmessaging.libs.common.LogConstants
 import com.kinectmessaging.libs.exception.InvalidInputException
 import com.kinectmessaging.libs.logging.MDCHelper
+import com.kinectmessaging.libs.model.ContactMessages
 import com.kinectmessaging.libs.model.KContactHistory
 import net.logstash.logback.argument.StructuredArguments
 import org.slf4j.LoggerFactory
@@ -16,7 +17,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-const val DEFAULT_SORT = "journey-name"
+const val DEFAULT_SORT = "journeyName"
 @RestController()
 @RequestMapping("/kinect/messaging/contact-history")
 class ContactHistoryController {
@@ -26,7 +27,7 @@ class ContactHistoryController {
     @Autowired
     lateinit var contactHistoryService: ContactHistoryService
 
-    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun createContactHistory(
         @RequestBody contactHistory: KContactHistory,
         @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
@@ -37,6 +38,22 @@ class ContactHistoryController {
         MDCHelper.addMDC(headerMap)
         log.info("${LogConstants.SERVICE_START} {}", StructuredArguments.kv("request", contactHistory))
         val result = contactHistoryService.saveContactHistory(contactHistory)
+        log.info(LogConstants.SERVICE_END, StructuredArguments.kv("response", result))
+        MDCHelper.clearMDC()
+    }
+
+    @PostMapping(value = ["/message"], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    fun updateContactMessageByMessageId(
+        @RequestBody contactMessage: ContactMessages,
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
+    ) {
+        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
+        headerMap["contact-message-id"] = contactMessage.messageId
+        headerMap["method"] = object {}.javaClass.enclosingMethod.name
+        MDCHelper.addMDC(headerMap)
+        log.info("${LogConstants.SERVICE_START} {}", StructuredArguments.kv("request", contactMessage))
+
+        val result = contactHistoryService.updateContactMessageByMessageId(contactMessage)
         log.info(LogConstants.SERVICE_END, StructuredArguments.kv("response", result))
         MDCHelper.clearMDC()
     }

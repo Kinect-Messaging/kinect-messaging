@@ -29,7 +29,7 @@
         <module>email</module>
         <module>event-processor</module>
         <module>config</module>
-        <module>ch</module>
+        <module>contact-history</module>
     </modules>
 
 </project>

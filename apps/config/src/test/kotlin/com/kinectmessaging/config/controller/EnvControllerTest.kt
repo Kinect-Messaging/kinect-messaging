@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
+import java.time.LocalDateTime
 import java.util.*
 
 @AutoConfigureWebTestClient
@@ -40,7 +41,7 @@ class EnvControllerTest {
             eventName = "CustomerCreated",
             changeLog = mutableListOf(ChangeLog(
                 user = "Tester",
-                time = Calendar.getInstance().time.toString(),
+                time = LocalDateTime.now().toString(),
                 comment = "Deployed to Dev"
             ))
         ),
@@ -52,7 +53,7 @@ class EnvControllerTest {
             eventName = "CustomerWelcome",
             changeLog = mutableListOf(ChangeLog(
                 user = "Tester",
-                time = Calendar.getInstance().time.toString(),
+                time = LocalDateTime.now().toString(),
                 comment = "Deployed to Prod"
             ))
         )
@@ -67,7 +68,7 @@ class EnvControllerTest {
             eventName = "CustomerCreated",
             changeLog = mutableListOf(ChangeLog(
                 user = "Tester",
-                time = Calendar.getInstance().time.toString(),
+                time = LocalDateTime.now().toString(),
                 comment = "Deployed to Dev"
             ))
         ),
@@ -79,7 +80,7 @@ class EnvControllerTest {
             eventName = "CustomerWelcome",
             changeLog = mutableListOf(ChangeLog(
                 user = "Tester",
-                time = Calendar.getInstance().time.toString(),
+                time = LocalDateTime.now().toString(),
                 comment = "Deployed to Prod"
             ))
         )

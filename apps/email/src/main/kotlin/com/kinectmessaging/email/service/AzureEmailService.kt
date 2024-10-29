@@ -6,9 +6,9 @@ import com.azure.communication.email.models.EmailMessage
 import com.azure.communication.email.models.EmailSendResult
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.core.util.polling.SyncPoller
-import com.kinectmessaging.email.client.TemplateClient
-import com.kinectmessaging.libs.model.KMessage
-import com.kinectmessaging.libs.model.TemplatePersonalizationRequest
+import com.kinectmessaging.email.client.ApiClient
+import com.kinectmessaging.libs.common.EmailUtils
+import com.kinectmessaging.libs.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.slf4j.MDCContext
 import kotlinx.coroutines.withContext
@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 import javax.mail.internet.InternetAddress
 
 
@@ -34,7 +35,7 @@ class AzureEmailService : EmailService {
     var sendEmail: Boolean = false
 
     @Autowired
-    lateinit var templateClient: TemplateClient
+    lateinit var apiClient: ApiClient
 
     override suspend fun deliverEmail(kMessage: KMessage): String? {
         kMessage.emailData?.let { emailData ->
@@ -43,7 +44,7 @@ class AzureEmailService : EmailService {
             val bccRecipients = emailData.bccRecipients?.let { mapRecipients(it) }
             val subject = emailData.subject
             val templates = withContext(MDCContext()){
-                templateClient.loadTemplate(
+                apiClient.loadTemplate(
                     TemplatePersonalizationRequest(
                         textTemplateId = emailData.textTemplateId,
                         htmlTemplateId = emailData.htmlTemplateId,
@@ -54,7 +55,9 @@ class AzureEmailService : EmailService {
 
             val plainEmailBody = templates?.first { it.templateId == emailData.textTemplateId }?.templateContent
             val htmlEmailMessage = templates?.first { it.templateId == emailData.htmlTemplateId }?.templateContent
-            kMessage.emailData?.senderAddress?.let { senderAddress = it }
+            if (EmailUtils.isEmailValid(emailData.senderAddress)){
+                senderAddress = emailData.senderAddress
+            }
 
             if (plainEmailBody?.isNotBlank() == true || htmlEmailMessage?.isNotBlank() == true) {
                 val message = EmailMessage()
@@ -67,7 +70,7 @@ class AzureEmailService : EmailService {
                     .setBodyHtml(htmlEmailMessage)
 
                 if (sendEmail) {
-                    return sendEmailWithAzure(message)
+                    return sendEmailWithAzure(kMessage.id, message)
                 }
                 log.info("Created Azure Email Message : ${message.bodyHtml}")
             }
@@ -76,7 +79,7 @@ class AzureEmailService : EmailService {
         } ?: throw RuntimeException("Unable to send email. Email data is empty.")
     }
 
-    suspend fun sendEmailWithAzure(message: EmailMessage): String? {
+    suspend fun sendEmailWithAzure(id: String, message: EmailMessage): String? {
         try {
             val result = withContext(Dispatchers.IO) {
                 val emailClient = EmailClientBuilder()
@@ -87,6 +90,23 @@ class AzureEmailService : EmailService {
                 if (result.status == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED){
                     val emailResult = result.value
                     log.info("Result from Azure Email Service - ${emailResult.status} for id - ${emailResult.id}")
+                    val contactMessages = ContactMessages(
+                        messageId = id,
+                        deliveryTrackingId = emailResult.id,
+                        deliveryChannel = DeliveryChannel.EMAIL, 
+                        contactAddress = message.toRecipients[0].address,
+                        deliveryStatus = listOf(
+                            DeliveryStatus(
+                                statusTime = LocalDateTime.now(),
+                                status = HistoryStatusCodes.SENT,
+                                statusMessage = null,
+                                originalStatus = null
+                            )
+                        ),
+                        engagementStatus = null
+                    )
+                    apiClient.updateContactMessages(contactMessages)
+                    log.info("Updating contact history from Azure Email Service for id - ${contactMessages.messageId}")
                     return@withContext emailResult.status.toString()
                 } else {
                     log.error("Result from Azure Email Service - ${result.status}")
@@ -111,5 +131,4 @@ class AzureEmailService : EmailService {
         }
         return azureRecipients
     }
-
 }

@@ -16,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 import java.io.File
+import java.time.LocalDateTime
 import java.util.*
 
 
@@ -156,7 +157,7 @@ class EventProcessorControllerTest {
         val givenInput = KEvent(
             eventId = UUID.randomUUID().toString(),
             eventName = "CustomerSupportRequested",
-            eventTime = Calendar.getInstance().time,
+            eventTime = LocalDateTime.now(),
             payload = payload,
             recipients = mutableListOf(
                 Person(

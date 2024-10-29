@@ -15,11 +15,21 @@ data class DeliveryData (
     val sender: String,
     val recipient: String,
     val messageId: String,
-    val status: String,
+    val status: AzureEmailDeliveryStatus,
     val deliveryStatusDetails: DeliveryStatusDetails,
-    val deliveryAttemptTimeStamp: String
+    val deliveryAttemptTimestamp: String?
 )
 
 data class DeliveryStatusDetails (
     val statusMessage: String
 )
+
+enum class AzureEmailDeliveryStatus {
+    Delivered,
+    Suppressed,
+    Bounced,
+    Quarantined,
+    FilteredSpam,
+    Expanded,
+    Failed
+}

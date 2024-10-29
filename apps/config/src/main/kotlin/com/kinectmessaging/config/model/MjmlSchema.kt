@@ -1,6 +1,6 @@
 package com.kinectmessaging.config.model
 
-import java.util.*
+import java.time.LocalDateTime
 
 data class MjmlRequest(
     val mjml: String,
@@ -15,6 +15,6 @@ data class MjmlResponse(
 
 data class MjmlError(
     val requestId: String,
-    val startedAt: Date,
+    val startedAt: LocalDateTime,
     val message: String
 )

@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: kinect-contact-history-app
+  config:
+    import: "optional:configserver:http://kinect-config-server"

@@ -60,6 +60,9 @@ param springDataMongoDBNameKeyVaultUrl string
 @description('The key vault url for Azure Email Connection.')
 param azureEmailConnectionKeyVaultUrl string
 
+@description('The key vault url for Spring Cloud Azure Storage Queue Access Key.')
+param springCloudAzureStorageQueueAccessKey string
+
 // Deploy Flags
 @description('Deploy Flag for config container app.')
 param configDeployFlag bool
@@ -69,6 +72,9 @@ param emailDeployFlag bool
 
 @description('Deploy Flag for event processor container app.')
 param eventProcessorDeployFlag bool
+
+@description('Deploy Flag for contact history container app.')
+param contactHistoryDeployFlag bool
 
 // ------------------
 // RESOURCES
@@ -144,6 +150,31 @@ module eventProcessorContainerApp 'modules/event-processor.bicep' = if(eventProc
     portNumber: portNumber
   }
 }
+
+// Module for Contact History ContainerApp
+module contactHistoryContainerApp 'modules/contact-history.bicep' = if(contactHistoryDeployFlag) {
+  name: 'contactHistoryContainerApp--${uniqueString(resourceGroup().id)}'
+  params: {
+    location: location
+    tags: tags
+    containerAppsEnvironmentId: containerAppEnvironment.id
+    containerImage: containerImage
+    containerName: containerName
+    containerRegistryName: containerRegistryName
+    containerRegistryPassword: containerRegistryPassword
+    containerRegistryUsername: containerRegistryUsername
+    cpu: cpu
+    keyVaultUserAssignedIdentityId: keyVaultUserAssignedIdentityId
+    maxInstance: maxInstance
+    memory: memory
+    minInstance: minInstance
+    portNumber: portNumber
+    springDataMongoDBNameKeyVaultUrl: springDataMongoDBNameKeyVaultUrl
+    springDataMongoDBURIKeyVaultUrl: springDataMongoDBURIKeyVaultUrl
+    springCloudAzureStorageQueueAccessKey: springCloudAzureStorageQueueAccessKey
+  }
+}
+
 // ------------------
 // OUTPUTS
 // ------------------
