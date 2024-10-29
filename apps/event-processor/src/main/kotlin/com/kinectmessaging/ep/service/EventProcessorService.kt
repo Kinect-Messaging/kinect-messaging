@@ -116,6 +116,7 @@ class EventProcessorService {
                         toRecipients.forEach { recipient ->
                             contactHistoryList.add(KContactHistory(
                                 id = UUID.randomUUID().toString(),
+                                sourceEventId = event.eventId,
                                 journeyTransactionId = journeyTransactionId,
                                 journeyName = journeyConfig.journeyName,
                                 messages = ContactMessages(
