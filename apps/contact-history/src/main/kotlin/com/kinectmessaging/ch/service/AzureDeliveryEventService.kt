@@ -1,9 +1,5 @@
 package com.kinectmessaging.ch.service
 
-import com.azure.spring.integration.storage.queue.inbound.StorageQueueMessageSource
-import com.azure.spring.messaging.AzureHeaders
-import com.azure.spring.messaging.checkpoint.Checkpointer
-import com.azure.storage.queue.QueueClient
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.kinectmessaging.ch.model.AzureEmailDeliveryReport
@@ -15,9 +11,6 @@ import net.logstash.logback.argument.StructuredArguments.kv
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.integration.annotation.ServiceActivator
-import org.springframework.messaging.MessageChannel
-import org.springframework.messaging.handler.annotation.Header
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
