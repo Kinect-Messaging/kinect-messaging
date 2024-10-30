@@ -5,6 +5,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import com.kinectmessaging.ch.model.AzureEmailDeliveryReport
 import com.kinectmessaging.ch.model.AzureEmailDeliveryStatus
 import com.kinectmessaging.libs.common.LogConstants
+import com.kinectmessaging.libs.exception.InvalidInputException
 import com.kinectmessaging.libs.model.DeliveryStatus
 import com.kinectmessaging.libs.model.HistoryStatusCodes
 import net.logstash.logback.argument.StructuredArguments.kv
@@ -85,7 +86,7 @@ class AzureDeliveryEventService {
                     kv("originalStatus", deliveryData.status)
                 )
             }
-        }
+        } ?: throw InvalidInputException("Incoming email delivery event is null or empty.")
     }
 
     fun emailDeliveryEventProcessor(azureEmailDeliveryReport: AzureEmailDeliveryReport): String {
