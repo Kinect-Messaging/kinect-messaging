@@ -119,7 +119,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
           name: 'spring-data-mongodb-database'
         }
         {
-          identity: storageQueueUserAssignedIdentityId
+          identity: keyVaultUserAssignedIdentityId
           keyVaultUrl: springCloudAzureStorageQueueAccessKey
           name: 'azure-storage-queue-key'
         }
