@@ -54,6 +54,9 @@ param keyVaultUserAssignedIdentityId string
 @description('The resource ID of the user assigned managed identity for accessing storage queues.')
 param storageQueueUserAssignedIdentityId string
 
+@description('The resource ID of the user assigned managed identity for accessing event grid.')
+param eventGridUserAssignedIdentityId string
+
 @description('The key vault url for Spring Data Mongo DB URI.')
 param springDataMongoDBURIKeyVaultUrl string
 
@@ -65,9 +68,6 @@ param springDataContactHistoryDBNameKeyVaultUrl string
 
 @description('The key vault url for Azure Email Connection.')
 param azureEmailConnectionKeyVaultUrl string
-
-@description('The key vault url for Spring Cloud Azure Storage Queue Access Key.')
-param springCloudAzureStorageQueueAccessKey string
 
 // Deploy Flags
 @description('Deploy Flag for config container app.')
@@ -172,13 +172,13 @@ module contactHistoryContainerApp 'modules/contact-history.bicep' = if(contactHi
     cpu: cpu
     keyVaultUserAssignedIdentityId: keyVaultUserAssignedIdentityId
     storageQueueUserAssignedIdentityId: storageQueueUserAssignedIdentityId
+    eventGridUserAssignedIdentityId: eventGridUserAssignedIdentityId
     maxInstance: maxInstance
     memory: memory
     minInstance: minInstance
     portNumber: portNumber
     springDataContactHistoryDBNameKeyVaultUrl: springDataContactHistoryDBNameKeyVaultUrl
     springDataMongoDBURIKeyVaultUrl: springDataMongoDBURIKeyVaultUrl
-    springCloudAzureStorageQueueAccessKey: springCloudAzureStorageQueueAccessKey
   }
 }
 
