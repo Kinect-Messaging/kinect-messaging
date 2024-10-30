@@ -55,9 +55,6 @@ param keyVaultUserAssignedIdentityId string
 @description('The resource ID of the user assigned managed identity for accessing storage queues.')
 param storageQueueUserAssignedIdentityId string
 
-@description('The resource ID of the user assigned managed identity for accessing event grid.')
-param eventGridUserAssignedIdentityId string
-
 @description('The key vault url for Spring Data Mongo DB URI.')
 param springDataMongoDBURIKeyVaultUrl string
 
@@ -85,7 +82,6 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
    userAssignedIdentities: {
        '${keyVaultUserAssignedIdentityId}': {}
        '${storageQueueUserAssignedIdentityId}': {}
-       '${eventGridUserAssignedIdentityId}': {}
    }
  }
   properties: {
