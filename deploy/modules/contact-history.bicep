@@ -52,6 +52,9 @@ param maxInstance int
 @description('The resource ID of the user assigned managed identity for accessing key vault.')
 param keyVaultUserAssignedIdentityId string
 
+@description('The resource ID of the user assigned managed identity for accessing storage queues.')
+param storageQueueUserAssignedIdentityId string
+
 @description('The key vault url for Spring Data Mongo DB URI.')
 param springDataMongoDBURIKeyVaultUrl string
 
@@ -81,6 +84,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
     type: 'UserAssigned'
    userAssignedIdentities: {
        '${keyVaultUserAssignedIdentityId}': {}
+       '${storageQueueUserAssignedIdentityId}': {}
    }
  }
   properties: {
@@ -115,7 +119,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
           name: 'spring-data-mongodb-database'
         }
         {
-          identity: keyVaultUserAssignedIdentityId
+          identity: storageQueueUserAssignedIdentityId
           keyVaultUrl: springCloudAzureStorageQueueAccessKey
           name: 'azure-storage-queue-key'
         }

@@ -51,6 +51,9 @@ param maxInstance int
 @description('The resource ID of the user assigned managed identity for accessing key vault.')
 param keyVaultUserAssignedIdentityId string
 
+@description('The resource ID of the user assigned managed identity for accessing storage queues.')
+param storageQueueUserAssignedIdentityId string
+
 @description('The key vault url for Spring Data Mongo DB URI.')
 param springDataMongoDBURIKeyVaultUrl string
 
@@ -168,6 +171,7 @@ module contactHistoryContainerApp 'modules/contact-history.bicep' = if(contactHi
     containerRegistryUsername: containerRegistryUsername
     cpu: cpu
     keyVaultUserAssignedIdentityId: keyVaultUserAssignedIdentityId
+    storageQueueUserAssignedIdentityId: storageQueueUserAssignedIdentityId
     maxInstance: maxInstance
     memory: memory
     minInstance: minInstance
