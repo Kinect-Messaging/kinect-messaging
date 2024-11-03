@@ -56,7 +56,7 @@ param keyVaultUserAssignedIdentityId string
 param springDataMongoDBURIKeyVaultUrl string
 
 @description('The key vault url for Spring Data Mongo DB name.')
-param springDataMongoDBNameKeyVaultUrl string
+param springDataConfigDBNameKeyVaultUrl string
 
 
 //@secure()
@@ -108,7 +108,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
         }
         {
           identity: keyVaultUserAssignedIdentityId
-          keyVaultUrl: springDataMongoDBNameKeyVaultUrl
+          keyVaultUrl: springDataConfigDBNameKeyVaultUrl
           name: 'spring-data-mongodb-database'
         }
       ]

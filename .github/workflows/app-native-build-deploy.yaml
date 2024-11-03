@@ -1,0 +1,305 @@
+
+name: Build & Deploy Native App
+env:
+  REGISTRY: ghcr.io
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        type: choice
+        description: Select the app to deploy
+        options:
+          - email
+          - config
+          - contact-history
+          - event-processor
+#  pull_request:
+#    branches: [ main ]
+#    paths:
+#      - 'apps/**/src/**'
+#  push:
+#    branches: [ main ]
+#    paths:
+#      - 'apps/**/src/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+
+    env:
+      SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
+      # Use docker.io for Docker Hub if empty
+      REGISTRY: ghcr.io
+      APP_NAME: ${{ github.event.inputs.name }}
+    outputs:
+      docker-tag: ${{ steps.meta.outputs.tags }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '23'
+          distribution: 'graalvm'
+          cache: 'maven'
+          #        cache-dependency-path: 'sub-project/pom.xml' # optional
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+
+      # Install the cosign tool except on PR
+      # https://github.com/sigstore/cosign-installer
+      - name: Install cosign
+        if: github.event_name != 'pull_request'
+        uses: sigstore/cosign-installer@v3.6.0
+
+      # Set up BuildKit Docker container builder to be able to build
+      # multi-platform images and export cache
+      # https://github.com/docker/setup-buildx-action
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3 # v3.0.0
+
+
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3 # v3.0.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Extract metadata (tags, labels) for Docker
+      # https://github.com/docker/metadata-action
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5 # v5.0.0
+        env:
+          # github.repository as <account>/<repo>
+          IMAGE_NAME: ${{ github.repository }}/${{ env.APP_NAME }}
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+#      - name: Build and push Docker image
+#        id: build-and-push
+#        uses: docker/build-push-action@v5 # v5.0.0
+#        with:
+#          context: .
+#          file: ./deploy/Dockerfile
+#          build-args: |
+#            APP_NAME=${{ env.APP_NAME }}
+#          push: ${{ github.event_name != 'pull_request' }}
+#          tags: ${{ steps.meta.outputs.tags }}
+#          labels: ${{ steps.meta.outputs.labels }}
+#          cache-from: type=gha
+#          cache-to: type=gha,mode=max
+
+      # Build Application using Maven
+      - name: Build and push docker image with Maven
+        id: build-and-push
+        run: |
+          cd apps/${{ env.APP_NAME }}
+          mvn --batch-mode spring-boot:build-image \
+          -Pnative,publish \
+          -DskipTests \
+          -Ddocker.publishRegistry.username=${{ github.actor }} \
+          -Ddocker.publishRegistry.password=${{ secrets.GITHUB_TOKEN }} \
+          -Ddocker.publishRegistry.url=${{ env.REGISTRY }} \
+          -Dspring-boot.build-image.publish=true \
+          -Dspring-boot.build-image.imageName=${{ steps.meta.outputs.tags }}
+
+      # Sign the resulting Docker image digest except on PRs.
+      # This will only write to the public Rekor transparency log when the Docker
+      # repository is public to avoid leaking data.  If you would like to publish
+      # transparency data even for private images, pass --force to cosign below.
+      # https://github.com/sigstore/cosign
+      - name: Sign the published Docker image
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
+          TAGS: ${{ steps.meta.outputs.tags }}
+        # This step uses the identity token to provision an ephemeral certificate
+        # against the sigstore community Fulcio instance.
+        run: |
+          echo "${TAGS}" 
+          export DIGEST=$(docker buildx imagetools inspect ${{ steps.meta.outputs.tags }} --format '{{json .Manifest}}' | jq -r '.digest')
+          echo "${DIGEST}"
+          images=""
+          for tag in ${TAGS}; do
+            images+="${tag}@${DIGEST}"
+          done
+          cosign sign --yes ${images}
+
+  # Convert App Name to Pascal case
+  setup:
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    name: Prepare workflow variables
+    environment:
+      name: dev
+    outputs:
+      app-name: ${{ steps.assign-app-name.outputs.APP_NAME }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: "5.38"
+      - id: assign-app-name
+        run: |
+          perl -v
+          echo APP_NAME="$(echo ${{ github.event.inputs.name }} | perl -pe 's/-(.)/\u$1/g')" >> "$GITHUB_OUTPUT"
+
+  # This job is used for linting the bicep files
+  lint:
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    name: Lint bicep files
+    environment:
+      name: dev
+    steps:
+      - uses: actions/checkout@v4
+      - name: Perform linting
+        run: az bicep build --f deploy/main.bicep
+
+  # This job creates the resource group if it does not exist and validates the bicep template
+  validate:
+    runs-on: ubuntu-latest
+    name: Create RG and Validate bicep template
+    needs: [ build, lint, setup ]
+    environment:
+      name: dev
+    permissions:
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+    env:
+      SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
+      CONTAINER_NAME: kinect-${{ github.event.inputs.name }}-app
+      ENV_NAME: dev
+      APP_NAME: ${{ needs.setup.outputs.app-name }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo $APP_NAME
+      - name: Generate Bicep param
+        id: generate-bicep-param
+        env:
+          GPG_SECRET_PASSPHRASE: ${{ secrets.GPG_SECRET_PASSPHRASE }}
+        run: ./deploy/decrypt.sh
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Create Resource Group if does not exist
+        uses: azure/CLI@v2
+        with:
+          inlineScript: |
+            if [[ $(az group exists -n ${{ vars.RESOURCE_GROUP }}) == true ]]
+            then
+              echo "Resource group already exists in the subscription"
+            else
+              az group create  --name ${{ vars.RESOURCE_GROUP }} --location ${{ vars.LOCATION }}
+              echo "Resource group created"
+            fi
+
+      - uses: azure/arm-deploy@v2
+        name: Run validation
+        with:
+          deploymentName: ${{ github.run_number }}
+          resourceGroupName: ${{ vars.RESOURCE_GROUP }}
+          region: ${{ vars.LOCATION }}
+          template: ./deploy/main.bicep
+          parameters: ./deploy/main.parameters.json ${{ env.APP_NAME }}DeployFlag=true containerName=${{ env.CONTAINER_NAME }} containerImage=${{ needs.build.outputs.docker-tag }} containerRegistryUsername=${{ secrets.REGISTRY_USER }} containerRegistryPassword=${{ secrets.REGISTRY_PASSWORD }}
+          deploymentMode: Validate
+
+  # This job run what-if on the bicep template
+  preview:
+    runs-on: ubuntu-latest
+    needs: [ build, validate, setup ]
+    name: Run what-if on the bicep template
+    environment:
+      name: dev
+    permissions:
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+    env:
+      SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
+      CONTAINER_NAME: kinect-${{ github.event.inputs.name }}-app
+      ENV_NAME: dev
+      APP_NAME: ${{ needs.setup.outputs.app-name }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate Bicep param
+        id: generate-bicep-param
+        env:
+          GPG_SECRET_PASSPHRASE: ${{ secrets.GPG_SECRET_PASSPHRASE }}
+        run: ./deploy/decrypt.sh
+      - uses: azure/login@v2
+        name: Sign in to Azure
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - uses: azure/arm-deploy@v2
+        name: Run what-if
+        with:
+          resourceGroupName: ${{ vars.RESOURCE_GROUP }}
+          template: ./deploy/main.bicep
+          parameters: ./deploy/main.parameters.json ${{ needs.setup.outputs.app-name }}DeployFlag=true containerName=${{ env.CONTAINER_NAME }} containerImage=${{ needs.build.outputs.docker-tag }} containerRegistryUsername=${{ secrets.REGISTRY_USER }} containerRegistryPassword=${{ secrets.REGISTRY_PASSWORD }}
+          additionalArguments: "--what-if --rollback-on-error --what-if-exclude-change-types  Ignore"
+
+  # This job deploys the bicep template to Azure subscription using GitHub Container Registry images
+  deploy-with-ghcr-images:
+    runs-on: ubuntu-latest
+    needs: [ build, setup, preview ]
+    name: Deploy to Azure subscription with GHCR
+    environment:
+      name: dev
+    permissions:
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+    env:
+      SEGMENT_DOWNLOAD_TIMEOUT_MINS: '5' #Specify timeout in minutes. Default is 10 minutes.
+      CONTAINER_NAME: kinect-${{ github.event.inputs.name }}-app
+      ENV_NAME: dev
+      APP_NAME: ${{ needs.setup.outputs.app-name }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate Bicep param
+        id: generate-bicep-param
+        env:
+          GPG_SECRET_PASSPHRASE: ${{ secrets.GPG_SECRET_PASSPHRASE }}
+        run: ./deploy/decrypt.sh
+      - uses: azure/login@v2
+        name: Sign in to Azure
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - uses: azure/arm-deploy@v2
+        id: deployment-with-ghcr-images
+        name: Deploy to Azure subscription
+        with:
+          deploymentName: ${{ env.CONTAINER_NAME }}
+          resourceGroupName: ${{ vars.RESOURCE_GROUP }}
+          region: ${{ vars.LOCATION }}
+          template: ./deploy/main.bicep
+          parameters: ./deploy/main.parameters.json ${{ needs.setup.outputs.app-name }}DeployFlag=true containerName=${{ env.CONTAINER_NAME }} containerImage=${{ needs.build.outputs.docker-tag }} containerRegistryUsername=${{ secrets.REGISTRY_USER }} containerRegistryPassword=${{ secrets.REGISTRY_PASSWORD }}
+          failOnStdErr: false
