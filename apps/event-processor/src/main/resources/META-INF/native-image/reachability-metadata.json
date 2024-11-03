@@ -240,6 +240,45 @@
       "type": "com.kinectmessaging.libs.model.EmailData"
     },
     {
+      "type": "com.kinectmessaging.libs.model.Audit"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.Attachment"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.ChangeLog"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.Contact"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.Person"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.Address"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.EmailRecipientConfig"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.AttachmentConfig"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.EnvConfig"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.EngagementStatus"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.DeliveryStatus"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.KTemplate"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.TemplatePersonalizationRequest"
+    },
+    {
       "type": "com.kinectmessaging.ep.EventProcessorApplication",
       "allDeclaredFields": true
     },
