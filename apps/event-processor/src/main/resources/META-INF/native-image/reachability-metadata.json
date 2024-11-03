@@ -222,6 +222,24 @@
       "type": "com.hazelcast.spring.cache.HazelcastCache"
     },
     {
+      "type": "com.kinectmessaging.libs.model.JourneyConfig"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.MessageConfig"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.EmailConfig"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.KContactHistory"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.ContactMessages"
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.EmailData"
+    },
+    {
       "type": "com.kinectmessaging.ep.EventProcessorApplication",
       "allDeclaredFields": true
     },
