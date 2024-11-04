@@ -358,6 +358,15 @@
       "allDeclaredFields": true
     },
     {
+      "type": "com.kinectmessaging.ch.model.AzureEmailDeliveryReport",
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true,
+      "allDeclaredFields": true,
+      "allPublicFields": true
+    },
+    {
       "type": "com.kinectmessaging.ch.model.ContactHistoryEntity_Instantiator_n4hmu",
       "methods": [
         {
