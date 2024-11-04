@@ -3,9 +3,6 @@
     "name": "ch.qos.logback.classic.model.ConfigurationModel"
   },
   {
-    "name": "ch.qos.logback.classic.model.LoggerModel"
-  },
-  {
     "name": "ch.qos.logback.classic.model.RootLoggerModel"
   },
   {

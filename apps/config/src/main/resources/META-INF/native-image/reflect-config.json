@@ -49,113 +49,6 @@
     "queryAllPublicMethods": true
   },
   {
-    "name": "com.fasterxml.jackson.databind.JsonNode",
-    "allDeclaredFields": true,
-    "allDeclaredConstructors": true,
-    "methods": [
-      {
-        "name": "getNodeType",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isArray",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isBigDecimal",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isBigInteger",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isBinary",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isBoolean",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isContainerNode",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isDouble",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isEmpty",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isFloat",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isFloatingPointNumber",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isInt",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isIntegralNumber",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isLong",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isMissingNode",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isNull",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isNumber",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isObject",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isPojo",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isShort",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isTextual",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "isValueNode",
-        "parameterTypes": [ ]
-      }
-    ]
-  },
-  {
-    "name": "com.fasterxml.jackson.databind.JsonSerializable$Base",
-    "allDeclaredFields": true,
-    "allDeclaredConstructors": true
-  },
-  {
-    "name": "com.fasterxml.jackson.databind.node.JsonNodeType",
-    "allDeclaredFields": true,
-    "allPublicConstructors": true,
-    "allDeclaredConstructors": true,
-    "allPublicMethods": true
-  },
-  {
     "name": "com.fasterxml.jackson.databind.ObjectMapper",
     "queryAllPublicMethods": true,
     "queryAllDeclaredMethods": true
@@ -237,48 +130,14 @@
     "queryAllDeclaredMethods": true
   },
   {
-    "name": "com.kinectmessaging.ep.client.ApiClient",
-    "queryAllPublicMethods": true,
-    "queryAllDeclaredMethods": true,
-    "fields": [
-      {
-        "name": "contactHistoryWebClient"
-      },
-      {
-        "name": "emailWebClient"
-      },
-      {
-        "name": "journeyWebClient"
-      },
-      {
-        "name": "messageWebClient"
-      }
-    ],
-    "queriedMethods": [
-      {
-        "name": "<init>",
-        "parameterTypes": [ ]
-      }
-    ]
-  },
-  {
-    "name": "com.kinectmessaging.ep.client.Config",
+    "name": "com.kinectmessaging.config.client.Config",
     "queryAllPublicMethods": true,
     "queryAllDeclaredMethods": true,
     "allPublicMethods": true,
     "allDeclaredMethods": true,
     "fields": [
       {
-        "name": "contactHistoryUrl"
-      },
-      {
-        "name": "emailUrl"
-      },
-      {
-        "name": "journeyUrl"
-      },
-      {
-        "name": "messageUrl"
+        "name": "url"
       }
     ],
     "queriedMethods": [
@@ -287,25 +146,7 @@
         "parameterTypes": [ ]
       },
       {
-        "name": "contactHistoryWebClient",
-        "parameterTypes": [
-          "org.springframework.web.reactive.function.client.WebClient$Builder"
-        ]
-      },
-      {
-        "name": "emailWebClient",
-        "parameterTypes": [
-          "org.springframework.web.reactive.function.client.WebClient$Builder"
-        ]
-      },
-      {
-        "name": "journeyWebClient",
-        "parameterTypes": [
-          "org.springframework.web.reactive.function.client.WebClient$Builder"
-        ]
-      },
-      {
-        "name": "messageWebClient",
+        "name": "webClient",
         "parameterTypes": [
           "org.springframework.web.reactive.function.client.WebClient$Builder"
         ]
@@ -313,7 +154,7 @@
     ]
   },
   {
-    "name": "com.kinectmessaging.ep.client.Config$$SpringCGLIB$$0",
+    "name": "com.kinectmessaging.config.client.Config$$SpringCGLIB$$0",
     "allDeclaredFields": true,
     "allDeclaredConstructors": true,
     "allDeclaredMethods": true,
@@ -325,37 +166,284 @@
     ]
   },
   {
-    "name": "com.kinectmessaging.ep.client.Config$$SpringCGLIB$$FastClass$$0",
+    "name": "com.kinectmessaging.config.client.Config$$SpringCGLIB$$FastClass$$0",
     "allDeclaredConstructors": true
   },
   {
-    "name": "com.kinectmessaging.ep.client.Config$$SpringCGLIB$$FastClass$$1",
+    "name": "com.kinectmessaging.config.client.Config$$SpringCGLIB$$FastClass$$1",
     "allDeclaredConstructors": true
   },
   {
-    "name": "com.kinectmessaging.ep.controller.EventProcessorController",
+    "name": "com.kinectmessaging.config.client.MjmlClient",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "org.springframework.web.reactive.function.client.WebClient"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.config.controller.ControllerExceptionHandler",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "globalExceptionHandler",
+        "parameterTypes": [
+          "java.lang.Exception"
+        ]
+      },
+      {
+        "name": "invalidInputException",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.exception.InvalidInputException"
+        ]
+      }
+    ],
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.config.controller.EnvController",
     "queryAllPublicMethods": true,
     "queryAllDeclaredMethods": true,
     "fields": [
       {
-        "name": "eventProcessorService"
+        "name": "envService"
       }
     ],
     "methods": [
       {
-        "name": "processEvent",
+        "name": "getEnvById",
         "parameterTypes": [
-          "com.kinectmessaging.libs.model.KEvent",
-          "java.util.Map",
+          "java.lang.String",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "getEnvs",
+        "parameterTypes": [
+          "java.lang.Integer",
+          "java.lang.Integer",
+          "java.lang.String",
+          "org.springframework.data.domain.Sort$Direction",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "getEnvs$default",
+        "parameterTypes": [
+          "com.kinectmessaging.config.controller.EnvController",
+          "java.lang.Integer",
+          "java.lang.Integer",
+          "java.lang.String",
+          "org.springframework.data.domain.Sort$Direction",
+          "java.lang.String",
+          "int",
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "saveEnv",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.model.EnvConfig",
+          "java.lang.String"
+        ]
+      }
+    ],
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.config.controller.JourneyController",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "fields": [
+      {
+        "name": "journeyService"
+      }
+    ],
+    "methods": [
+      {
+        "name": "createJourney",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.model.JourneyConfig",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "getJourneyByEventName",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "getJourneyById",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "getJourneys",
+        "parameterTypes": [
+          "java.lang.Integer",
+          "java.lang.Integer",
+          "java.lang.String",
+          "org.springframework.data.domain.Sort$Direction",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "getJourneys$default",
+        "parameterTypes": [
+          "com.kinectmessaging.config.controller.JourneyController",
+          "java.lang.Integer",
+          "java.lang.Integer",
+          "java.lang.String",
+          "org.springframework.data.domain.Sort$Direction",
+          "java.lang.String",
+          "int",
+          "java.lang.Object"
+        ]
+      }
+    ],
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.config.controller.MessageController",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "fields": [
+      {
+        "name": "messageService"
+      }
+    ],
+    "methods": [
+      {
+        "name": "createMessage",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.model.MessageConfig",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "getMessageById",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "getMessages",
+        "parameterTypes": [
+          "java.lang.Integer",
+          "java.lang.Integer",
+          "java.lang.String",
+          "org.springframework.data.domain.Sort$Direction",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "getMessages$default",
+        "parameterTypes": [
+          "com.kinectmessaging.config.controller.MessageController",
+          "java.lang.Integer",
+          "java.lang.Integer",
+          "java.lang.String",
+          "org.springframework.data.domain.Sort$Direction",
+          "java.lang.String",
+          "int",
+          "java.lang.Object"
+        ]
+      }
+    ],
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.config.controller.TemplateController",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "fields": [
+      {
+        "name": "templateService"
+      }
+    ],
+    "methods": [
+      {
+        "name": "createTemplate",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.model.KTemplate",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "getAllTemplates",
+        "parameterTypes": [
+          "java.lang.Integer",
+          "java.lang.Integer",
+          "java.lang.String",
+          "org.springframework.data.domain.Sort$Direction",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "getAllTemplates$default",
+        "parameterTypes": [
+          "com.kinectmessaging.config.controller.TemplateController",
+          "java.lang.Integer",
+          "java.lang.Integer",
+          "java.lang.String",
+          "org.springframework.data.domain.Sort$Direction",
+          "java.lang.String",
+          "int",
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "getTemplate",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "personalizeTemplate",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.model.TemplatePersonalizationRequest",
+          "java.lang.String",
           "kotlin.coroutines.Continuation"
         ]
       },
       {
-        "name": "processEvent$suspendImpl",
+        "name": "personalizeTemplate$suspendImpl",
         "parameterTypes": [
-          "com.kinectmessaging.ep.controller.EventProcessorController",
-          "com.kinectmessaging.libs.model.KEvent",
-          "java.util.Map",
+          "com.kinectmessaging.config.controller.TemplateController",
+          "com.kinectmessaging.libs.model.TemplatePersonalizationRequest",
+          "java.lang.String",
           "kotlin.coroutines.Continuation"
         ]
       }
@@ -368,7 +456,7 @@
     ]
   },
   {
-    "name": "com.kinectmessaging.ep.EventProcessorApplication",
+    "name": "com.kinectmessaging.config.KinectConfigApplication",
     "queryAllPublicMethods": true,
     "queryAllDeclaredMethods": true,
     "allPublicMethods": true,
@@ -381,7 +469,7 @@
     ]
   },
   {
-    "name": "com.kinectmessaging.ep.EventProcessorApplication$$SpringCGLIB$$0",
+    "name": "com.kinectmessaging.config.KinectConfigApplication$$SpringCGLIB$$0",
     "allDeclaredFields": true,
     "allDeclaredConstructors": true,
     "allDeclaredMethods": true,
@@ -393,12 +481,12 @@
     ]
   },
   {
-    "name": "com.kinectmessaging.ep.EventProcessorApplicationKt"
+    "name": "com.kinectmessaging.config.KinectConfigApplicationKt"
   },
   {
-    "name": "com.kinectmessaging.ep.EventProcessorApplicationKt__ApplicationContextInitializer",
+    "name": "com.kinectmessaging.config.KinectConfigApplicationKt__ApplicationContextInitializer",
     "condition": {
-      "typeReachable": "com.kinectmessaging.ep.EventProcessorApplicationKt"
+      "typeReachable": "com.kinectmessaging.config.KinectConfigApplicationKt"
     },
     "methods": [
       {
@@ -408,23 +496,250 @@
     ]
   },
   {
-    "name": "com.kinectmessaging.ep.service.EventProcessorService",
-    "queryAllPublicMethods": true,
+    "name": "com.kinectmessaging.config.model.EnvEntity",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
     "queryAllDeclaredMethods": true,
-    "fields": [
+    "methods": [
       {
-        "name": "apiClient"
-      }
-    ],
-    "queriedMethods": [
+        "name": "component1",
+        "parameterTypes": [ ]
+      },
       {
-        "name": "<init>",
+        "name": "component2",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component3",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component4",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component5",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component6",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "copy",
+        "parameterTypes": [
+          "java.lang.String",
+          "com.kinectmessaging.libs.model.EnvNames",
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String",
+          "java.util.List"
+        ]
+      },
+      {
+        "name": "copy$default",
+        "parameterTypes": [
+          "com.kinectmessaging.config.model.EnvEntity",
+          "java.lang.String",
+          "com.kinectmessaging.libs.model.EnvNames",
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String",
+          "java.util.List",
+          "int",
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "getChangeLog",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getEnvId",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getEnvName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getEventName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getJourneyId",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMessageId",
         "parameterTypes": [ ]
       }
     ]
   },
   {
-    "name": "com.kinectmessaging.libs.model.Address",
+    "name": "com.kinectmessaging.config.model.JourneyEntity",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "component1",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component2",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component3",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component4",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "copy",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.lang.String",
+          "java.util.List",
+          "com.kinectmessaging.libs.model.Audit"
+        ]
+      },
+      {
+        "name": "copy$default",
+        "parameterTypes": [
+          "com.kinectmessaging.config.model.JourneyEntity",
+          "java.lang.String",
+          "java.lang.String",
+          "java.util.List",
+          "com.kinectmessaging.libs.model.Audit",
+          "int",
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "getAuditInfo",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getJourneyId",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getJourneyName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getJourneySteps",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.config.model.MessageEntity",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "component1",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component2",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component3",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component4",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component5",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component6",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component7",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component8",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "copy",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.lang.String",
+          "int",
+          "java.lang.String",
+          "com.kinectmessaging.libs.model.MessageStatus",
+          "java.util.List",
+          "com.kinectmessaging.libs.model.Audit",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "copy$default",
+        "parameterTypes": [
+          "com.kinectmessaging.config.model.MessageEntity",
+          "java.lang.String",
+          "java.lang.String",
+          "int",
+          "java.lang.String",
+          "com.kinectmessaging.libs.model.MessageStatus",
+          "java.util.List",
+          "com.kinectmessaging.libs.model.Audit",
+          "java.lang.String",
+          "int",
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "getAuditInfo",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getEmailConfig",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getJourneyId",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMessageCondition",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMessageId",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMessageName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMessageStatus",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMessageVersion",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.config.model.TemplateEntity",
     "allDeclaredFields": true,
     "allDeclaredConstructors": true,
     "queryAllDeclaredMethods": true,
@@ -458,54 +773,188 @@
         "parameterTypes": [
           "java.lang.String",
           "java.lang.String",
+          "com.kinectmessaging.libs.model.TemplateType",
+          "com.kinectmessaging.libs.model.TemplateLanguage",
           "java.lang.String",
-          "java.lang.String",
-          "java.lang.String",
-          "java.lang.String"
+          "com.kinectmessaging.libs.model.Audit"
         ]
       },
       {
         "name": "copy$default",
         "parameterTypes": [
-          "com.kinectmessaging.libs.model.Address",
+          "com.kinectmessaging.config.model.TemplateEntity",
           "java.lang.String",
           "java.lang.String",
+          "com.kinectmessaging.libs.model.TemplateType",
+          "com.kinectmessaging.libs.model.TemplateLanguage",
           "java.lang.String",
-          "java.lang.String",
-          "java.lang.String",
-          "java.lang.String",
+          "com.kinectmessaging.libs.model.Audit",
           "int",
           "java.lang.Object"
         ]
       },
       {
-        "name": "getAddressLine1",
+        "name": "getAuditInfo",
         "parameterTypes": [ ]
       },
       {
-        "name": "getAddressLine2",
+        "name": "getTemplateContent",
         "parameterTypes": [ ]
       },
       {
-        "name": "getCity",
+        "name": "getTemplateId",
         "parameterTypes": [ ]
       },
       {
-        "name": "getCountry",
+        "name": "getTemplateLanguage",
         "parameterTypes": [ ]
       },
       {
-        "name": "getPostalCode",
+        "name": "getTemplateName",
         "parameterTypes": [ ]
       },
       {
-        "name": "getState",
+        "name": "getTemplateType",
         "parameterTypes": [ ]
       }
     ]
   },
   {
-    "name": "com.kinectmessaging.libs.model.Contact",
+    "name": "com.kinectmessaging.config.repository.EnvRepository",
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.kinectmessaging.config.repository.JourneyRepository",
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.kinectmessaging.config.repository.MessageRepository",
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.kinectmessaging.config.repository.TemplateRepository",
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.kinectmessaging.config.service.EnvService",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "fields": [
+      {
+        "name": "envRepository"
+      }
+    ],
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.config.service.JourneyService",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "fields": [
+      {
+        "name": "journeyRepository"
+      }
+    ],
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.config.service.MessageService",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "fields": [
+      {
+        "name": "messageRepository"
+      }
+    ],
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.config.service.TemplateService",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "fields": [
+      {
+        "name": "mjmlClient"
+      },
+      {
+        "name": "templateRepository"
+      }
+    ],
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.libs.exception.ErrorMessage",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "component1",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component2",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component3",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "copy",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.lang.Integer",
+          "java.util.Map"
+        ]
+      },
+      {
+        "name": "copy$default",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.exception.ErrorMessage",
+          "java.lang.String",
+          "java.lang.Integer",
+          "java.util.Map",
+          "int",
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "getErrors",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMessage",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getStatusCode",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.libs.model.AttachmentConfig",
     "allDeclaredFields": true,
     "allDeclaredConstructors": true,
     "queryAllDeclaredMethods": true,
@@ -527,36 +976,330 @@
         "parameterTypes": [
           "java.lang.String",
           "java.lang.String",
-          "com.kinectmessaging.libs.model.Address"
+          "java.lang.String"
         ]
       },
       {
         "name": "copy$default",
         "parameterTypes": [
-          "com.kinectmessaging.libs.model.Contact",
+          "com.kinectmessaging.libs.model.AttachmentConfig",
           "java.lang.String",
           "java.lang.String",
-          "com.kinectmessaging.libs.model.Address",
+          "java.lang.String",
           "int",
           "java.lang.Object"
         ]
       },
       {
-        "name": "getAddress",
+        "name": "getContent",
         "parameterTypes": [ ]
       },
       {
-        "name": "getEmail",
+        "name": "getContentType",
         "parameterTypes": [ ]
       },
       {
-        "name": "getPhone",
+        "name": "getName",
         "parameterTypes": [ ]
       }
     ]
   },
   {
-    "name": "com.kinectmessaging.libs.model.KEvent",
+    "name": "com.kinectmessaging.libs.model.Audit",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "component1",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component2",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component3",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component4",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "copy",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "copy$default",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.model.Audit",
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String",
+          "int",
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "getCreatedBy",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getCreatedTime",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getUpdatedBy",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getUpdatedTime",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.libs.model.ChangeLog",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "component1",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component2",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component3",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "copy",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "copy$default",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.model.ChangeLog",
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String",
+          "int",
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "getComment",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getTime",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getUser",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.libs.model.EmailConfig",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "component1",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component10",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component11",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component2",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component3",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component4",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component5",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component6",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component7",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component8",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component9",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "copy",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.model.TargetSystem",
+          "java.util.Map",
+          "java.lang.String",
+          "java.lang.String",
+          "java.util.List",
+          "java.util.List",
+          "java.util.List",
+          "java.util.List",
+          "java.util.List",
+          "java.util.Map",
+          "java.util.Map"
+        ]
+      },
+      {
+        "name": "copy$default",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.model.EmailConfig",
+          "com.kinectmessaging.libs.model.TargetSystem",
+          "java.util.Map",
+          "java.lang.String",
+          "java.lang.String",
+          "java.util.List",
+          "java.util.List",
+          "java.util.List",
+          "java.util.List",
+          "java.util.List",
+          "java.util.Map",
+          "java.util.Map",
+          "int",
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "getAttachments",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getBccRecipients",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getCcRecipients",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getEmailHeaders",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getPersonalizationData",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getReplyTo",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getSenderAddress",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getSubject",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getTargetSystem",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getTemplateConfig",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getToRecipients",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.libs.model.EmailRecipientConfig",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "component1",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component2",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component3",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "copy",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "copy$default",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.model.EmailRecipientConfig",
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String",
+          "int",
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "getEmailAddress",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getFirstName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getLastName",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.libs.model.EnvConfig",
     "allDeclaredFields": true,
     "allDeclaredConstructors": true,
     "queryAllDeclaredMethods": true,
@@ -582,30 +1325,44 @@
         "parameterTypes": [ ]
       },
       {
+        "name": "component6",
+        "parameterTypes": [ ]
+      },
+      {
         "name": "copy",
         "parameterTypes": [
           "java.lang.String",
+          "com.kinectmessaging.libs.model.EnvNames",
           "java.lang.String",
-          "java.time.LocalDateTime",
-          "com.fasterxml.jackson.databind.JsonNode",
+          "java.lang.String",
+          "java.lang.String",
           "java.util.List"
         ]
       },
       {
         "name": "copy$default",
         "parameterTypes": [
-          "com.kinectmessaging.libs.model.KEvent",
+          "com.kinectmessaging.libs.model.EnvConfig",
+          "java.lang.String",
+          "com.kinectmessaging.libs.model.EnvNames",
           "java.lang.String",
           "java.lang.String",
-          "java.time.LocalDateTime",
-          "com.fasterxml.jackson.databind.JsonNode",
+          "java.lang.String",
           "java.util.List",
           "int",
           "java.lang.Object"
         ]
       },
       {
-        "name": "getEventId",
+        "name": "getChangeLog",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getEnvId",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getEnvName",
         "parameterTypes": [ ]
       },
       {
@@ -613,21 +1370,31 @@
         "parameterTypes": [ ]
       },
       {
-        "name": "getEventTime",
+        "name": "getJourneyId",
         "parameterTypes": [ ]
       },
       {
-        "name": "getPayload",
-        "parameterTypes": [ ]
-      },
-      {
-        "name": "getRecipients",
+        "name": "getMessageId",
         "parameterTypes": [ ]
       }
     ]
   },
   {
-    "name": "com.kinectmessaging.libs.model.Person",
+    "name": "com.kinectmessaging.libs.model.EnvNames",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "allPublicMethods": true,
+    "methods": [
+      {
+        "name": "getEntries",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.libs.model.JourneyConfig",
     "allDeclaredFields": true,
     "allDeclaredConstructors": true,
     "queryAllDeclaredMethods": true,
@@ -654,41 +1421,377 @@
           "java.lang.String",
           "java.lang.String",
           "java.util.List",
+          "com.kinectmessaging.libs.model.Audit"
+        ]
+      },
+      {
+        "name": "copy$default",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.model.JourneyConfig",
+          "java.lang.String",
+          "java.lang.String",
+          "java.util.List",
+          "com.kinectmessaging.libs.model.Audit",
+          "int",
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "getAuditInfo",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getJourneyId",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getJourneyName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getJourneySteps",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.libs.model.JourneySteps",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "component1",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component2",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component3",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component4",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "copy",
+        "parameterTypes": [
+          "int",
+          "java.lang.String",
+          "java.lang.String",
           "java.util.Map"
         ]
       },
       {
         "name": "copy$default",
         "parameterTypes": [
-          "com.kinectmessaging.libs.model.Person",
+          "com.kinectmessaging.libs.model.JourneySteps",
+          "int",
           "java.lang.String",
           "java.lang.String",
-          "java.util.List",
           "java.util.Map",
           "int",
           "java.lang.Object"
         ]
       },
       {
-        "name": "getContacts",
+        "name": "getEventName",
         "parameterTypes": [ ]
       },
       {
-        "name": "getFirstName",
+        "name": "getMessageConfigs",
         "parameterTypes": [ ]
       },
       {
-        "name": "getLastName",
+        "name": "getSeqId",
         "parameterTypes": [ ]
       },
       {
-        "name": "getPreferredLanguage",
+        "name": "getStepCondition",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.libs.model.KTemplate",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "component1",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component2",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component3",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component4",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component5",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component6",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "copy",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.lang.String",
+          "com.kinectmessaging.libs.model.TemplateType",
+          "com.kinectmessaging.libs.model.TemplateLanguage",
+          "java.lang.String",
+          "com.kinectmessaging.libs.model.Audit"
+        ]
+      },
+      {
+        "name": "copy$default",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.model.KTemplate",
+          "java.lang.String",
+          "java.lang.String",
+          "com.kinectmessaging.libs.model.TemplateType",
+          "com.kinectmessaging.libs.model.TemplateLanguage",
+          "java.lang.String",
+          "com.kinectmessaging.libs.model.Audit",
+          "int",
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "getAuditInfo",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getTemplateContent",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getTemplateId",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getTemplateLanguage",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getTemplateName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getTemplateType",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.libs.model.MessageConfig",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "component1",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component2",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component3",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component4",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component5",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component6",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component7",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component8",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "copy",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.lang.String",
+          "int",
+          "java.lang.String",
+          "com.kinectmessaging.libs.model.MessageStatus",
+          "java.util.List",
+          "java.lang.String",
+          "com.kinectmessaging.libs.model.Audit"
+        ]
+      },
+      {
+        "name": "copy$default",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.model.MessageConfig",
+          "java.lang.String",
+          "java.lang.String",
+          "int",
+          "java.lang.String",
+          "com.kinectmessaging.libs.model.MessageStatus",
+          "java.util.List",
+          "java.lang.String",
+          "com.kinectmessaging.libs.model.Audit",
+          "int",
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "getAuditInfo",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getEmailConfig",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getJourneyId",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMessageCondition",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMessageId",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMessageName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMessageStatus",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMessageVersion",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.libs.model.MessageStatus",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "allPublicMethods": true,
+    "methods": [
+      {
+        "name": "getEntries",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.libs.model.TargetSystem",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "allPublicMethods": true,
+    "methods": [
+      {
+        "name": "getEntries",
         "parameterTypes": [ ]
       }
     ]
   },
   {
     "name": "com.kinectmessaging.libs.model.TemplateLanguage",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "allPublicMethods": true,
+    "methods": [
+      {
+        "name": "getEntries",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.libs.model.TemplatePersonalizationRequest",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "component1",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component2",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component3",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "copy",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.lang.String",
+          "java.util.Map"
+        ]
+      },
+      {
+        "name": "copy$default",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.model.TemplatePersonalizationRequest",
+          "java.lang.String",
+          "java.lang.String",
+          "java.util.Map",
+          "int",
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "getHtmlTemplateId",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getPersonalizationData",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getTextTemplateId",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.kinectmessaging.libs.model.TemplateType",
     "allDeclaredFields": true,
     "allPublicConstructors": true,
     "allDeclaredConstructors": true,
@@ -768,6 +1871,84 @@
     "queryAllDeclaredMethods": true
   },
   {
+    "name": "com.mongodb.client.internal.MapReduceIterableImpl",
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.mongodb.client.internal.MongoDatabaseImpl",
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.mongodb.client.MapReduceIterable",
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.mongodb.client.model.IndexOptions",
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.mongodb.client.MongoClient",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "close",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "com.mongodb.client.MongoDatabase",
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.mongodb.connection.StreamFactoryFactory",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "com.mongodb.event.CommandListener",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "com.mongodb.event.ConnectionPoolListener",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "com.mongodb.internal.build.MongoDriverVersion",
+    "allPublicFields": true
+  },
+  {
+    "name": "com.mongodb.internal.connection.StreamFactoryFactory",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "com.mongodb.MongoClientSettings",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.mongodb.MongoClientSettings$Builder",
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.mongodb.ServerAddress",
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.mongodb.UnixServerAddress",
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.samskivert.mustache.Mustache$Compiler",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "com.samskivert.mustache.Mustache$TemplateLoader",
+    "queryAllPublicMethods": true
+  },
+  {
     "name": "io.micrometer.core.instrument.binder.jvm.ClassLoaderMetrics",
     "queryAllPublicMethods": true,
     "queryAllDeclaredMethods": true
@@ -828,6 +2009,26 @@
   {
     "name": "io.micrometer.core.instrument.binder.MeterBinder",
     "queryAllPublicMethods": true
+  },
+  {
+    "name": "io.micrometer.core.instrument.binder.mongodb.MongoCommandTagsProvider",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "io.micrometer.core.instrument.binder.mongodb.MongoConnectionPoolTagsProvider",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
   },
   {
     "name": "io.micrometer.core.instrument.binder.system.FileDescriptorMetrics",
@@ -945,6 +2146,12 @@
     ]
   },
   {
+    "name": "java.lang.Boolean"
+  },
+  {
+    "name": "java.lang.Class"
+  },
+  {
     "name": "java.lang.Enum",
     "methods": [
       {
@@ -961,10 +2168,41 @@
     "queryAllPublicMethods": true
   },
   {
+    "name": "java.lang.Long"
+  },
+  {
     "name": "java.lang.Number"
   },
   {
+    "name": "java.lang.Object",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.lang.Object[]"
+  },
+  {
+    "name": "java.lang.reflect.AccessibleObject"
+  },
+  {
+    "name": "java.lang.reflect.Executable"
+  },
+  {
+    "name": "java.lang.reflect.Method"
+  },
+  {
     "name": "java.lang.String"
+  },
+  {
+    "name": "java.lang.Throwable",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "java.net.InetSocketAddress"
+  },
+  {
+    "name": "java.net.SocketAddress"
   },
   {
     "name": "java.net.URI",
@@ -992,7 +2230,16 @@
     ]
   },
   {
-    "name": "java.time.LocalDateTime"
+    "name": "java.time.Duration"
+  },
+  {
+    "name": "java.time.Instant"
+  },
+  {
+    "name": "java.time.ZonedDateTime"
+  },
+  {
+    "name": "java.util.Collection"
   },
   {
     "name": "java.util.concurrent.Executor",
@@ -1031,10 +2278,26 @@
     ]
   },
   {
+    "name": "java.util.Locale"
+  },
+  {
+    "name": "java.util.Locale$LanguageRange"
+  },
+  {
     "name": "java.util.Map"
   },
   {
+    "name": "java.util.Optional"
+  },
+  {
+    "name": "java.util.Properties",
+    "allPublicMethods": true
+  },
+  {
     "name": "java.util.Set"
+  },
+  {
+    "name": "java.util.stream.Stream"
   },
   {
     "name": "javax.inject.Inject"
@@ -1046,13 +2309,34 @@
     "name": "javax.money.MonetaryAmount"
   },
   {
+    "name": "kotlin.annotation.MustBeDocumented",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "kotlin.annotation.Retention",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "kotlin.annotation.Target",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
     "name": "kotlin.enums.EnumEntries",
     "allDeclaredFields": true,
     "allDeclaredConstructors": true,
     "queryAllDeclaredMethods": true
   },
   {
-    "name": "kotlin.Metadata"
+    "name": "kotlin.Metadata",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true
   },
   {
     "name": "kotlin.reflect.full.KClasses"
@@ -1098,6 +2382,58 @@
     "allPublicConstructors": true,
     "queryAllPublicMethods": true,
     "allPublicMethods": true
+  },
+  {
+    "name": "org.aopalliance.aop.Advice",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.aopalliance.intercept.Interceptor",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.aopalliance.intercept.Invocation",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getArguments",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.aopalliance.intercept.Joinpoint",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getStaticPart",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getThis",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.aopalliance.intercept.MethodInterceptor",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.aopalliance.intercept.MethodInvocation",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getMethod",
+        "parameterTypes": [ ]
+      }
+    ]
   },
   {
     "name": "org.apache.hc.client5.http.impl.classic.HttpClients",
@@ -1163,12 +2499,26 @@
     ]
   },
   {
+    "name": "org.springframework.aot.hint.annotation.Reflective",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.beans.BeanInfoFactory",
+    "allDeclaredConstructors": true
+  },
+  {
     "name": "org.springframework.beans.factory.Aware",
     "queryAllPublicMethods": true
   },
   {
     "name": "org.springframework.beans.factory.BeanClassLoaderAware",
     "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.beans.factory.BeanFactory",
+    "allPublicMethods": true
   },
   {
     "name": "org.springframework.beans.factory.BeanFactoryAware",
@@ -1227,6 +2577,23 @@
       {
         "name": "<init>",
         "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.actuate.autoconfigure.data.mongo.MongoHealthContributorAutoConfiguration",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "mongoHealthContributor",
+        "parameterTypes": [
+          "java.util.Map"
+        ]
       }
     ]
   },
@@ -1931,6 +3298,41 @@
     ]
   },
   {
+    "name": "org.springframework.boot.actuate.autoconfigure.metrics.data.MetricsRepositoryMethodInvocationListenerBeanPostProcessor",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.boot.actuate.autoconfigure.metrics.data.RepositoryMetricsAutoConfiguration",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties"
+        ]
+      },
+      {
+        "name": "metricsRepositoryMethodInvocationListener",
+        "parameterTypes": [
+          "org.springframework.beans.factory.ObjectProvider",
+          "org.springframework.boot.actuate.metrics.data.RepositoryTagsProvider"
+        ]
+      },
+      {
+        "name": "metricsRepositoryMethodInvocationListenerBeanPostProcessor",
+        "parameterTypes": [
+          "org.springframework.beans.factory.ObjectProvider"
+        ]
+      },
+      {
+        "name": "repositoryTagsProvider",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
     "name": "org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleMetricsExportAutoConfiguration",
     "queryAllPublicMethods": true,
     "queryAllDeclaredMethods": true,
@@ -2308,6 +3710,73 @@
         "name": "setMaxUriTags",
         "parameterTypes": [
           "int"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.actuate.autoconfigure.metrics.mongo.MongoMetricsAutoConfiguration",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.actuate.autoconfigure.metrics.mongo.MongoMetricsAutoConfiguration$MongoCommandMetricsConfiguration",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "mongoCommandTagsProvider",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "mongoMetricsCommandListener",
+        "parameterTypes": [
+          "io.micrometer.core.instrument.MeterRegistry",
+          "io.micrometer.core.instrument.binder.mongodb.MongoCommandTagsProvider"
+        ]
+      },
+      {
+        "name": "mongoMetricsCommandListenerClientSettingsBuilderCustomizer",
+        "parameterTypes": [
+          "io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.actuate.autoconfigure.metrics.mongo.MongoMetricsAutoConfiguration$MongoConnectionPoolMetricsConfiguration",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "mongoConnectionPoolTagsProvider",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "mongoMetricsConnectionPoolListener",
+        "parameterTypes": [
+          "io.micrometer.core.instrument.MeterRegistry",
+          "io.micrometer.core.instrument.binder.mongodb.MongoConnectionPoolTagsProvider"
+        ]
+      },
+      {
+        "name": "mongoMetricsConnectionPoolListenerClientSettingsBuilderCustomizer",
+        "parameterTypes": [
+          "io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener"
         ]
       }
     ]
@@ -3093,7 +4562,8 @@
   },
   {
     "name": "org.springframework.boot.actuate.health.HealthContributor",
-    "queryAllPublicMethods": true
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
   },
   {
     "name": "org.springframework.boot.actuate.health.HealthContributorRegistry",
@@ -3203,6 +4673,20 @@
         "parameterTypes": [ ]
       }
     ]
+  },
+  {
+    "name": "org.springframework.boot.actuate.metrics.data.DefaultRepositoryTagsProvider",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.boot.actuate.metrics.data.MetricsRepositoryMethodInvocationListener",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.boot.actuate.metrics.data.RepositoryTagsProvider",
+    "queryAllPublicMethods": true
   },
   {
     "name": "org.springframework.boot.actuate.metrics.startup.StartupTimeMetricsListener",
@@ -3407,6 +4891,111 @@
       {
         "name": "propertySourcesPlaceholderConfigurer",
         "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.dao.PersistenceExceptionTranslationAutoConfiguration",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "persistenceExceptionTranslationPostProcessor",
+        "parameterTypes": [
+          "org.springframework.core.env.Environment"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.data.mongo.MongoDatabaseFactoryConfiguration",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "mongoDatabaseFactory",
+        "parameterTypes": [
+          "com.mongodb.client.MongoClient",
+          "org.springframework.boot.autoconfigure.mongo.MongoProperties",
+          "org.springframework.boot.autoconfigure.mongo.MongoConnectionDetails"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.data.mongo.MongoDatabaseFactoryDependentConfiguration",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "gridFsTemplate",
+        "parameterTypes": [
+          "org.springframework.boot.autoconfigure.mongo.MongoProperties",
+          "org.springframework.data.mongodb.MongoDatabaseFactory",
+          "org.springframework.data.mongodb.core.MongoTemplate",
+          "org.springframework.boot.autoconfigure.mongo.MongoConnectionDetails"
+        ]
+      },
+      {
+        "name": "mongoTemplate",
+        "parameterTypes": [
+          "org.springframework.data.mongodb.MongoDatabaseFactory",
+          "org.springframework.data.mongodb.core.convert.MongoConverter"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.data.mongo.MongoDataConfiguration",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "mappingMongoConverter",
+        "parameterTypes": [
+          "org.springframework.beans.factory.ObjectProvider",
+          "org.springframework.data.mongodb.core.mapping.MongoMappingContext",
+          "org.springframework.data.mongodb.core.convert.MongoCustomConversions"
+        ]
+      },
+      {
+        "name": "mongoCustomConversions",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "mongoMappingContext",
+        "parameterTypes": [
+          "org.springframework.boot.autoconfigure.mongo.MongoProperties",
+          "org.springframework.data.mongodb.core.convert.MongoCustomConversions",
+          "org.springframework.data.mongodb.MongoManagedTypes"
+        ]
       }
     ]
   },
@@ -3822,6 +5411,511 @@
     "allDeclaredConstructors": true
   },
   {
+    "name": "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "mongo",
+        "parameterTypes": [
+          "org.springframework.beans.factory.ObjectProvider",
+          "com.mongodb.MongoClientSettings"
+        ]
+      },
+      {
+        "name": "mongoConnectionDetails",
+        "parameterTypes": [
+          "org.springframework.boot.autoconfigure.mongo.MongoProperties"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration$MongoClientSettingsConfiguration",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "mongoClientSettings",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "standardMongoSettingsCustomizer",
+        "parameterTypes": [
+          "org.springframework.boot.autoconfigure.mongo.MongoProperties",
+          "org.springframework.boot.autoconfigure.mongo.MongoConnectionDetails",
+          "org.springframework.beans.factory.ObjectProvider"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.mongo.MongoClientSettingsBuilderCustomizer",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.mongo.MongoConnectionDetails",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.mongo.MongoProperties",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getAdditionalHosts",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getAuthenticationDatabase",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getDatabase",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getFieldNamingStrategy",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getGridfs",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getHost",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMongoClientDatabase",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getPassword",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getPort",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getReplicaSetName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getSsl",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getUri",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getUsername",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getUuidRepresentation",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isAutoIndexCreation",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "setAdditionalHosts",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      },
+      {
+        "name": "setAuthenticationDatabase",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setAutoIndexCreation",
+        "parameterTypes": [
+          "java.lang.Boolean"
+        ]
+      },
+      {
+        "name": "setDatabase",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setFieldNamingStrategy",
+        "parameterTypes": [
+          "java.lang.Class"
+        ]
+      },
+      {
+        "name": "setHost",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setPassword",
+        "parameterTypes": [
+          "char[]"
+        ]
+      },
+      {
+        "name": "setPort",
+        "parameterTypes": [
+          "java.lang.Integer"
+        ]
+      },
+      {
+        "name": "setReplicaSetName",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setUri",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setUsername",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setUuidRepresentation",
+        "parameterTypes": [
+          "org.bson.UuidRepresentation"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.mongo.MongoProperties$Gridfs",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getBucket",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getDatabase",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "setBucket",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setDatabase",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.mongo.MongoProperties$Ssl",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getBundle",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isEnabled",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "setBundle",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setEnabled",
+        "parameterTypes": [
+          "boolean"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.mongo.PropertiesMongoConnectionDetails",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.mongo.StandardMongoClientSettingsBuilderCustomizer",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.mustache.MustacheAutoConfiguration",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "org.springframework.boot.autoconfigure.mustache.MustacheProperties",
+          "org.springframework.context.ApplicationContext"
+        ]
+      },
+      {
+        "name": "mustacheCompiler",
+        "parameterTypes": [
+          "com.samskivert.mustache.Mustache$TemplateLoader"
+        ]
+      },
+      {
+        "name": "mustacheTemplateLoader",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.mustache.MustacheProperties",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getCharset",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getCharsetName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getPrefix",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getReactive",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getRequestContextAttribute",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getServlet",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getSuffix",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getViewNames",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isCheckTemplateLocation",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isEnabled",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "setCharset",
+        "parameterTypes": [
+          "java.nio.charset.Charset"
+        ]
+      },
+      {
+        "name": "setCheckTemplateLocation",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setEnabled",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setPrefix",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setRequestContextAttribute",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setSuffix",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setViewNames",
+        "parameterTypes": [
+          "java.lang.String[]"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.mustache.MustacheProperties$Reactive",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMediaTypes",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "setMediaTypes",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.mustache.MustacheProperties$Servlet",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getContentType",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isAllowRequestOverride",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isAllowSessionOverride",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isCache",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isExposeRequestAttributes",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isExposeSessionAttributes",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isExposeSpringMacroHelpers",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "setAllowRequestOverride",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setAllowSessionOverride",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setCache",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setContentType",
+        "parameterTypes": [
+          "org.springframework.util.MimeType"
+        ]
+      },
+      {
+        "name": "setExposeRequestAttributes",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setExposeSessionAttributes",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setExposeSpringMacroHelpers",
+        "parameterTypes": [
+          "boolean"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.mustache.MustacheReactiveWebConfiguration",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "mustacheViewResolver",
+        "parameterTypes": [
+          "com.samskivert.mustache.Mustache$Compiler",
+          "org.springframework.boot.autoconfigure.mustache.MustacheProperties"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.mustache.MustacheResourceTemplateLoader",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
     "name": "org.springframework.boot.autoconfigure.mustache.MustacheTemplateAvailabilityProvider",
     "allDeclaredConstructors": true
   },
@@ -3950,6 +6044,10 @@
         ]
       }
     ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.service.connection.ConnectionDetails",
+    "queryAllPublicMethods": true
   },
   {
     "name": "org.springframework.boot.autoconfigure.session.JdbcIndexedSessionRepositoryDependsOnDatabaseInitializationDetector",
@@ -4849,6 +6947,85 @@
   {
     "name": "org.springframework.boot.autoconfigure.thymeleaf.ThymeleafTemplateAvailabilityProvider",
     "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.transaction.ExecutionListenersTransactionManagerCustomizer",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.transaction.TransactionAutoConfiguration",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.transaction.TransactionManagerCustomizationAutoConfiguration",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "platformTransactionManagerCustomizers",
+        "parameterTypes": [
+          "org.springframework.beans.factory.ObjectProvider"
+        ]
+      },
+      {
+        "name": "transactionExecutionListeners",
+        "parameterTypes": [
+          "org.springframework.beans.factory.ObjectProvider"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.transaction.TransactionManagerCustomizer",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.transaction.TransactionManagerCustomizers",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.boot.autoconfigure.transaction.TransactionProperties",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getDefaultTimeout",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getRollbackOnCommitFailure",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "setDefaultTimeout",
+        "parameterTypes": [
+          "java.time.Duration"
+        ]
+      },
+      {
+        "name": "setRollbackOnCommitFailure",
+        "parameterTypes": [
+          "java.lang.Boolean"
+        ]
+      }
+    ]
   },
   {
     "name": "org.springframework.boot.autoconfigure.web.embedded.EmbeddedWebServerFactoryCustomizerAutoConfiguration",
@@ -7929,6 +10106,11 @@
     "queryAllDeclaredMethods": true
   },
   {
+    "name": "org.springframework.boot.web.reactive.result.view.MustacheViewResolver",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
     "name": "org.springframework.boot.web.reactive.server.ConfigurableReactiveWebServerFactory",
     "queryAllPublicMethods": true
   },
@@ -9545,6 +11727,13 @@
       {
         "name": "<init>",
         "parameterTypes": [ ]
+      },
+      {
+        "name": "configClientProperties",
+        "parameterTypes": [
+          "org.springframework.core.env.Environment",
+          "org.springframework.context.ApplicationContext"
+        ]
       }
     ]
   },
@@ -9593,6 +11782,13 @@
   },
   {
     "name": "org.springframework.cloud.config.client.ConfigClientProperties",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "fields": [
+      {
+        "name": "name"
+      }
+    ],
     "methods": [
       {
         "name": "<init>",
@@ -10050,6 +12246,10 @@
     "queryAllPublicMethods": true
   },
   {
+    "name": "org.springframework.context.ResourceLoaderAware",
+    "queryAllPublicMethods": true
+  },
+  {
     "name": "org.springframework.context.SmartLifecycle",
     "queryAllPublicMethods": true
   },
@@ -10076,12 +12276,46 @@
     "queryAllPublicMethods": true
   },
   {
+    "name": "org.springframework.core.env.EnvironmentCapable",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.core.io.InputStreamSource[]",
+    "allPublicMethods": true
+  },
+  {
     "name": "org.springframework.core.io.ProtocolResolver",
     "allDeclaredConstructors": true
   },
   {
     "name": "org.springframework.core.io.ResourceEditor",
     "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.core.io.ResourceLoader",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.core.io.support.PropertiesLoaderSupport",
+    "allDeclaredFields": true,
+    "methods": [
+      {
+        "name": "setIgnoreResourceNotFound",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setLocations",
+        "parameterTypes": [
+          "org.springframework.core.io.Resource[]"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.core.io.support.ResourcePatternResolver",
+    "queryAllPublicMethods": true
   },
   {
     "name": "org.springframework.core.Ordered",
@@ -10109,6 +12343,919 @@
     "queryAllPublicMethods": true
   },
   {
+    "name": "org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.data.annotation.Id",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.annotation.Persistent",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.convert.EntityConverter",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.convert.EntityReader",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.convert.EntityWriter",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.domain.Example",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true,
+    "methods": [
+      {
+        "name": "getMatcher",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getProbe",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getProbeType",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.ExampleMatcher",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getDefaultStringMatcher",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getIgnoredPaths",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getMatchMode",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getNullHandler",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getPropertySpecifiers",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isAllMatching",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isAnyMatching",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isIgnoreCaseEnabled",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.ExampleMatcher$GenericPropertyMatcher",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.domain.ExampleMatcher$GenericPropertyMatchers",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.domain.ExampleMatcher$MatcherConfigurer",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.domain.ExampleMatcher$MatchMode",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.domain.ExampleMatcher$NoOpPropertyValueTransformer",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.domain.ExampleMatcher$NullHandler",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.domain.ExampleMatcher$PropertySpecifier",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getIgnoreCase",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getPath",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getPropertyValueTransformer",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getStringMatcher",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.ExampleMatcher$PropertySpecifiers",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getSpecifiers",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.ExampleMatcher$PropertyValueTransformer",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.domain.ExampleMatcher$StringMatcher",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.domain.Limit",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "isLimited",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isUnlimited",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.Limit$Limited",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "isLimited",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.Limit$Unlimited",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "isLimited",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.ManagedTypes",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.domain.OffsetScrollPosition",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getOffset",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isInitial",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.OffsetScrollPosition$OffsetPositionFunction",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "startOffset",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.Page",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getTotalElements",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getTotalPages",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.Pageable",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getOffset",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getPageNumber",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getPageSize",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getSort",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isPaged",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isUnpaged",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.ScrollPosition",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "isInitial",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.ScrollPosition$Direction",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.domain.Slice",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getContent",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getNumber",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getNumberOfElements",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getPageable",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getSize",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getSort",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isFirst",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isLast",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.Sort",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "isEmpty",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isSorted",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isUnsorted",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.Sort$Direction",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true,
+    "methods": [
+      {
+        "name": "isAscending",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isDescending",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.Sort$NullHandling",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.domain.Sort$Order",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getDirection",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getNullHandling",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getProperty",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isAscending",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isDescending",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isIgnoreCase",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.Sort$TypedSort",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "isEmpty",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.domain.Unpaged",
+    "condition": {
+      "typeReachable": "org.springframework.data.web.config.SpringDataJacksonConfiguration$PageModule"
+    }
+  },
+  {
+    "name": "org.springframework.data.mapping.context.MappingContext",
+    "queryAllPublicMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.CodecRegistryProvider",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.config.GeoJsonConfiguration",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.annotation.Collation",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.convert.MappingMongoConverter",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.convert.MongoConverter",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.convert.MongoCustomConversions",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.convert.MongoWriter",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.ExecutableAggregationOperation",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.ExecutableFindOperation",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.ExecutableInsertOperation",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.ExecutableMapReduceOperation",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.ExecutableRemoveOperation",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.ExecutableUpdateOperation",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.FluentMongoOperations",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.index.Indexed",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.index.IndexOperationsProvider",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.mapping.Document",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.mapping.event.AfterConvertCallback",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.mapping.event.AfterSaveCallback",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.mapping.event.BeforeConvertCallback",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.mapping.event.BeforeSaveCallback",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.mapping.event.ReactiveAfterConvertCallback",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.mapping.event.ReactiveAfterSaveCallback",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.mapping.event.ReactiveBeforeConvertCallback",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.mapping.event.ReactiveBeforeSaveCallback",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.mapping.MongoMappingContext",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.MongoDatabaseFactorySupport",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.MongoOperations",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.MongoTemplate",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.query.BasicQuery",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.query.BasicQuery$$SpringCGLIB$$0",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.query.Query",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.query.Query$$SpringCGLIB$$0",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.core.ReadPreferenceAware",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.gridfs.GridFsOperations",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.gridfs.GridFsTemplate",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.MongoDatabaseFactory",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.MongoManagedTypes",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.MongoSessionProvider",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.repository.config.MongoRepositoryConfigurationExtension",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.mongodb.repository.support.MongoRepositoryFactory",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.repository.support.MongoRepositoryFactoryBean",
+    "allDeclaredFields": true,
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "setCreateIndexesForQueryMethods",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setMongoOperations",
+        "parameterTypes": [
+          "org.springframework.data.mongodb.core.MongoOperations"
+        ]
+      }
+    ],
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "java.lang.Class"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.mongodb.repository.support.SimpleMongoRepository",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.mongodb.repository.support.SimpleReactiveMongoRepository",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.projection.SpelEvaluatingMethodInterceptor$TargetWrapper",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.data.repository.config.PropertiesBasedNamedQueriesFactoryBean",
+    "allDeclaredFields": true,
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.repository.config.RepositoryConfigurationExtension",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.repository.core.RepositoryMetadata",
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport",
+    "allDeclaredFields": true,
+    "allPublicMethods": true,
+    "methods": [
+      {
+        "name": "setLazyInit",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setNamedQueries",
+        "parameterTypes": [
+          "org.springframework.data.repository.core.NamedQueries"
+        ]
+      },
+      {
+        "name": "setQueryLookupStrategyKey",
+        "parameterTypes": [
+          "org.springframework.data.repository.query.QueryLookupStrategy$Key"
+        ]
+      },
+      {
+        "name": "setRepositoryFragments",
+        "parameterTypes": [
+          "org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.repository.core.support.RepositoryFactoryInformation",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.repository.core.support.RepositoryFactorySupport",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.repository.core.support.RepositoryFragment",
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.repository.core.support.RepositoryFragmentsFactoryBean",
+    "queryAllPublicMethods": true,
+    "queryAllDeclaredMethods": true,
+    "allPublicMethods": true,
+    "queriedMethods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.repository.core.support.RepositoryMethodInvocationListener",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.repository.core.support.TransactionalRepositoryFactoryBeanSupport",
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.repository.NoRepositoryBean",
+    "queryAllPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.repository.query.FluentQuery",
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.repository.query.FluentQuery$FetchableFluentQuery",
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.repository.query.FluentQuery$ReactiveFluentQuery",
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.repository.query.QueryByExampleExecutor",
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.repository.query.ReactiveQueryByExampleExecutor",
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.util.CustomCollectionRegistrar",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.util.CustomCollections$EclipseCollections",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.util.CustomCollections$VavrCollections",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.util.KotlinBeanInfoFactory",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.util.MethodInvocationRecorder",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.util.MethodInvocationRecorder$DefaultPropertyNameDetectionStrategy",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.util.MethodInvocationRecorder$InvocationInformation",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getInvokedMethod",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getRecorded",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.util.MethodInvocationRecorder$PropertyNameDetectionStrategy",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.util.MethodInvocationRecorder$Recorded",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getPropertyPath",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.util.MethodInvocationRecorder$Recorded$ToCollectionConverter",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.util.MethodInvocationRecorder$Recorded$ToMapConverter",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.util.MethodInvocationRecorder$RecordingMethodInterceptor",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.util.MethodInvocationRecorder$Unrecorded",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.util.Streamable",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "get",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isEmpty",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.data.web.config.SpringDataJacksonConfiguration",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.web.config.SpringDataJacksonConfiguration$PageModule$PageModelConverter",
+    "condition": {
+      "typeReachable": "org.springframework.data.web.config.SpringDataJacksonConfiguration$PageModule"
+    },
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.web.config.SpringDataJacksonConfiguration$PageModule$PlainPageSerializationWarning",
+    "condition": {
+      "typeReachable": "org.springframework.data.web.config.SpringDataJacksonConfiguration$PageModule"
+    },
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.web.config.SpringDataJacksonModules",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.data.web.config.SpringDataWebSettings",
+    "condition": {
+      "typeReachable": "org.springframework.data.web.config.EnableSpringDataWebSupport"
+    },
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.data.web.PagedModel",
+    "allPublicMethods": true
+  },
+  {
+    "name": "org.springframework.data.web.PagedModel$PageMetadata",
+    "allDeclaredConstructors": true,
+    "allPublicMethods": true
+  },
+  {
     "name": "org.springframework.format.FormatterRegistry",
     "queryAllPublicMethods": true
   },
@@ -10116,6 +13263,17 @@
     "name": "org.springframework.format.support.FormattingConversionService",
     "queryAllPublicMethods": true,
     "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.http.CacheControl",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getHeaderValue",
+        "parameterTypes": [ ]
+      }
+    ]
   },
   {
     "name": "org.springframework.http.client.AbstractClientHttpRequestFactoryWrapper",
@@ -10190,6 +13348,57 @@
     "allPublicConstructors": true
   },
   {
+    "name": "org.springframework.http.ContentDisposition",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getCharset",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getCreationDate",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getFilename",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getModificationDate",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getName",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getReadDate",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getSize",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getType",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isAttachment",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isFormData",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isInline",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
     "name": "org.springframework.http.converter.json.Jackson2ObjectMapperBuilder",
     "queryAllPublicMethods": true,
     "queryAllDeclaredMethods": true
@@ -10213,7 +13422,493 @@
     ]
   },
   {
+    "name": "org.springframework.http.HttpEntity",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getBody",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getHeaders",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.http.HttpHeaders",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getAccept",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getAcceptCharset",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getAcceptLanguage",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getAcceptLanguageAsLocales",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getAcceptPatch",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getAccessControlAllowCredentials",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getAccessControlAllowHeaders",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getAccessControlAllowMethods",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getAccessControlAllowOrigin",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getAccessControlExposeHeaders",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getAccessControlMaxAge",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getAccessControlRequestHeaders",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getAccessControlRequestMethod",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getAllow",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getCacheControl",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getConnection",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getContentDisposition",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getContentLanguage",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getContentLength",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getContentType",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getDate",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getETag",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getExpires",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getHost",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getIfMatch",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getIfModifiedSince",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getIfNoneMatch",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getIfUnmodifiedSince",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getLastModified",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getLocation",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getOrigin",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getPragma",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getRange",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getUpgrade",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getVary",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isEmpty",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "setAccept",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      },
+      {
+        "name": "setAcceptCharset",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      },
+      {
+        "name": "setAcceptLanguage",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      },
+      {
+        "name": "setAcceptLanguageAsLocales",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      },
+      {
+        "name": "setAcceptPatch",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      },
+      {
+        "name": "setAccessControlAllowCredentials",
+        "parameterTypes": [
+          "boolean"
+        ]
+      },
+      {
+        "name": "setAccessControlAllowHeaders",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      },
+      {
+        "name": "setAccessControlAllowMethods",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      },
+      {
+        "name": "setAccessControlAllowOrigin",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setAccessControlExposeHeaders",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      },
+      {
+        "name": "setAccessControlMaxAge",
+        "parameterTypes": [
+          "java.time.Duration"
+        ]
+      },
+      {
+        "name": "setAccessControlMaxAge",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setAccessControlRequestHeaders",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      },
+      {
+        "name": "setAccessControlRequestMethod",
+        "parameterTypes": [
+          "org.springframework.http.HttpMethod"
+        ]
+      },
+      {
+        "name": "setAll",
+        "parameterTypes": [
+          "java.util.Map"
+        ]
+      },
+      {
+        "name": "setAllow",
+        "parameterTypes": [
+          "java.util.Set"
+        ]
+      },
+      {
+        "name": "setBasicAuth",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setBearerAuth",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setCacheControl",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setCacheControl",
+        "parameterTypes": [
+          "org.springframework.http.CacheControl"
+        ]
+      },
+      {
+        "name": "setConnection",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setConnection",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      },
+      {
+        "name": "setContentDisposition",
+        "parameterTypes": [
+          "org.springframework.http.ContentDisposition"
+        ]
+      },
+      {
+        "name": "setContentLanguage",
+        "parameterTypes": [
+          "java.util.Locale"
+        ]
+      },
+      {
+        "name": "setContentLength",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setContentType",
+        "parameterTypes": [
+          "org.springframework.http.MediaType"
+        ]
+      },
+      {
+        "name": "setDate",
+        "parameterTypes": [
+          "java.time.Instant"
+        ]
+      },
+      {
+        "name": "setDate",
+        "parameterTypes": [
+          "java.time.ZonedDateTime"
+        ]
+      },
+      {
+        "name": "setDate",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setETag",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setExpires",
+        "parameterTypes": [
+          "java.time.Instant"
+        ]
+      },
+      {
+        "name": "setExpires",
+        "parameterTypes": [
+          "java.time.ZonedDateTime"
+        ]
+      },
+      {
+        "name": "setExpires",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setHost",
+        "parameterTypes": [
+          "java.net.InetSocketAddress"
+        ]
+      },
+      {
+        "name": "setIfMatch",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setIfMatch",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      },
+      {
+        "name": "setIfModifiedSince",
+        "parameterTypes": [
+          "java.time.Instant"
+        ]
+      },
+      {
+        "name": "setIfModifiedSince",
+        "parameterTypes": [
+          "java.time.ZonedDateTime"
+        ]
+      },
+      {
+        "name": "setIfModifiedSince",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setIfNoneMatch",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setIfNoneMatch",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      },
+      {
+        "name": "setIfUnmodifiedSince",
+        "parameterTypes": [
+          "java.time.Instant"
+        ]
+      },
+      {
+        "name": "setIfUnmodifiedSince",
+        "parameterTypes": [
+          "java.time.ZonedDateTime"
+        ]
+      },
+      {
+        "name": "setIfUnmodifiedSince",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setLastModified",
+        "parameterTypes": [
+          "java.time.Instant"
+        ]
+      },
+      {
+        "name": "setLastModified",
+        "parameterTypes": [
+          "java.time.ZonedDateTime"
+        ]
+      },
+      {
+        "name": "setLastModified",
+        "parameterTypes": [
+          "long"
+        ]
+      },
+      {
+        "name": "setLocation",
+        "parameterTypes": [
+          "java.net.URI"
+        ]
+      },
+      {
+        "name": "setOrigin",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setPragma",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setRange",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      },
+      {
+        "name": "setUpgrade",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "setVary",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      }
+    ]
+  },
+  {
     "name": "org.springframework.http.HttpMethod",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
     "methods": [
       {
         "name": "valueOf",
@@ -10222,6 +13917,11 @@
         ]
       }
     ]
+  },
+  {
+    "name": "org.springframework.http.HttpRange",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true
   },
   {
     "name": "org.springframework.http.HttpStatus",
@@ -10256,6 +13956,48 @@
       },
       {
         "name": "isError",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.http.HttpStatusCode",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "is1xxInformational",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "is2xxSuccessful",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "is3xxRedirection",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "is4xxClientError",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "is5xxServerError",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "isError",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
+    "name": "org.springframework.http.MediaType",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getQualityValue",
         "parameterTypes": [ ]
       }
     ]
@@ -10338,6 +14080,21 @@
     ]
   },
   {
+    "name": "org.springframework.http.ResponseEntity",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "getStatusCode",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getStatusCodeValue",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
     "name": "org.springframework.http.server.reactive.HttpHandler",
     "queryAllPublicMethods": true,
     "queryAllDeclaredMethods": true
@@ -10367,6 +14124,12 @@
   {
     "name": "org.springframework.security.rsa.crypto.RsaSecretEncryptor",
     "allDeclaredConstructors": true
+  },
+  {
+    "name": "org.springframework.stereotype.Indexed",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllPublicMethods": true
   },
   {
     "name": "org.springframework.util.MimeType",
@@ -10617,6 +14380,10 @@
     "name": "org.springframework.web.reactive.result.view.ViewResolutionResultHandler",
     "queryAllPublicMethods": true,
     "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "org.springframework.web.reactive.result.view.ViewResolver",
+    "queryAllPublicMethods": true
   },
   {
     "name": "org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter",
