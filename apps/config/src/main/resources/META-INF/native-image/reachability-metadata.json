@@ -638,7 +638,12 @@
     },
     {
       "type": "com.kinectmessaging.config.model.MjmlResponse",
-      "allDeclaredFields": true
+      "allDeclaredConstructors": true,
+      "allPublicConstructors": true,
+      "allDeclaredMethods": true,
+      "allPublicMethods": true,
+      "allDeclaredFields": true,
+      "allPublicFields": true
     },
     {
       "type": "com.kinectmessaging.config.model.TemplateEntity",
