@@ -15,7 +15,7 @@
     <properties>
         <java.version>17</java.version>
         <kotlin.version>1.9.21</kotlin.version>
-        <spring-cloud-azure.version>5.15.0</spring-cloud-azure.version>
+<!--        <spring-cloud-azure.version>5.15.0</spring-cloud-azure.version>-->
     </properties>
     <dependencies>
         <dependency>
@@ -26,10 +26,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.azure.spring</groupId>-->
-<!--            <artifactId>spring-cloud-azure-starter-integration-storage-queue</artifactId>-->
-<!--        </dependency>-->
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -40,13 +36,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>com.azure.spring</groupId>
-                <artifactId>spring-cloud-azure-dependencies</artifactId>
-                <version>${spring-cloud-azure.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.azure.spring</groupId>-->
+<!--                <artifactId>spring-cloud-azure-dependencies</artifactId>-->
+<!--                <version>${spring-cloud-azure.version}</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 
@@ -55,43 +51,129 @@
         <testSourceDirectory>src/test/kotlin</testSourceDirectory>
         <plugins>
             <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-plugin</artifactId>
-                <version>1.9.23</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
+                        <id>process-aot</id>
                         <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>test-compile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>test-compile</goal>
+                            <goal>process-aot</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
             <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
-            </plugin>
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.22.2</version>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>MainKt</mainClass>
+                    <args>
+                        <arg>-Xjsr305=strict</arg>
+                    </args>
+                    <compilerPlugins>
+                        <plugin>spring</plugin>
+                    </compilerPlugins>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jetbrains.kotlin</groupId>
+                        <artifactId>kotlin-maven-allopen</artifactId>
+                        <version>${kotlin.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
-
+    <profiles>
+        <profile>
+            <id>publish</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <docker>
+                                <publishRegistry>
+                                    <!--suppress UnresolvedMavenProperty -->
+                                    <url>${docker.publishRegistry.url}</url>
+                                    <!--suppress UnresolvedMavenProperty -->
+                                    <username>${docker.publishRegistry.username}</username>
+                                    <!--suppress UnresolvedMavenProperty -->
+                                    <password>${docker.publishRegistry.password}</password>
+                                </publishRegistry>
+                            </docker>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <image>
+                                <env>
+                                    <BP_JVM_VERSION>23</BP_JVM_VERSION>
+                                    <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+                                    <BP_SPRING_AOT_ENABLED>true</BP_SPRING_AOT_ENABLED>
+                                    <BPL_SPRING_AOT_ENABLED>true</BPL_SPRING_AOT_ENABLED>
+                                    <JAVA_TOOL_OPTIONS>-Dspring.aot.enabled=true -DskipTests</JAVA_TOOL_OPTIONS>
+                                    <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>-H:-AddAllFileSystemProviders --initialize-at-build-time=org.slf4j,ch.qos.logback,com.fasterxml.jackson.core --trace-object-instantiation=com.fasterxml.jackson.core.Base64Variants --initialize-at-build-time=org.bouncycastle --initialize-at-build-time=net.i2p.crypto.eddsa.EdDSASecurityProvider --initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$Default --initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$NonceAndIV</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+                                </env>
+                                <buildCache>
+                                    <volume>
+                                        <name>cache-${project.artifactId}.build</name>
+                                    </volume>
+                                </buildCache>
+                                <launchCache>
+                                    <volume>
+                                        <name>cache-${project.artifactId}.launch</name>
+                                    </volume>
+                                </launchCache>
+                            </image>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>process-aot</id>
+                                <goals>
+                                    <goal>process-aot</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <configuration>
+                            <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+                            <metadataRepository>
+                                <enabled>true</enabled>
+                            </metadataRepository>
+                            <buildArgs>
+                                <buildArg>-H:-AddAllFileSystemProviders</buildArg>
+                                <buildArg>--initialize-at-build-time=org.slf4j,ch.qos.logback,com.fasterxml.jackson.core</buildArg>
+                                <buildArg>--initialize-at-build-time=org.bouncycastle</buildArg>
+                                <buildArg>--initialize-at-build-time=net.i2p.crypto.eddsa.EdDSASecurityProvider</buildArg>
+                                <buildArg>--initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$Default</buildArg>
+                                <buildArg>--initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$NonceAndIV</buildArg>
+                            </buildArgs>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>native</id>
+                                <goals>
+                                    <goal>compile-no-fork</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
