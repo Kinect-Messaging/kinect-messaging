@@ -66,6 +66,9 @@ class EventProcessorService {
 
             log.debug("Fetched Message configs for event ${event.eventName} with id ${event.eventId}", kv("Message Configs", messageConfigs))
             // Create relevant notification from configs
+            if (messageConfigs.isEmpty()){
+                throw InvalidInputException(message = "No valid message configs fetched for event ${event.eventName}")
+            }
             messageConfigs.forEach { messageConfig ->
                 // verify if message condition exists and evaluates to true
                 val messageConditionResult =
