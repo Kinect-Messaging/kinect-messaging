@@ -556,6 +556,67 @@
     ]
   },
   {
+    "name": "com.kinectmessaging.libs.model.Audit",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "component1",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component2",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component3",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "component4",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "copy",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "copy$default",
+        "parameterTypes": [
+          "com.kinectmessaging.libs.model.Audit",
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String",
+          "java.lang.String",
+          "int",
+          "java.lang.Object"
+        ]
+      },
+      {
+        "name": "getCreatedBy",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getCreatedTime",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getUpdatedBy",
+        "parameterTypes": [ ]
+      },
+      {
+        "name": "getUpdatedTime",
+        "parameterTypes": [ ]
+      }
+    ]
+  },
+  {
     "name": "com.kinectmessaging.libs.model.KEvent",
     "allDeclaredFields": true,
     "allDeclaredConstructors": true,
