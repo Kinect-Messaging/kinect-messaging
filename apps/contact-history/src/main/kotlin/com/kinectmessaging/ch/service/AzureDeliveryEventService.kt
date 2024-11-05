@@ -11,7 +11,6 @@ import com.kinectmessaging.libs.model.HistoryStatusCodes
 import net.logstash.logback.argument.StructuredArguments.kv
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -28,9 +27,6 @@ class AzureDeliveryEventService {
     lateinit var contactHistoryService: ContactHistoryService
 
     private val log = LoggerFactory.getLogger(this::class.java)
-
-    @Value("\${spring.cloud.azure.storage.queue.max-events}")
-    var maxEvents: Int = DEFAULT_MAX_EVENTS
 
     /**
      * This message receiver binding with [StorageQueueMessageSource]

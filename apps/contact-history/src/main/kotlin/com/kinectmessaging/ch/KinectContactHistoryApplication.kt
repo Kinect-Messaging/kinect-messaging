@@ -12,10 +12,10 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 class KinectContactHistoryApplication
 
 fun main(args: Array<String>) {
-	val app = SpringApplication(
-		KinectContactHistoryApplication::class.java
-	)
-	app.applicationStartup = BufferingApplicationStartup(2048)
-	app.run(*args)
-//	runApplication<KinectContactHistoryApplication>(*args)
+//	val app = SpringApplication(
+//		KinectContactHistoryApplication::class.java
+//	)
+//	app.applicationStartup = BufferingApplicationStartup(2048)
+//	app.run(*args)
+	runApplication<KinectContactHistoryApplication>(*args)
 }
