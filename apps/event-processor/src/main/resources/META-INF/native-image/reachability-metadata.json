@@ -1445,17 +1445,6 @@
       "type": "io.netty.util.ReferenceCountUtil"
     },
     {
-      "type": "io.netty.util.ResourceLeakDetector$DefaultResourceLeak",
-      "fields": [
-        {
-          "name": "droppedRecords"
-        },
-        {
-          "name": "head"
-        }
-      ]
-    },
-    {
       "type": "io.netty.util.concurrent.DefaultPromise",
       "fields": [
         {
@@ -2063,8 +2052,7 @@
       "type": "java.time.LocalDateTime"
     },
     {
-      "type": "java.util.Date",
-      "allDeclaredFields": true
+      "type": "java.util.Date"
     },
     {
       "type": "java.util.EventListener"
@@ -2398,14 +2386,6 @@
       ]
     },
     {
-      "type": "kotlinx.coroutines.CompletedExceptionally",
-      "fields": [
-        {
-          "name": "_handled$volatile"
-        }
-      ]
-    },
-    {
       "type": "kotlinx.coroutines.EventLoopImplBase",
       "fields": [
         {
@@ -2427,20 +2407,6 @@
         },
         {
           "name": "_state$volatile"
-        }
-      ]
-    },
-    {
-      "type": "kotlinx.coroutines.JobSupport$Finishing",
-      "fields": [
-        {
-          "name": "_exceptionsHolder$volatile"
-        },
-        {
-          "name": "_isCompleting$volatile"
-        },
-        {
-          "name": "_rootCause$volatile"
         }
       ]
     },
@@ -7466,9 +7432,6 @@
       "type": "org.springframework.web.filter.CharacterEncodingFilter"
     },
     {
-      "type": "org.springframework.web.method.annotation.ExceptionHandlerMethodResolver"
-    },
-    {
       "type": "org.springframework.web.reactive.DispatchExceptionHandler"
     },
     {
@@ -7826,14 +7789,6 @@
     },
     {
       "type": "reactor.core.publisher.FluxIterable$IterableSubscription",
-      "fields": [
-        {
-          "name": "requested"
-        }
-      ]
-    },
-    {
-      "type": "reactor.core.publisher.FluxOnErrorReturn$ReturnSubscriber",
       "fields": [
         {
           "name": "requested"
@@ -8235,22 +8190,6 @@
     },
     {
       "type": "reactor.tools.agent.ReactorDebugAgent"
-    },
-    {
-      "type": "reactor.util.concurrent.SpscArrayQueueConsumer",
-      "fields": [
-        {
-          "name": "consumerIndex"
-        }
-      ]
-    },
-    {
-      "type": "reactor.util.concurrent.SpscArrayQueueProducer",
-      "fields": [
-        {
-          "name": "producerIndex"
-        }
-      ]
     },
     {
       "type": "reactor.util.concurrent.SpscLinkedArrayQueue",

@@ -42,7 +42,7 @@ class ApiClient () {
     suspend fun getJourneyConfigsByEventName(eventName: String): List<JourneyConfig>? =
         journeyWebClient
             .get()
-            .uri("?eventName=$eventName")
+            .uri("/?eventName=$eventName")
             .header(Defaults.TRANSACTION_ID_HEADER, MDC.get("transaction-id") ?: UUID.randomUUID().toString())
             .retrieve()
             .awaitBodyOrNull<List<JourneyConfig>>()

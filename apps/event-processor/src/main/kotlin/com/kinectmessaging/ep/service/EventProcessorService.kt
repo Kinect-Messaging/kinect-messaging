@@ -62,12 +62,12 @@ class EventProcessorService {
                         apiClient.getMessageConfigsById(key)?.let { messageConfigs.add(it) }
                     }
                 }
-            }
+            } ?: log.warn("No valid journey steps for event ${event.eventName} and journey ${journeyConfig.journeyName}")
 
             log.debug("Fetched Message configs for event ${event.eventName} with id ${event.eventId}", kv("Message Configs", messageConfigs))
             // Create relevant notification from configs
             if (messageConfigs.isEmpty()){
-                throw InvalidInputException(message = "No valid message configs fetched for event ${event.eventName}")
+                log.warn("No valid message configs fetched for event ${event.eventName} and journey ${journeyConfig.journeyName}")
             }
             messageConfigs.forEach { messageConfig ->
                 // verify if message condition exists and evaluates to true
