@@ -38,9 +38,11 @@ class EventProcessorService {
         // Get matching configurations for the event
         val notificationMessages = mutableListOf<KMessage>()
         val contactHistoryList = mutableListOf<KContactHistory>()
+        log.debug("Calling Journey configs for event ${event.eventName} with id ${event.eventId}")
         val matchingJourneys = apiClient.getJourneyConfigsByEventName(eventName = event.eventName)
+        log.debug("Fetched Journey configs for event ${event.eventName} with id ${event.eventId}", kv("Journey Configs", matchingJourneys))
         val payload = event.payload?.let { jacksonObjectMapper().convertValue<Map<String, Any>>(it) }
-
+        log.debug("Payload for jsonata evaluation.", kv("Payload", payload))
         matchingJourneys?.forEach { journeyConfig ->
             val messageConfigs = mutableListOf<MessageConfig>()
             val journeyTransactionId = UUID.randomUUID().toString()

@@ -326,12 +326,6 @@
           ]
         },
         {
-          "name": "journeyWebClient",
-          "parameterTypes": [
-            "org.springframework.web.reactive.function.client.WebClient$Builder"
-          ]
-        },
-        {
           "name": "messageWebClient",
           "parameterTypes": [
             "org.springframework.web.reactive.function.client.WebClient$Builder"
@@ -379,6 +373,81 @@
           "parameterTypes": [
             "java.lang.Class"
           ]
+        }
+      ]
+    },
+    {
+      "type": "com.kinectmessaging.ep.client.JourneyConfig",
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "journeyWebClient",
+          "parameterTypes": [
+            "org.springframework.web.reactive.function.client.WebClient$Builder"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.kinectmessaging.ep.client.JourneyConfig$$SpringCGLIB$$0",
+      "allDeclaredFields": true,
+      "fields": [
+        {
+          "name": "CGLIB$FACTORY_DATA"
+        }
+      ],
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "CGLIB$SET_STATIC_CALLBACKS",
+          "parameterTypes": [
+            "org.springframework.cglib.proxy.Callback[]"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.kinectmessaging.ep.client.JourneyConfig$$SpringCGLIB$$FastClass$$0",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.Class"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.kinectmessaging.ep.client.JourneyConfig$$SpringCGLIB$$FastClass$$1",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.Class"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.kinectmessaging.ep.client.JourneyConfigClient",
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.kinectmessaging.ep.controller.ControllerExceptionHandler",
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
         }
       ]
     },
@@ -442,6 +511,22 @@
             "java.lang.String",
             "java.lang.String"
           ]
+        },
+        {
+          "name": "getCreatedBy",
+          "parameterTypes": []
+        },
+        {
+          "name": "getCreatedTime",
+          "parameterTypes": []
+        },
+        {
+          "name": "getUpdatedBy",
+          "parameterTypes": []
+        },
+        {
+          "name": "getUpdatedTime",
+          "parameterTypes": []
         }
       ]
     },
@@ -551,6 +636,50 @@
             "java.util.Map",
             "java.util.Map"
           ]
+        },
+        {
+          "name": "getAttachments",
+          "parameterTypes": []
+        },
+        {
+          "name": "getBccRecipients",
+          "parameterTypes": []
+        },
+        {
+          "name": "getCcRecipients",
+          "parameterTypes": []
+        },
+        {
+          "name": "getEmailHeaders",
+          "parameterTypes": []
+        },
+        {
+          "name": "getPersonalizationData",
+          "parameterTypes": []
+        },
+        {
+          "name": "getReplyTo",
+          "parameterTypes": []
+        },
+        {
+          "name": "getSenderAddress",
+          "parameterTypes": []
+        },
+        {
+          "name": "getSubject",
+          "parameterTypes": []
+        },
+        {
+          "name": "getTargetSystem",
+          "parameterTypes": []
+        },
+        {
+          "name": "getTemplateConfig",
+          "parameterTypes": []
+        },
+        {
+          "name": "getToRecipients",
+          "parameterTypes": []
         }
       ]
     },
@@ -633,6 +762,18 @@
             "java.lang.String",
             "java.lang.String"
           ]
+        },
+        {
+          "name": "getEmailAddress",
+          "parameterTypes": []
+        },
+        {
+          "name": "getFirstName",
+          "parameterTypes": []
+        },
+        {
+          "name": "getLastName",
+          "parameterTypes": []
         }
       ]
     },
@@ -664,6 +805,22 @@
             "java.util.List",
             "com.kinectmessaging.libs.model.Audit"
           ]
+        },
+        {
+          "name": "getAuditInfo",
+          "parameterTypes": []
+        },
+        {
+          "name": "getJourneyId",
+          "parameterTypes": []
+        },
+        {
+          "name": "getJourneyName",
+          "parameterTypes": []
+        },
+        {
+          "name": "getJourneySteps",
+          "parameterTypes": []
         }
       ]
     },
@@ -679,6 +836,22 @@
             "java.lang.String",
             "java.util.Map"
           ]
+        },
+        {
+          "name": "getEventName",
+          "parameterTypes": []
+        },
+        {
+          "name": "getMessageConfigs",
+          "parameterTypes": []
+        },
+        {
+          "name": "getSeqId",
+          "parameterTypes": []
+        },
+        {
+          "name": "getStepCondition",
+          "parameterTypes": []
         }
       ]
     },
@@ -800,6 +973,34 @@
         },
         {
           "name": "getAuditInfo",
+          "parameterTypes": []
+        },
+        {
+          "name": "getEmailConfig",
+          "parameterTypes": []
+        },
+        {
+          "name": "getJourneyId",
+          "parameterTypes": []
+        },
+        {
+          "name": "getMessageCondition",
+          "parameterTypes": []
+        },
+        {
+          "name": "getMessageId",
+          "parameterTypes": []
+        },
+        {
+          "name": "getMessageName",
+          "parameterTypes": []
+        },
+        {
+          "name": "getMessageStatus",
+          "parameterTypes": []
+        },
+        {
+          "name": "getMessageVersion",
           "parameterTypes": []
         }
       ]
@@ -1357,6 +1558,9 @@
       "type": "io.netty.handler.ssl.SslHandler"
     },
     {
+      "type": "io.netty.handler.timeout.ReadTimeoutHandler"
+    },
+    {
       "type": "io.netty.incubator.channel.uring.IOUring"
     },
     {
@@ -1443,6 +1647,17 @@
     },
     {
       "type": "io.netty.util.ReferenceCountUtil"
+    },
+    {
+      "type": "io.netty.util.ResourceLeakDetector$DefaultResourceLeak",
+      "fields": [
+        {
+          "name": "droppedRecords"
+        },
+        {
+          "name": "head"
+        }
+      ]
     },
     {
       "type": "io.netty.util.concurrent.DefaultPromise",
@@ -7167,6 +7382,9 @@
       "type": "org.springframework.hateoas.Link"
     },
     {
+      "type": "org.springframework.http.HttpStatus"
+    },
+    {
       "type": "org.springframework.http.ReactiveHttpInputMessage"
     },
     {
@@ -7390,6 +7608,12 @@
       "type": "org.springframework.validation.Validator"
     },
     {
+      "type": "org.springframework.web.bind.annotation.ControllerAdvice"
+    },
+    {
+      "type": "org.springframework.web.bind.annotation.ExceptionHandler"
+    },
+    {
       "type": "org.springframework.web.bind.annotation.GetMapping"
     },
     {
@@ -7411,7 +7635,13 @@
       "type": "org.springframework.web.bind.annotation.ResponseBody"
     },
     {
+      "type": "org.springframework.web.bind.annotation.ResponseStatus"
+    },
+    {
       "type": "org.springframework.web.bind.annotation.RestController"
+    },
+    {
+      "type": "org.springframework.web.bind.annotation.RestControllerAdvice"
     },
     {
       "type": "org.springframework.web.client.RestClient"
@@ -7430,6 +7660,9 @@
     },
     {
       "type": "org.springframework.web.filter.CharacterEncodingFilter"
+    },
+    {
+      "type": "org.springframework.web.method.annotation.ExceptionHandlerMethodResolver"
     },
     {
       "type": "org.springframework.web.reactive.DispatchExceptionHandler"
@@ -7784,6 +8017,14 @@
       "fields": [
         {
           "name": "once"
+        }
+      ]
+    },
+    {
+      "type": "reactor.core.publisher.FluxFirstWithSignal$RaceCoordinator",
+      "fields": [
+        {
+          "name": "winner"
         }
       ]
     },
@@ -8649,6 +8890,13 @@
     {
       "type": {
         "proxy": [
+          "org.springframework.web.bind.annotation.ControllerAdvice"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
           "org.springframework.web.bind.annotation.RequestHeader"
         ]
       }
@@ -8793,6 +9041,15 @@
     },
     {
       "glob": "com/kinectmessaging/ep/client/Config.class"
+    },
+    {
+      "glob": "com/kinectmessaging/ep/client/JourneyConfig.class"
+    },
+    {
+      "glob": "com/kinectmessaging/ep/client/JourneyConfigClient.class"
+    },
+    {
+      "glob": "com/kinectmessaging/ep/controller/ControllerExceptionHandler.class"
     },
     {
       "glob": "com/kinectmessaging/ep/controller/EventProcessorController.class"
@@ -9752,6 +10009,9 @@
       "glob": "org/springframework/http/codec/CodecConfigurer.properties"
     },
     {
+      "glob": "org/springframework/web/bind/annotation/ControllerAdvice.class"
+    },
+    {
       "glob": "org/springframework/web/bind/annotation/Mapping.class"
     },
     {
@@ -9762,6 +10022,9 @@
     },
     {
       "glob": "org/springframework/web/bind/annotation/RestController.class"
+    },
+    {
+      "glob": "org/springframework/web/bind/annotation/RestControllerAdvice.class"
     },
     {
       "glob": "org/springframework/web/reactive/config/DelegatingWebFluxConfiguration.class"

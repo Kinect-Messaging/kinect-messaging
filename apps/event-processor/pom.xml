@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.dashjoin</groupId>
             <artifactId>jsonata</artifactId>
-            <version>0.9.7</version>
+            <version>0.9.8</version>
         </dependency>
     </dependencies>
 
@@ -125,6 +125,13 @@
                                     <goal>process-aot</goal>
                                 </goals>
                             </execution>
+                            <execution>
+                                <id>build-image</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build-image-no-fork</goal>
+                                </goals>
+                            </execution>
                         </executions>
                     </plugin>
                     <plugin>
@@ -143,6 +150,8 @@
                                 <buildArg>--initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$Default</buildArg>
                                 <buildArg>--initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$NonceAndIV</buildArg>
                             </buildArgs>
+                            <quickBuild>true</quickBuild>
+<!--                            <debug>true</debug>-->
                         </configuration>
                         <executions>
                             <execution>

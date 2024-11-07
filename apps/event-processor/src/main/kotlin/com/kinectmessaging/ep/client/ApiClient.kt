@@ -43,7 +43,7 @@ class ApiClient () {
         journeyWebClient
             .get()
             .uri("/?eventName=$eventName")
-            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get("transaction-id") ?: UUID.randomUUID().toString())
+            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get(Defaults.TRANSACTION_ID_HEADER) ?: UUID.randomUUID().toString())
             .retrieve()
             .awaitBodyOrNull<List<JourneyConfig>>()
 
@@ -51,14 +51,14 @@ class ApiClient () {
         messageWebClient
             .get()
             .uri("/$id")
-            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get("transaction-id") ?: UUID.randomUUID().toString())
+            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get(Defaults.TRANSACTION_ID_HEADER) ?: UUID.randomUUID().toString())
             .retrieve()
             .awaitBodyOrNull<MessageConfig>()
 
     suspend fun sendEmail(emailData: KMessage): String =
         emailWebClient
             .post()
-            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get("transaction-id") ?: UUID.randomUUID().toString())
+            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get(Defaults.TRANSACTION_ID_HEADER) ?: UUID.randomUUID().toString())
             .bodyValue(emailData)
             .retrieve()
             .awaitBody<String>()
@@ -66,7 +66,7 @@ class ApiClient () {
     suspend fun createContactHistory(contactHistory: KContactHistory): ResponseEntity<Void> =
         contactHistoryWebClient
             .post()
-            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get("transaction-id") ?: UUID.randomUUID().toString())
+            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get(Defaults.TRANSACTION_ID_HEADER) ?: UUID.randomUUID().toString())
             .bodyValue(contactHistory)
             .retrieve()
             .awaitBodilessEntity()
