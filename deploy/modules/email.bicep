@@ -50,7 +50,7 @@ param maxInstance int
 
 // Key Vault Secrets
 @description('The resource ID of the user assigned managed identity for accessing key vault.')
-param keyVaultUserAssignedIdentityId string
+param keyVaultUserAssignedId string
 
 @description('The key vault url for Azure Email Connection.')
 param azureEmailConnectionKeyVaultUrl string
@@ -74,7 +74,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   identity: {
     type: 'UserAssigned'
    userAssignedIdentities: {
-       '${keyVaultUserAssignedIdentityId}': {}
+       '${keyVaultUserAssignedId}': {}
    }
  }
   properties: {
@@ -99,7 +99,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
           value: containerRegistryPassword
         }
         {
-            identity: keyVaultUserAssignedIdentityId
+            identity: keyVaultUserAssignedId
             keyVaultUrl: azureEmailConnectionKeyVaultUrl
             name: 'app-email-azure-connectionstring'
         }
