@@ -1,5 +1,7 @@
 package com.kinectmessaging.ch
 
+import io.cloudevents.core.provider.EventFormatProvider
+import io.cloudevents.jackson.JsonFormat
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories
@@ -10,5 +12,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 class KinectContactHistoryApplication
 
 fun main(args: Array<String>) {
+	EventFormatProvider.getInstance().registerFormat(JsonFormat())
 	runApplication<KinectContactHistoryApplication>(*args)
 }
