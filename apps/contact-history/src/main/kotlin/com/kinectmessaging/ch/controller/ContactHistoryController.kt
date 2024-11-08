@@ -1,5 +1,8 @@
 package com.kinectmessaging.ch.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.kinectmessaging.ch.service.ContactHistoryService
 import com.kinectmessaging.libs.common.Defaults
 import com.kinectmessaging.libs.common.ErrorConstants
@@ -8,6 +11,10 @@ import com.kinectmessaging.libs.exception.InvalidInputException
 import com.kinectmessaging.libs.logging.MDCHelper
 import com.kinectmessaging.libs.model.ContactMessages
 import com.kinectmessaging.libs.model.KContactHistory
+import io.cloudevents.CloudEvent
+import io.cloudevents.core.CloudEventUtils.mapData
+import io.cloudevents.core.impl.BaseCloudEvent
+import io.cloudevents.jackson.PojoCloudEventDataMapper
 import net.logstash.logback.argument.StructuredArguments
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,36 +31,42 @@ class ContactHistoryController {
 
     private val log = LoggerFactory.getLogger(this::class.java)
 
+    private val objectMapper: ObjectMapper = ObjectMapper().registerKotlinModule().registerModule(JavaTimeModule())
     @Autowired
     lateinit var contactHistoryService: ContactHistoryService
 
-    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping()
     fun createContactHistory(
-        @RequestBody contactHistory: KContactHistory,
+        @RequestBody event: CloudEvent,
         @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ) {
         val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
-        headerMap["contact-history-id"] = contactHistory.id
+        headerMap["contact-history-id"] = event.id
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         MDCHelper.addMDC(headerMap)
-        log.info("${LogConstants.SERVICE_START} {}", StructuredArguments.kv("request", contactHistory))
-        val result = contactHistoryService.saveContactHistory(contactHistory)
+        log.info("${LogConstants.SERVICE_START} {}", StructuredArguments.kv("request", event))
+        val eventData = mapData(event, PojoCloudEventDataMapper.from(objectMapper, KContactHistory::class.java))
+        val contactHistory = eventData?.value
+        val result = contactHistory?.let { contactHistoryService.saveContactHistory(it) }
+            ?: throw InvalidInputException("${ErrorConstants.NO_DATA_FOUND_MESSAGE} for event $event")
         log.info(LogConstants.SERVICE_END, StructuredArguments.kv("response", result))
         MDCHelper.clearMDC()
     }
 
-    @PostMapping(value = ["/message"], consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(value = ["/message"])
     fun updateContactMessageByMessageId(
-        @RequestBody contactMessage: ContactMessages,
+        @RequestBody event: CloudEvent,
         @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ) {
         val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
-        headerMap["contact-message-id"] = contactMessage.messageId
+        headerMap["contact-message-id"] = event.id
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         MDCHelper.addMDC(headerMap)
-        log.info("${LogConstants.SERVICE_START} {}", StructuredArguments.kv("request", contactMessage))
-
-        val result = contactHistoryService.updateContactMessageByMessageId(contactMessage)
+        log.info("${LogConstants.SERVICE_START} {}", StructuredArguments.kv("request", event))
+        val eventData = mapData(event, PojoCloudEventDataMapper.from(objectMapper, ContactMessages::class.java))
+        val contactMessage = eventData?.value
+        val result = contactMessage?.let { contactHistoryService.updateContactMessageByMessageId(it) }
+            ?: throw InvalidInputException("${ErrorConstants.NO_DATA_FOUND_MESSAGE} for event $event")
         log.info(LogConstants.SERVICE_END, StructuredArguments.kv("response", result))
         MDCHelper.clearMDC()
     }

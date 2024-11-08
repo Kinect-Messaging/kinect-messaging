@@ -161,6 +161,9 @@
       "type": "com.fasterxml.jackson.core.Versioned"
     },
     {
+      "type": "com.fasterxml.jackson.databind.JsonNode"
+    },
+    {
       "type": "com.fasterxml.jackson.databind.Module",
       "allDeclaredFields": true
     },
@@ -297,6 +300,31 @@
       ]
     },
     {
+      "type": "com.kinectmessaging.ch.config.CloudEventsHttpConfig",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "com.kinectmessaging.ch.config.CloudEventsHttpConfig$$SpringCGLIB$$0",
+      "allDeclaredFields": true,
+      "fields": [
+        {
+          "name": "CGLIB$FACTORY_DATA"
+        }
+      ],
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "CGLIB$SET_STATIC_CALLBACKS",
+          "parameterTypes": [
+            "org.springframework.cglib.proxy.Callback[]"
+          ]
+        }
+      ]
+    },
+    {
       "type": "com.kinectmessaging.ch.controller.AzureEmailEventsController",
       "allDeclaredFields": true,
       "methods": [
@@ -307,7 +335,7 @@
         {
           "name": "consumeEmailDeliveryEvents",
           "parameterTypes": [
-            "byte[]"
+            "io.cloudevents.CloudEvent"
           ]
         }
       ]
@@ -319,6 +347,50 @@
         {
           "name": "<init>",
           "parameterTypes": []
+        },
+        {
+          "name": "createContactHistory",
+          "parameterTypes": [
+            "io.cloudevents.CloudEvent",
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "getContactHistory",
+          "parameterTypes": [
+            "java.lang.Integer",
+            "java.lang.Integer",
+            "java.lang.String",
+            "org.springframework.data.domain.Sort$Direction",
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "getContactHistory$default",
+          "parameterTypes": [
+            "com.kinectmessaging.ch.controller.ContactHistoryController",
+            "java.lang.Integer",
+            "java.lang.Integer",
+            "java.lang.String",
+            "org.springframework.data.domain.Sort$Direction",
+            "java.lang.String",
+            "int",
+            "java.lang.Object"
+          ]
+        },
+        {
+          "name": "getContactHistoryById",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "updateContactMessageByMessageId",
+          "parameterTypes": [
+            "com.kinectmessaging.libs.model.ContactMessages",
+            "java.lang.String"
+          ]
         }
       ]
     },
@@ -333,31 +405,32 @@
       ]
     },
     {
-      "type": "com.kinectmessaging.ch.model.AzureEmailDeliveryReport",
-      "allDeclaredFields": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "com.kinectmessaging.ch.model.DeliveryData",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String"
-          ]
-        }
-      ]
-    },
-    {
       "type": "com.kinectmessaging.ch.model.AzureEmailDeliveryStatus",
       "allDeclaredFields": true
     },
     {
       "type": "com.kinectmessaging.ch.model.ContactHistoryEntity",
       "allDeclaredFields": true
+    },
+    {
+      "type": "com.kinectmessaging.ch.model.ContactHistoryEntity_Accessor_apb3rg",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "com.kinectmessaging.ch.model.ContactHistoryEntity"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.kinectmessaging.ch.model.ContactHistoryEntity_Instantiator_apb3rg",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "com.kinectmessaging.ch.model.DeliveryData",
@@ -396,6 +469,12 @@
           "parameterTypes": [
             "java.lang.String"
           ]
+        },
+        {
+          "name": "findByMessages_MessageId",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
         }
       ]
     },
@@ -421,21 +500,190 @@
     },
     {
       "type": "com.kinectmessaging.libs.model.ContactMessages",
-      "allDeclaredFields": true
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.String",
+            "com.kinectmessaging.libs.model.DeliveryChannel",
+            "java.lang.String",
+            "java.util.List",
+            "java.util.List"
+          ]
+        },
+        {
+          "name": "getContactAddress",
+          "parameterTypes": []
+        },
+        {
+          "name": "getDeliveryChannel",
+          "parameterTypes": []
+        },
+        {
+          "name": "getDeliveryStatus",
+          "parameterTypes": []
+        },
+        {
+          "name": "getDeliveryTrackingId",
+          "parameterTypes": []
+        },
+        {
+          "name": "getEngagementStatus",
+          "parameterTypes": []
+        },
+        {
+          "name": "getMessageId",
+          "parameterTypes": []
+        }
+      ]
     },
     {
-      "type": "com.kinectmessaging.libs.model.DeliveryChannel"
+      "type": "com.kinectmessaging.libs.model.ContactMessages$Access4JacksonSerializerca9b4500",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.ContactMessages_Accessor_6ingh0",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "com.kinectmessaging.libs.model.ContactMessages"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.ContactMessages_Instantiator_6ingh0",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.DeliveryChannel",
+      "allDeclaredFields": true
     },
     {
       "type": "com.kinectmessaging.libs.model.DeliveryStatus",
-      "allDeclaredFields": true
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.time.LocalDateTime",
+            "com.kinectmessaging.libs.model.HistoryStatusCodes",
+            "java.lang.String",
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "getOriginalStatus",
+          "parameterTypes": []
+        },
+        {
+          "name": "getStatus",
+          "parameterTypes": []
+        },
+        {
+          "name": "getStatusMessage",
+          "parameterTypes": []
+        },
+        {
+          "name": "getStatusTime",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.DeliveryStatus$Access4JacksonSerializer10702eac",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.DeliveryStatus_Accessor_6m66yb",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "com.kinectmessaging.libs.model.DeliveryStatus"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.DeliveryStatus_Instantiator_6m66yb",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "com.kinectmessaging.libs.model.EngagementStatus",
       "allDeclaredFields": true
     },
     {
-      "type": "com.kinectmessaging.libs.model.HistoryStatusCodes"
+      "type": "com.kinectmessaging.libs.model.HistoryStatusCodes",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.KContactHistory",
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "java.lang.String",
+            "com.kinectmessaging.libs.model.ContactMessages"
+          ]
+        },
+        {
+          "name": "getId",
+          "parameterTypes": []
+        },
+        {
+          "name": "getJourneyName",
+          "parameterTypes": []
+        },
+        {
+          "name": "getJourneyTransactionId",
+          "parameterTypes": []
+        },
+        {
+          "name": "getMessages",
+          "parameterTypes": []
+        },
+        {
+          "name": "getSourceEventId",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.KContactHistory$Access4JacksonSerializera9e13992",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "com.maciejwalkowiak.spring.boot.startup.ReportRenderer",
@@ -701,6 +949,184 @@
     },
     {
       "type": "groovy.text.markup.MarkupTemplateEngine"
+    },
+    {
+      "type": "io.cloudevents.CloudEvent",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "io.cloudevents.CloudEventAttributes",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "io.cloudevents.CloudEventContext",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "io.cloudevents.CloudEventData",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "io.cloudevents.CloudEventExtensions",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "io.cloudevents.SpecVersion",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "io.cloudevents.core.impl.BaseCloudEvent",
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "getId",
+          "parameterTypes": []
+        },
+        {
+          "name": "getType",
+          "parameterTypes": []
+        },
+        {
+          "name": "getSubject",
+          "parameterTypes": []
+        },
+        {
+          "name": "getDataContentType",
+          "parameterTypes": []
+        },
+        {
+          "name": "getExtensionNames",
+          "parameterTypes": []
+        },
+        {
+          "name": "getAttributeNames",
+          "parameterTypes": []
+        },
+        {
+          "name": "getDataSchema",
+          "parameterTypes": []
+        },
+        {
+          "name": "getSource",
+          "parameterTypes": []
+        },
+        {
+          "name": "getSpecVersion",
+          "parameterTypes": []
+        },
+        {
+          "name": "getData",
+          "parameterTypes": []
+        },
+        {
+          "name": "getTime",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "io.cloudevents.core.v1.CloudEventV1",
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "getId",
+          "parameterTypes": []
+        },
+        {
+          "name": "getType",
+          "parameterTypes": []
+        },
+        {
+          "name": "getSubject",
+          "parameterTypes": []
+        },
+        {
+          "name": "getDataContentType",
+          "parameterTypes": []
+        },
+        {
+          "name": "getExtensionNames",
+          "parameterTypes": []
+        },
+        {
+          "name": "getAttributeNames",
+          "parameterTypes": []
+        },
+        {
+          "name": "getDataSchema",
+          "parameterTypes": []
+        },
+        {
+          "name": "getSource",
+          "parameterTypes": []
+        },
+        {
+          "name": "getSpecVersion",
+          "parameterTypes": []
+        },
+        {
+          "name": "getData",
+          "parameterTypes": []
+        },
+        {
+          "name": "getTime",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "io.cloudevents.core.v1.CloudEventV1$Access4JacksonSerializerb3616e50",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "io.cloudevents.jackson.JsonCloudEventData",
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "getNode",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "io.cloudevents.jackson.JsonCloudEventData$Access4JacksonSerializer785fe318",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "io.cloudevents.jackson.JsonFormat"
+    },
+    {
+      "type": "io.cloudevents.lang.Nullable"
+    },
+    {
+      "type": "io.cloudevents.rw.CloudEventContextReader",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "io.cloudevents.rw.CloudEventContextWriter"
+    },
+    {
+      "type": "io.cloudevents.rw.CloudEventDataMapper"
+    },
+    {
+      "type": "io.cloudevents.rw.CloudEventReader",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "io.cloudevents.rw.CloudEventWriter"
+    },
+    {
+      "type": "io.cloudevents.rw.CloudEventWriterFactory"
     },
     {
       "type": "io.lettuce.core.metrics.MicrometerCommandLatencyRecorder"
@@ -1545,10 +1971,6 @@
           "parameterTypes": []
         },
         {
-          "name": "getOwnerType",
-          "parameterTypes": []
-        },
-        {
           "name": "getRawType",
           "parameterTypes": []
         }
@@ -1602,6 +2024,10 @@
     },
     {
       "type": "java.net.SocketPermission"
+    },
+    {
+      "type": "java.net.URI",
+      "allDeclaredFields": true
     },
     {
       "type": "java.net.URLClassLoader"
@@ -1689,6 +2115,9 @@
       "type": "java.time.LocalDateTime"
     },
     {
+      "type": "java.time.OffsetDateTime"
+    },
+    {
       "type": "java.util.Collection"
     },
     {
@@ -1705,6 +2134,9 @@
     },
     {
       "type": "java.util.PropertyPermission"
+    },
+    {
+      "type": "java.util.Set"
     },
     {
       "type": "java.util.concurrent.Executor"
@@ -1728,6 +2160,14 @@
         },
         {
           "name": "cellsBusy"
+        }
+      ]
+    },
+    {
+      "type": "java.util.concurrent.atomic.Striped64$Cell",
+      "fields": [
+        {
+          "name": "value"
         }
       ]
     },
@@ -1833,7 +2273,19 @@
       "type": "kotlin.Boolean"
     },
     {
+      "type": "kotlin.BooleanArray"
+    },
+    {
+      "type": "kotlin.Byte"
+    },
+    {
       "type": "kotlin.ByteArray"
+    },
+    {
+      "type": "kotlin.Char"
+    },
+    {
+      "type": "kotlin.CharArray"
     },
     {
       "type": "kotlin.Comparable"
@@ -1842,13 +2294,31 @@
       "type": "kotlin.Deprecated"
     },
     {
+      "type": "kotlin.Double"
+    },
+    {
+      "type": "kotlin.DoubleArray"
+    },
+    {
       "type": "kotlin.Enum"
+    },
+    {
+      "type": "kotlin.Float"
+    },
+    {
+      "type": "kotlin.FloatArray"
     },
     {
       "type": "kotlin.Int"
     },
     {
+      "type": "kotlin.IntArray"
+    },
+    {
       "type": "kotlin.Long"
+    },
+    {
+      "type": "kotlin.LongArray"
     },
     {
       "type": "kotlin.Metadata",
@@ -1896,10 +2366,17 @@
       ]
     },
     {
+      "type": "kotlin.Short"
+    },
+    {
+      "type": "kotlin.ShortArray"
+    },
+    {
       "type": "kotlin.String"
     },
     {
-      "type": "kotlin.Unit"
+      "type": "kotlin.Unit",
+      "allDeclaredFields": true
     },
     {
       "type": "kotlin.annotation.AnnotationRetention"
@@ -1932,6 +2409,9 @@
       "type": "kotlin.collections.List"
     },
     {
+      "type": "kotlin.collections.Map"
+    },
+    {
       "type": "kotlin.collections.MutableCollection"
     },
     {
@@ -1939,6 +2419,15 @@
     },
     {
       "type": "kotlin.collections.MutableList"
+    },
+    {
+      "type": "kotlin.collections.MutableMap"
+    },
+    {
+      "type": "kotlin.collections.MutableSet"
+    },
+    {
+      "type": "kotlin.collections.Set"
     },
     {
       "type": "kotlin.coroutines.Continuation"
@@ -2238,6 +2727,9 @@
       ]
     },
     {
+      "type": "org.springframework.aop.scope.ScopedObject"
+    },
+    {
       "type": "org.springframework.aot.generate.Generated"
     },
     {
@@ -2277,7 +2769,13 @@
       "type": "org.springframework.beans.factory.SmartInitializingSingleton"
     },
     {
-      "type": "org.springframework.beans.factory.annotation.Autowired"
+      "type": "org.springframework.beans.factory.annotation.Autowired",
+      "methods": [
+        {
+          "name": "required",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor",
@@ -7114,6 +7612,10 @@
       "type": "org.springframework.data.domain.Sort"
     },
     {
+      "type": "org.springframework.data.domain.Sort$Direction",
+      "allDeclaredFields": true
+    },
+    {
       "type": "org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate"
     },
     {
@@ -7135,11 +7637,17 @@
       "type": "org.springframework.data.mapping.PersistentPropertyAccessor"
     },
     {
+      "type": "org.springframework.data.mapping.callback.EntityCallback"
+    },
+    {
       "type": "org.springframework.data.mapping.context.AbstractMappingContext",
       "allDeclaredFields": true
     },
     {
       "type": "org.springframework.data.mapping.context.MappingContext"
+    },
+    {
+      "type": "org.springframework.data.mapping.model.ClassGeneratingEntityInstantiator$ObjectInstantiator"
     },
     {
       "type": "org.springframework.data.mongodb.MongoDatabaseFactory"
@@ -7201,6 +7709,18 @@
       "allDeclaredFields": true
     },
     {
+      "type": "org.springframework.data.mongodb.core.mapping.event.AfterConvertCallback"
+    },
+    {
+      "type": "org.springframework.data.mongodb.core.mapping.event.AfterSaveCallback"
+    },
+    {
+      "type": "org.springframework.data.mongodb.core.mapping.event.BeforeConvertCallback"
+    },
+    {
+      "type": "org.springframework.data.mongodb.core.mapping.event.BeforeSaveCallback"
+    },
+    {
       "type": "org.springframework.data.mongodb.gridfs.GridFsOperations"
     },
     {
@@ -7241,7 +7761,13 @@
       "type": "org.springframework.data.mongodb.repository.config.MongoRepositoryConfigurationExtension"
     },
     {
-      "type": "org.springframework.data.mongodb.repository.support.CrudMethodMetadata"
+      "type": "org.springframework.data.mongodb.repository.support.CrudMethodMetadata",
+      "methods": [
+        {
+          "name": "getReadPreference",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "org.springframework.data.mongodb.repository.support.MongoRepositoryFactoryBean",
@@ -7276,6 +7802,24 @@
             "org.springframework.data.mongodb.repository.query.MongoEntityInformation",
             "org.springframework.data.mongodb.core.MongoOperations"
           ]
+        },
+        {
+          "name": "findAll",
+          "parameterTypes": [
+            "org.springframework.data.domain.Pageable"
+          ]
+        },
+        {
+          "name": "findById",
+          "parameterTypes": [
+            "java.lang.Object"
+          ]
+        },
+        {
+          "name": "save",
+          "parameterTypes": [
+            "java.lang.Object"
+          ]
         }
       ]
     },
@@ -7305,7 +7849,21 @@
     },
     {
       "type": "org.springframework.data.repository.CrudRepository",
-      "allDeclaredFields": true
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "findById",
+          "parameterTypes": [
+            "java.lang.Object"
+          ]
+        },
+        {
+          "name": "save",
+          "parameterTypes": [
+            "java.lang.Object"
+          ]
+        }
+      ]
     },
     {
       "type": "org.springframework.data.repository.ListCrudRepository",
@@ -7320,7 +7878,15 @@
     },
     {
       "type": "org.springframework.data.repository.PagingAndSortingRepository",
-      "allDeclaredFields": true
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "findAll",
+          "parameterTypes": [
+            "org.springframework.data.domain.Pageable"
+          ]
+        }
+      ]
     },
     {
       "type": "org.springframework.data.repository.Repository",
@@ -7488,6 +8054,9 @@
     },
     {
       "type": "org.springframework.http.ReactiveHttpInputMessage"
+    },
+    {
+      "type": "org.springframework.http.ResponseEntity"
     },
     {
       "type": "org.springframework.http.client.ReactorResourceFactory",
@@ -7742,19 +8311,144 @@
       "type": "org.springframework.web.bind.annotation.ExceptionHandler"
     },
     {
-      "type": "org.springframework.web.bind.annotation.GetMapping"
+      "type": "org.springframework.web.bind.annotation.GetMapping",
+      "methods": [
+        {
+          "name": "consumes",
+          "parameterTypes": []
+        },
+        {
+          "name": "headers",
+          "parameterTypes": []
+        },
+        {
+          "name": "name",
+          "parameterTypes": []
+        },
+        {
+          "name": "params",
+          "parameterTypes": []
+        },
+        {
+          "name": "path",
+          "parameterTypes": []
+        },
+        {
+          "name": "produces",
+          "parameterTypes": []
+        },
+        {
+          "name": "value",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "org.springframework.web.bind.annotation.Mapping"
     },
     {
-      "type": "org.springframework.web.bind.annotation.PostMapping"
+      "type": "org.springframework.web.bind.annotation.PathVariable",
+      "methods": [
+        {
+          "name": "name",
+          "parameterTypes": []
+        },
+        {
+          "name": "required",
+          "parameterTypes": []
+        },
+        {
+          "name": "value",
+          "parameterTypes": []
+        }
+      ]
     },
     {
-      "type": "org.springframework.web.bind.annotation.RequestBody"
+      "type": "org.springframework.web.bind.annotation.PostMapping",
+      "methods": [
+        {
+          "name": "consumes",
+          "parameterTypes": []
+        },
+        {
+          "name": "headers",
+          "parameterTypes": []
+        },
+        {
+          "name": "name",
+          "parameterTypes": []
+        },
+        {
+          "name": "params",
+          "parameterTypes": []
+        },
+        {
+          "name": "path",
+          "parameterTypes": []
+        },
+        {
+          "name": "produces",
+          "parameterTypes": []
+        },
+        {
+          "name": "value",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.springframework.web.bind.annotation.RequestBody",
+      "methods": [
+        {
+          "name": "required",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "org.springframework.web.bind.annotation.RequestHeader",
+      "methods": [
+        {
+          "name": "defaultValue",
+          "parameterTypes": []
+        },
+        {
+          "name": "name",
+          "parameterTypes": []
+        },
+        {
+          "name": "required",
+          "parameterTypes": []
+        },
+        {
+          "name": "value",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "org.springframework.web.bind.annotation.RequestMapping"
+    },
+    {
+      "type": "org.springframework.web.bind.annotation.RequestParam",
+      "methods": [
+        {
+          "name": "defaultValue",
+          "parameterTypes": []
+        },
+        {
+          "name": "name",
+          "parameterTypes": []
+        },
+        {
+          "name": "required",
+          "parameterTypes": []
+        },
+        {
+          "name": "value",
+          "parameterTypes": []
+        }
+      ]
     },
     {
       "type": "org.springframework.web.bind.annotation.ResponseBody"
@@ -8158,6 +8852,14 @@
       ]
     },
     {
+      "type": "reactor.core.publisher.MonoCallable$MonoCallableSubscription",
+      "fields": [
+        {
+          "name": "requestedOnce"
+        }
+      ]
+    },
+    {
       "type": "reactor.core.publisher.MonoCreate$DefaultMonoSink",
       "fields": [
         {
@@ -8196,6 +8898,14 @@
       ]
     },
     {
+      "type": "reactor.core.publisher.MonoSupplier$MonoSupplierSubscription",
+      "fields": [
+        {
+          "name": "requestedOnce"
+        }
+      ]
+    },
+    {
       "type": "reactor.core.publisher.MonoWhen$WhenCoordinator",
       "fields": [
         {
@@ -8229,6 +8939,14 @@
     },
     {
       "type": "reactor.core.publisher.Operators$BaseFluxToMonoOperator",
+      "fields": [
+        {
+          "name": "state"
+        }
+      ]
+    },
+    {
+      "type": "reactor.core.publisher.Operators$MonoInnerProducerBase",
       "fields": [
         {
           "name": "state"
@@ -8853,7 +9571,28 @@
     {
       "type": {
         "proxy": [
+          "org.springframework.web.bind.annotation.PathVariable"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "org.springframework.web.bind.annotation.RequestHeader"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
           "org.springframework.web.bind.annotation.RequestMapping"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
+          "org.springframework.web.bind.annotation.RequestParam"
         ]
       }
     }
@@ -8888,6 +9627,12 @@
     },
     {
       "glob": "META-INF/services/com.mongodb.spi.dns.InetAddressResolverProvider"
+    },
+    {
+      "glob": "META-INF/services/io.cloudevents.core.format.EventFormat"
+    },
+    {
+      "glob": "META-INF/services/io.cloudevents.core.validator.CloudEventValidator"
     },
     {
       "glob": "META-INF/services/java.lang.System$LoggerFinder"
@@ -8966,6 +9711,9 @@
     },
     {
       "glob": "com/kinectmessaging/ch/"
+    },
+    {
+      "glob": "com/kinectmessaging/ch/config/CloudEventsHttpConfig.class"
     },
     {
       "glob": "com/kinectmessaging/ch/controller/AzureEmailEventsController.class"
@@ -9809,6 +10557,9 @@
     },
     {
       "glob": "org/springframework/boot/sql/init/dependency/DatabaseInitializationDependencyConfigurer.class"
+    },
+    {
+      "glob": "org/springframework/boot/web/codec/CodecCustomizer.class"
     },
     {
       "glob": "org/springframework/cloud/autoconfigure/ConfigurationPropertiesRebinderAutoConfiguration.class"

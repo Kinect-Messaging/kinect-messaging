@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.kinectmessaging.ch.model.AzureEmailDeliveryReport
 import com.kinectmessaging.ch.model.AzureEmailDeliveryStatus
+import com.kinectmessaging.ch.model.DeliveryData
 import com.kinectmessaging.libs.common.LogConstants
 import com.kinectmessaging.libs.exception.InvalidInputException
 import com.kinectmessaging.libs.model.DeliveryStatus
@@ -85,35 +86,33 @@ class AzureDeliveryEventService {
         } ?: throw InvalidInputException("Incoming email delivery event is null or empty.")
     }
 
-    fun emailDeliveryEventProcessor(azureEmailDeliveryReport: AzureEmailDeliveryReport): String {
-        azureEmailDeliveryReport.data.let { deliveryData ->
-            val status =
-                when (deliveryData.status) {
-                    AzureEmailDeliveryStatus.Delivered, AzureEmailDeliveryStatus.Expanded -> {
-                        HistoryStatusCodes.DELIVERED
-                    }
-
-                    else -> {
-                        HistoryStatusCodes.FAILED
-                    }
+    fun emailDeliveryEventProcessor(deliveryData: DeliveryData): String {
+        val status =
+            when (deliveryData.status) {
+                AzureEmailDeliveryStatus.Delivered, AzureEmailDeliveryStatus.Expanded -> {
+                    HistoryStatusCodes.DELIVERED
                 }
-            contactHistoryService.updateContactMessageByDeliveryTrackingId(
-                deliveryTrackingId = deliveryData.messageId,
-                deliveryStatus = DeliveryStatus(
-                    statusTime = deliveryData.deliveryAttemptTimestamp?.let {
-                        LocalDateTime.parse(
-                            it,
-                            DateTimeFormatter.ISO_ZONED_DATE_TIME
-                        )
-                    } ?: LocalDateTime.now(),
-                    status = status,
-                    statusMessage = deliveryData.deliveryStatusDetails.statusMessage,
-                    originalStatus = null
-                ),
-                engagementStatus = null
-            )
-            return "Updated status $status for id ${deliveryData.messageId}"
-        }
+
+                else -> {
+                    HistoryStatusCodes.FAILED
+                }
+            }
+        contactHistoryService.updateContactMessageByDeliveryTrackingId(
+            deliveryTrackingId = deliveryData.messageId,
+            deliveryStatus = DeliveryStatus(
+                statusTime = deliveryData.deliveryAttemptTimestamp?.let {
+                    LocalDateTime.parse(
+                        it,
+                        DateTimeFormatter.ISO_ZONED_DATE_TIME
+                    )
+                } ?: LocalDateTime.now(),
+                status = status,
+                statusMessage = deliveryData.deliveryStatusDetails.statusMessage,
+                originalStatus = null
+            ),
+            engagementStatus = null
+        )
+        return "Updated status $status for id ${deliveryData.messageId}"
     }
 
     companion object {
