@@ -38,9 +38,9 @@ class ContactHistoryController {
     @PostMapping()
     fun createContactHistory(
         @RequestBody event: CloudEvent,
-        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER, required = false) transactionId: String?
     ) {
-        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+        val headerMap = transactionId?.let { mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId)) } ?: mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, event.id))
         headerMap["contact-history-id"] = event.id
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         MDCHelper.addMDC(headerMap)
@@ -56,9 +56,9 @@ class ContactHistoryController {
     @PostMapping(value = ["/message"])
     fun updateContactMessageByMessageId(
         @RequestBody event: CloudEvent,
-        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER, required = false) transactionId: String?
     ) {
-        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
+        val headerMap = transactionId?.let { mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId)) } ?: mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, event.id))
         headerMap["contact-message-id"] = event.id
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         MDCHelper.addMDC(headerMap)
