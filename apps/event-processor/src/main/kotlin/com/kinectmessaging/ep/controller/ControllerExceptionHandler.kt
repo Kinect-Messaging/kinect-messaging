@@ -22,7 +22,7 @@ class ControllerExceptionHandler {
                 null
             )
         }
-        log.error("${ErrorConstants.HTTP_5XX_ERROR_MESSAGE} ${ex.printStackTrace()}")
+        log.error("${ErrorConstants.HTTP_4XX_ERROR_MESSAGE} ${ex.printStackTrace()}")
         return message
     }
 

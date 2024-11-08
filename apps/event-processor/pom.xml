@@ -66,29 +66,29 @@
         </plugins>
     </build>
     <profiles>
-        <profile>
-            <id>publish</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <configuration>
-                            <docker>
-                                <publishRegistry>
-                                    <!--suppress UnresolvedMavenProperty -->
-                                    <url>${docker.publishRegistry.url}</url>
-                                    <!--suppress UnresolvedMavenProperty -->
-                                    <username>${docker.publishRegistry.username}</username>
-                                    <!--suppress UnresolvedMavenProperty -->
-                                    <password>${docker.publishRegistry.password}</password>
-                                </publishRegistry>
-                            </docker>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+<!--        <profile>-->
+<!--            <id>publish</id>-->
+<!--            <build>-->
+<!--                <plugins>-->
+<!--                    <plugin>-->
+<!--                        <groupId>org.springframework.boot</groupId>-->
+<!--                        <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                        <configuration>-->
+<!--                            <docker>-->
+<!--                                <publishRegistry>-->
+<!--                                    &lt;!&ndash;suppress UnresolvedMavenProperty &ndash;&gt;-->
+<!--                                    <url>${docker.publishRegistry.url}</url>-->
+<!--                                    &lt;!&ndash;suppress UnresolvedMavenProperty &ndash;&gt;-->
+<!--                                    <username>${docker.publishRegistry.username}</username>-->
+<!--                                    &lt;!&ndash;suppress UnresolvedMavenProperty &ndash;&gt;-->
+<!--                                    <password>${docker.publishRegistry.password}</password>-->
+<!--                                </publishRegistry>-->
+<!--                            </docker>-->
+<!--                        </configuration>-->
+<!--                    </plugin>-->
+<!--                </plugins>-->
+<!--            </build>-->
+<!--        </profile>-->
         <profile>
             <id>native</id>
             <build>
@@ -117,6 +117,16 @@
                                     </volume>
                                 </launchCache>
                             </image>
+                            <docker>
+                                <publishRegistry>
+                                    <!--suppress UnresolvedMavenProperty -->
+                                    <url>${docker.publishRegistry.url}</url>
+                                    <!--suppress UnresolvedMavenProperty -->
+                                    <username>${docker.publishRegistry.username}</username>
+                                    <!--suppress UnresolvedMavenProperty -->
+                                    <password>${docker.publishRegistry.password}</password>
+                                </publishRegistry>
+                            </docker>
                         </configuration>
                         <executions>
                             <execution>

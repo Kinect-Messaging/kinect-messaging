@@ -4,6 +4,7 @@ import com.dashjoin.jsonata.Jsonata.jsonata
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.kinectmessaging.ep.client.ApiClient
+import com.kinectmessaging.libs.common.LogConstants
 import com.kinectmessaging.libs.exception.InvalidInputException
 import com.kinectmessaging.libs.model.*
 import net.logstash.logback.argument.StructuredArguments.kv
@@ -38,11 +39,11 @@ class EventProcessorService {
         // Get matching configurations for the event
         val notificationMessages = mutableListOf<KMessage>()
         val contactHistoryList = mutableListOf<KContactHistory>()
-        log.debug("Calling Journey configs for event ${event.eventName} with id ${event.eventId}")
+        log.debug("${LogConstants.SERVICE_DEBUG} Calling Journey configs for event ${event.eventName} with id ${event.eventId}")
         val matchingJourneys = apiClient.getJourneyConfigsByEventName(eventName = event.eventName)
-        log.debug("Fetched Journey configs for event ${event.eventName} with id ${event.eventId}", kv("Journey Configs", matchingJourneys))
+        log.debug("${LogConstants.SERVICE_DEBUG} Fetched Journey configs for event ${event.eventName} with id ${event.eventId}", kv("Journey Configs", matchingJourneys))
         val payload = event.payload?.let { jacksonObjectMapper().convertValue<Map<String, Any>>(it) }
-        log.debug("Payload for jsonata evaluation.", kv("Payload", payload))
+        log.debug("${LogConstants.SERVICE_DEBUG} Payload for jsonata evaluation.", kv("Payload", payload))
         matchingJourneys?.forEach { journeyConfig ->
             val messageConfigs = mutableListOf<MessageConfig>()
             val journeyTransactionId = UUID.randomUUID().toString()
@@ -66,7 +67,7 @@ class EventProcessorService {
                 }
             } ?: log.warn("No valid journey steps for event ${event.eventName} and journey ${journeyConfig.journeyName}")
 
-            log.debug("Fetched Message configs for event ${event.eventName} with id ${event.eventId}", kv("Message Configs", messageConfigs))
+            log.debug("${LogConstants.SERVICE_DEBUG} Fetched Message configs for event ${event.eventName} with id ${event.eventId}", kv("Message Configs", messageConfigs))
             // Create relevant notification from configs
             if (messageConfigs.isEmpty()){
                 log.warn("No valid message configs fetched for event ${event.eventName} and journey ${journeyConfig.journeyName}")
@@ -119,7 +120,8 @@ class EventProcessorService {
                         
                         // Add Contact History record
                         toRecipients.forEach { recipient ->
-                            contactHistoryList.add(KContactHistory(
+                            contactHistoryList.add(
+                                KContactHistory(
                                 id = UUID.randomUUID().toString(),
                                 sourceEventId = event.eventId,
                                 journeyTransactionId = journeyTransactionId,
@@ -150,14 +152,14 @@ class EventProcessorService {
         }
 
 
-        log.debug("Updating Contact History records for event ${event.eventName} with id ${event.eventId}. ", kv("Contact History", contactHistoryList))
+        log.debug("${LogConstants.SERVICE_DEBUG} Updating Contact History records for event ${event.eventName} with id ${event.eventId}. ", kv("Contact History", contactHistoryList))
         // Publish contact history records
         contactHistoryList.forEach { contactHistory ->
             log.debug("Updating Contact History ${contactHistory.id}")
             apiClient.createContactHistory(contactHistory)
         }
 
-        log.debug("Publishing notification messages to delivery channels for event ${event.eventName} with id ${event.eventId}.", kv("Notification Messages", notificationMessages))
+        log.debug("${LogConstants.SERVICE_DEBUG} Publishing notification messages to delivery channels for event ${event.eventName} with id ${event.eventId}.", kv("Notification Messages", notificationMessages))
         // Invoke the relevant target service for each notification
         notificationMessages.forEach { notificationMessage ->
             when(notificationMessage.deliveryChannel){
