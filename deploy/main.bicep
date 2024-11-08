@@ -48,23 +48,43 @@ param minInstance int
 param maxInstance int
 
 // Key Vault Secrets
-@description('The resource ID of the user assigned managed identity for accessing key vault.')
-param keyVaultUserAssignedIdentityId string
-
-@description('The resource ID of the user assigned managed identity for accessing storage queues.')
-param storageQueueUserAssignedIdentityId string
-
+@secure()
 @description('The key vault url for Spring Data Mongo DB URI.')
 param springDataMongoDBURIKeyVaultUrl string
 
+@secure()
 @description('The key vault url for Spring Data Mongo DB name.')
 param springDataConfigDBNameKeyVaultUrl string
 
+@secure()
 @description('The key vault url for Spring Data Mongo DB name.')
 param springDataContactHistoryDBNameKeyVaultUrl string
 
+@secure()
 @description('The key vault url for Azure Email Connection.')
 param azureEmailConnectionKeyVaultUrl string
+
+@secure()
+@description('The key vault url for Azure Event Grid - Contact History URI.')
+param eventGridContactHisotryURIKeyVaultUrl string
+
+@secure()
+@description('The key vault url for Azure Event Grid - Contact History access key.')
+param eventGridContactHistoryAccessKeyVaultUrl string
+
+// Managed Identities
+@secure()
+@description('The resource ID of the user assigned managed identity for accessing key vault.')
+param keyVaultUserAssignedId string
+
+@secure()
+@description('The resource ID of the user assigned managed identity for accessing event grid.')
+param eventGridUserAssignedId string
+
+@secure()
+@description('The resource ID of the user assigned managed identity for accessing storage queues.')
+param storageQueueUserAssignedId string
+
 
 // Deploy Flags
 @description('Deploy Flag for config container app.')
@@ -101,7 +121,7 @@ module configContainerApp 'modules/config.bicep' = if(configDeployFlag) {
     containerRegistryPassword: containerRegistryPassword
     containerRegistryUsername: containerRegistryUsername
     cpu: cpu
-    keyVaultUserAssignedIdentityId: keyVaultUserAssignedIdentityId
+    keyVaultUserAssignedId: keyVaultUserAssignedId
     maxInstance: maxInstance
     memory: memory
     minInstance: minInstance
@@ -124,7 +144,7 @@ module emailContainerApp 'modules/email.bicep' = if(emailDeployFlag) {
     containerRegistryPassword: containerRegistryPassword
     containerRegistryUsername: containerRegistryUsername
     cpu: cpu
-    keyVaultUserAssignedIdentityId: keyVaultUserAssignedIdentityId
+    keyVaultUserAssignedId: keyVaultUserAssignedId
     maxInstance: maxInstance
     memory: memory
     minInstance: minInstance
@@ -146,11 +166,14 @@ module eventProcessorContainerApp 'modules/event-processor.bicep' = if(eventProc
     containerRegistryPassword: containerRegistryPassword
     containerRegistryUsername: containerRegistryUsername
     cpu: cpu
-    keyVaultUserAssignedIdentityId: keyVaultUserAssignedIdentityId
+    keyVaultUserAssignedId: keyVaultUserAssignedId
     maxInstance: maxInstance
     memory: memory
     minInstance: minInstance
     portNumber: portNumber
+    eventGridContactHisotryURIKeyVaultUrl: eventGridContactHisotryURIKeyVaultUrl
+    eventGridContactHistoryAccessKeyVaultUrl: eventGridContactHistoryAccessKeyVaultUrl
+    eventGridUserAssignedId: eventGridUserAssignedId
   }
 }
 
@@ -167,8 +190,8 @@ module contactHistoryContainerApp 'modules/contact-history.bicep' = if(contactHi
     containerRegistryPassword: containerRegistryPassword
     containerRegistryUsername: containerRegistryUsername
     cpu: cpu
-    keyVaultUserAssignedIdentityId: keyVaultUserAssignedIdentityId
-    storageQueueUserAssignedIdentityId: storageQueueUserAssignedIdentityId
+    keyVaultUserAssignedId: keyVaultUserAssignedId
+    storageQueueUserAssignedId: storageQueueUserAssignedId
     maxInstance: maxInstance
     memory: memory
     minInstance: minInstance

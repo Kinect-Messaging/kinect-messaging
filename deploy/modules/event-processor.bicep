@@ -48,9 +48,23 @@ param minInstance int
 @description('The maximum instance for the service.')
 param maxInstance int
 
-// Key Vault Secrets
+// User Assigned Identities
+@secure()
 @description('The resource ID of the user assigned managed identity for accessing key vault.')
-param keyVaultUserAssignedIdentityId string
+param keyVaultUserAssignedId string
+
+@secure()
+@description('The resource ID of the user assigned managed identity for accessing event grid.')
+param eventGridUserAssignedId string
+
+// Key Vault Secrets
+@secure()
+@description('The key vault url for Azure Event Grid - Contact History URI.')
+param eventGridContactHisotryURIKeyVaultUrl string
+
+@secure()
+@description('The key vault url for Azure Event Grid - Contact History access key.')
+param eventGridContactHistoryAccessKeyVaultUrl string
 
 
 //@secure()
@@ -71,7 +85,8 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   identity: {
     type: 'UserAssigned'
    userAssignedIdentities: {
-       '${keyVaultUserAssignedIdentityId}': {}
+       '${keyVaultUserAssignedId}': {}
+       '${eventGridUserAssignedId}': {}
    }
  }
   properties: {
@@ -94,6 +109,16 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
         {
           name: 'ghcr-password'
           value: containerRegistryPassword
+        }
+        {
+          identity: keyVaultUserAssignedId
+          keyVaultUrl: eventGridContactHistoryAccessKeyVaultUrl
+          name: 'aeg-access-key'
+        }
+        {
+          identity: keyVaultUserAssignedId
+          keyVaultUrl: eventGridContactHisotryURIKeyVaultUrl
+          name: 'aeg-contact-history-url'
         }
       ]
       registries: !empty(containerRegistryName) ? [
@@ -119,6 +144,14 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
 //              name: 'ApplicationInsights__InstrumentationKey'
 //              secretRef: 'appinsights-key'
 //            }
+              {
+                 name: 'app.client.contact-history.access-key'
+                 secretRef: 'aeg-access-key'
+              }
+              {
+                name: 'app.client.contact-history.url'
+                secretRef: 'aeg-contact-history-url'
+             }
           ]
         }
       ]
