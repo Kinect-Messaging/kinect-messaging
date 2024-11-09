@@ -2,6 +2,7 @@ package com.kinectmessaging.ch.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.kotlin.convertValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.kinectmessaging.ch.service.ContactHistoryService
 import com.kinectmessaging.libs.common.Defaults
@@ -9,6 +10,7 @@ import com.kinectmessaging.libs.common.ErrorConstants
 import com.kinectmessaging.libs.common.LogConstants
 import com.kinectmessaging.libs.exception.InvalidInputException
 import com.kinectmessaging.libs.logging.MDCHelper
+import com.kinectmessaging.libs.model.CloudEventsSchema
 import com.kinectmessaging.libs.model.ContactMessages
 import com.kinectmessaging.libs.model.KContactHistory
 import io.cloudevents.CloudEvent
@@ -37,7 +39,7 @@ class ContactHistoryController {
 
     @PostMapping()
     fun createContactHistory(
-        @RequestBody event: CloudEvent,
+        @RequestBody event: CloudEventsSchema,
         @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER, required = false) transactionId: String?
     ) {
         val headerMap = transactionId?.let { mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId)) } ?: mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, event.id))
@@ -45,9 +47,10 @@ class ContactHistoryController {
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         MDCHelper.addMDC(headerMap)
         log.info("${LogConstants.SERVICE_START} {}", StructuredArguments.kv("request", event))
-        val eventData = mapData(event, PojoCloudEventDataMapper.from(objectMapper, KContactHistory::class.java))
-        val contactHistory = eventData?.value
-        val result = contactHistory?.let { contactHistoryService.saveContactHistory(it) }
+//        val eventData = mapData(event, PojoCloudEventDataMapper.from(objectMapper, KContactHistory::class.java))
+        val eventData = event.data
+        val contactHistory = objectMapper.convertValue<KContactHistory>(eventData)
+        val result = contactHistory.let { contactHistoryService.saveContactHistory(it) }
             ?: throw InvalidInputException("${ErrorConstants.NO_DATA_FOUND_MESSAGE} for event $event")
         log.info(LogConstants.SERVICE_END, StructuredArguments.kv("response", result))
         MDCHelper.clearMDC()
@@ -55,7 +58,7 @@ class ContactHistoryController {
 
     @PostMapping(value = ["/message"])
     fun updateContactMessageByMessageId(
-        @RequestBody event: CloudEvent,
+        @RequestBody event: CloudEventsSchema,
         @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER, required = false) transactionId: String?
     ) {
         val headerMap = transactionId?.let { mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId)) } ?: mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, event.id))
@@ -63,9 +66,10 @@ class ContactHistoryController {
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         MDCHelper.addMDC(headerMap)
         log.info("${LogConstants.SERVICE_START} {}", StructuredArguments.kv("request", event))
-        val eventData = mapData(event, PojoCloudEventDataMapper.from(objectMapper, ContactMessages::class.java))
-        val contactMessage = eventData?.value
-        val result = contactMessage?.let { contactHistoryService.updateContactMessageByMessageId(it) }
+//        val eventData = mapData(event, PojoCloudEventDataMapper.from(objectMapper, ContactMessages::class.java))
+        val eventData = event.data
+        val contactMessage = objectMapper.convertValue<ContactMessages>(eventData)
+        val result = contactMessage.let { contactHistoryService.updateContactMessageByMessageId(it) }
             ?: throw InvalidInputException("${ErrorConstants.NO_DATA_FOUND_MESSAGE} for event $event")
         log.info(LogConstants.SERVICE_END, StructuredArguments.kv("response", result))
         MDCHelper.clearMDC()
