@@ -16,10 +16,6 @@ import com.kinectmessaging.libs.logging.MDCHelper
 import com.kinectmessaging.libs.model.CloudEventsSchema
 import com.kinectmessaging.libs.model.ContactMessages
 import com.kinectmessaging.libs.model.KContactHistory
-import io.cloudevents.CloudEvent
-import io.cloudevents.core.CloudEventUtils.mapData
-import io.cloudevents.core.impl.BaseCloudEvent
-import io.cloudevents.jackson.PojoCloudEventDataMapper
 import net.logstash.logback.argument.StructuredArguments
 import net.logstash.logback.argument.StructuredArguments.kv
 import org.slf4j.LoggerFactory
@@ -51,7 +47,7 @@ class ContactHistoryController {
     ) {
         val decodedEvent = String(Base64.decode(event))
         log.info("${LogConstants.SERVICE_START} {}", kv("request", decodedEvent))
-        val cloudEvent: CloudEventsSchema = jacksonObjectMapper().readValue(decodedEvent)
+        val cloudEvent: CloudEventsSchema = objectMapper.readValue(decodedEvent)
         val headerMap = transactionId?.let { mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId)) } ?: mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, cloudEvent.id))
         headerMap["contact-history-id"] = cloudEvent.id
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
@@ -73,7 +69,7 @@ class ContactHistoryController {
     ) {
         val decodedEvent = String(Base64.decode(event))
         log.info("${LogConstants.SERVICE_START} {}", kv("request", decodedEvent))
-        val cloudEvent: CloudEventsSchema = jacksonObjectMapper().readValue(decodedEvent)
+        val cloudEvent: CloudEventsSchema = objectMapper.readValue(decodedEvent)
         val headerMap = transactionId?.let { mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId)) } ?: mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, cloudEvent.id))
         headerMap["contact-history-id"] = cloudEvent.id
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
