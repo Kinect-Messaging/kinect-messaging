@@ -685,6 +685,9 @@
       ]
     },
     {
+      "type": "com.kinectmessaging.libs.model.CloudEventsSchema"
+    },
+    {
       "type": "com.kinectmessaging.libs.model.ContactMessages",
       "allDeclaredFields": true,
       "methods": [
@@ -6003,6 +6006,9 @@
     },
     {
       "type": "org.springframework.boot.loader.launch.LaunchedClassLoader"
+    },
+    {
+      "type": "org.springframework.boot.logging.LogLevelEditor"
     },
     {
       "type": "org.springframework.boot.logging.java.JavaLoggingSystem$Factory",

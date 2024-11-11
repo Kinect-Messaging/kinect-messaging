@@ -45,8 +45,11 @@ class ApiClient () {
     @Value("\${app.cloud-events.headers.spec-version}")
     lateinit var cloudEventsSpecVersion: String
 
-    @Value("\${app.cloud-events.headers.type}")
-    lateinit var cloudEventsType: String
+    @Value("\${app.cloud-events.headers.type.contact-history}")
+    lateinit var cloudEventsCHType: String
+
+    @Value("\${app.cloud-events.headers.type.email}")
+    lateinit var cloudEventsEmailType: String
 
     @Value("\${app.cloud-events.headers.source}")
     lateinit var cloudEventsSource: String
@@ -74,6 +77,14 @@ class ApiClient () {
         emailWebClient
             .post()
             .header(Defaults.TRANSACTION_ID_HEADER, MDC.get(Defaults.TRANSACTION_ID_HEADER) ?: UUID.randomUUID().toString())
+            .header("aeg-sas-key", contactHistoryTopicAccessKey)
+            .headers {
+                it.set(CloudEventsHeaders.ID, emailData.id)
+                it.set(CloudEventsHeaders.SPEC_VERSION, cloudEventsSpecVersion)
+                it.set(CloudEventsHeaders.TYPE, cloudEventsEmailType)
+                it.set(CloudEventsHeaders.SOURCE, cloudEventsSource)
+                it.set(CloudEventsHeaders.TIME, LocalDateTime.now().toString())
+            }
             .bodyValue(emailData)
             .retrieve()
             .awaitBody<String>()
@@ -86,7 +97,7 @@ class ApiClient () {
             .headers {
                 it.set(CloudEventsHeaders.ID, contactHistory.id)
                 it.set(CloudEventsHeaders.SPEC_VERSION, cloudEventsSpecVersion)
-                it.set(CloudEventsHeaders.TYPE, cloudEventsType)
+                it.set(CloudEventsHeaders.TYPE, cloudEventsCHType)
                 it.set(CloudEventsHeaders.SOURCE, cloudEventsSource)
                 it.set(CloudEventsHeaders.TIME, LocalDateTime.now().toString())
             }
