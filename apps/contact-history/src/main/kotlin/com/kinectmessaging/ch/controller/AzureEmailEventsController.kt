@@ -35,19 +35,19 @@ class AzureEmailEventsController {
     @OptIn(ExperimentalEncodingApi::class)
     @PostMapping(value = ["/delivery"])
     fun consumeEmailDeliveryEvents(
-        @RequestBody event: ByteArray
+        @RequestBody event: CloudEventsSchema,
     ) {
-        val decodedEvent = String(Base64.decode(event))
-        log.info("${LogConstants.SERVICE_START} {}", kv("request", decodedEvent))
-        val cloudEvent: CloudEventsSchema = objectMapper.readValue(decodedEvent)
+//        val decodedEvent = String(Base64.decode(event))
+        log.info("${LogConstants.SERVICE_START} {}", kv("request", event))
+//        val cloudEvent: CloudEventsSchema = objectMapper.readValue(decodedEvent)
         val headerMap = mutableMapOf(Pair(
-            Defaults.TRANSACTION_ID_HEADER, cloudEvent.id))
-        headerMap["contact-history-id"] = cloudEvent.id
+            Defaults.TRANSACTION_ID_HEADER, event.id))
+        headerMap["contact-history-id"] = event.id
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         MDCHelper.addMDC(headerMap)
         log.info("${LogConstants.SERVICE_START} {}", kv("request", event))
 //        val eventData = mapData(event, PojoCloudEventDataMapper.from(objectMapper, DeliveryData::class.java))
-        val eventData = cloudEvent.data
+        val eventData = event.data
         val contactHistory = objectMapper.convertValue<DeliveryData>(eventData)
         val result = contactHistory.let { azureDeliveryEventService.emailDeliveryEventProcessor(contactHistory) }
         log.info(

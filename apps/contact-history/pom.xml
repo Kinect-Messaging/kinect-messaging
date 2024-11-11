@@ -25,21 +25,21 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.cloudevents</groupId>
-            <artifactId>cloudevents-spring</artifactId>
-            <version>${cloud-events.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.cloudevents</groupId>
-            <artifactId>cloudevents-http-basic</artifactId>
-            <version>${cloud-events.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.cloudevents</groupId>
-            <artifactId>cloudevents-json-jackson</artifactId>
-            <version>${cloud-events.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.cloudevents</groupId>-->
+<!--            <artifactId>cloudevents-spring</artifactId>-->
+<!--            <version>${cloud-events.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>io.cloudevents</groupId>-->
+<!--            <artifactId>cloudevents-http-basic</artifactId>-->
+<!--            <version>${cloud-events.version}</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>io.cloudevents</groupId>-->
+<!--            <artifactId>cloudevents-json-jackson</artifactId>-->
+<!--            <version>${cloud-events.version}</version>-->
+<!--        </dependency>-->
     </dependencies>
     <dependencyManagement>
         <dependencies>
