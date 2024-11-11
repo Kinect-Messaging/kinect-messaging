@@ -164,7 +164,10 @@ class EventProcessorService {
         notificationMessages.forEach { notificationMessage ->
             when(notificationMessage.deliveryChannel){
                 DeliveryChannel.EMAIL -> {
-                    apiClient.sendEmail(notificationMessage)
+                    apiClient.sendNotifications(
+                        kMessage = notificationMessage,
+                        type = notificationMessage.deliveryChannel
+                    )
                 }
                 else -> {
                     log.warn("No valid delivery channel found in notification message for event ${event.eventName} with id ${event.eventId}.", kv("Notification Message", notificationMessage))

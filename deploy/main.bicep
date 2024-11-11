@@ -72,6 +72,14 @@ param eventGridContactHisotryURIKeyVaultUrl string
 @description('The key vault url for Azure Event Grid - Contact History access key.')
 param eventGridContactHistoryAccessKeyVaultUrl string
 
+@secure()
+@description('The key vault url for Azure Event Grid - Notifications URI.')
+param eventGridNotificationsURIKeyVaultUrl string
+
+@secure()
+@description('The key vault url for Azure Event Grid - Notifications access key.')
+param eventGridNotificationsAccessKeyVaultUrl string
+
 // Managed Identities
 @secure()
 @description('The resource ID of the user assigned managed identity for accessing key vault.')
@@ -152,6 +160,7 @@ module emailContainerApp 'modules/email.bicep' = if(emailDeployFlag) {
     azureEmailConnectionKeyVaultUrl: azureEmailConnectionKeyVaultUrl
     eventGridContactHisotryURIKeyVaultUrl: eventGridContactHisotryURIKeyVaultUrl
     eventGridContactHistoryAccessKeyVaultUrl: eventGridContactHistoryAccessKeyVaultUrl
+    storageQueueUserAssignedId: storageQueueUserAssignedId
   }
 }
 
@@ -176,6 +185,8 @@ module eventProcessorContainerApp 'modules/event-processor.bicep' = if(eventProc
     eventGridContactHisotryURIKeyVaultUrl: eventGridContactHisotryURIKeyVaultUrl
     eventGridContactHistoryAccessKeyVaultUrl: eventGridContactHistoryAccessKeyVaultUrl
     eventGridUserAssignedId: eventGridUserAssignedId
+    eventGridNotificationsAccessKeyVaultUrl: eventGridNotificationsAccessKeyVaultUrl
+    eventGridNotificationsURIKeyVaultUrl: eventGridNotificationsURIKeyVaultUrl
   }
 }
 

@@ -66,6 +66,14 @@ param eventGridContactHisotryURIKeyVaultUrl string
 @description('The key vault url for Azure Event Grid - Contact History access key.')
 param eventGridContactHistoryAccessKeyVaultUrl string
 
+@secure()
+@description('The key vault url for Azure Event Grid - Notifications URI.')
+param eventGridNotificationsURIKeyVaultUrl string
+
+@secure()
+@description('The key vault url for Azure Event Grid - Notifications access key.')
+param eventGridNotificationsAccessKeyVaultUrl string
+
 
 //@secure()
 //@description('The Application Insights Instrumentation.')
@@ -113,12 +121,22 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
         {
           identity: keyVaultUserAssignedId
           keyVaultUrl: eventGridContactHistoryAccessKeyVaultUrl
-          name: 'aeg-access-key'
+          name: 'aeg-contact-history-key'
         }
         {
           identity: keyVaultUserAssignedId
           keyVaultUrl: eventGridContactHisotryURIKeyVaultUrl
           name: 'aeg-contact-history-url'
+        }
+        {
+          identity: keyVaultUserAssignedId
+          keyVaultUrl: eventGridNotificationsAccessKeyVaultUrl
+          name: 'aeg-notificatiosn-key'
+        }
+        {
+          identity: keyVaultUserAssignedId
+          keyVaultUrl: eventGridNotificationsURIKeyVaultUrl
+          name: 'aeg-notifications-url'
         }
       ]
       registries: !empty(containerRegistryName) ? [
@@ -146,12 +164,20 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
 //            }
               {
                  name: 'app.client.contact-history.access-key'
-                 secretRef: 'aeg-access-key'
+                 secretRef: 'aeg-contact-history-key'
               }
               {
                 name: 'app.client.contact-history.url'
                 secretRef: 'aeg-contact-history-url'
              }
+             {
+              name: 'app.client.notifications.access-key'
+              secretRef: 'aeg-notifications-key'
+           }
+           {
+             name: 'app.client.notifications.url'
+             secretRef: 'aeg-notifications-url'
+          }
           ]
         }
       ]

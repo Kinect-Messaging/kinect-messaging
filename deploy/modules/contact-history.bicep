@@ -49,15 +49,19 @@ param minInstance int
 param maxInstance int
 
 // Key Vault Secrets
+@secure()
 @description('The resource ID of the user assigned managed identity for accessing key vault.')
 param keyVaultUserAssignedId string
 
+@secure()
 @description('The resource ID of the user assigned managed identity for accessing storage queues.')
 param storageQueueUserAssignedId string
 
+@secure()
 @description('The key vault url for Spring Data Mongo DB URI.')
 param springDataMongoDBURIKeyVaultUrl string
 
+@secure()
 @description('The key vault url for Spring Data Mongo DB name.')
 param springDataContactHistoryDBNameKeyVaultUrl string
 

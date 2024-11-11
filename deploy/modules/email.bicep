@@ -53,6 +53,11 @@ param maxInstance int
 @description('The resource ID of the user assigned managed identity for accessing key vault.')
 param keyVaultUserAssignedId string
 
+@secure()
+@description('The resource ID of the user assigned managed identity for accessing storage queues.')
+param storageQueueUserAssignedId string
+
+
 // Key Vault Secrets
 @secure()
 @description('The key vault url for Azure Email Connection.')
@@ -85,6 +90,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
     type: 'UserAssigned'
    userAssignedIdentities: {
        '${keyVaultUserAssignedId}': {}
+       '${storageQueueUserAssignedId}': {}
    }
  }
   properties: {
@@ -116,7 +122,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
         {
           identity: keyVaultUserAssignedId
           keyVaultUrl: eventGridContactHistoryAccessKeyVaultUrl
-          name: 'aeg-access-key'
+          name: 'aeg-contact-history-access-key'
         }
         {
           identity: keyVaultUserAssignedId
@@ -153,7 +159,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
             }
             {
               name: 'app.client.contact-history.access-key'
-              secretRef: 'aeg-access-key'
+              secretRef: 'aeg-contact-history-access-key'
            }
            {
              name: 'app.client.contact-history.url'
