@@ -13,10 +13,6 @@ import com.kinectmessaging.libs.logging.MDCHelper
 import com.kinectmessaging.libs.model.CloudEventsSchema
 import com.kinectmessaging.libs.model.ContactMessages
 import com.kinectmessaging.libs.model.KContactHistory
-import io.cloudevents.CloudEvent
-import io.cloudevents.core.CloudEventUtils.mapData
-import io.cloudevents.core.impl.BaseCloudEvent
-import io.cloudevents.jackson.PojoCloudEventDataMapper
 import net.logstash.logback.argument.StructuredArguments
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
