@@ -13,7 +13,6 @@ param tags object = {}
 @description('The resource Id of the container apps environment.')
 param containerAppsEnvironmentId string
 
-
 @description('The name of the container for the service. The name is use as Dapr App ID.')
 param containerName string
 
@@ -74,17 +73,13 @@ param eventGridNotificationsURIKeyVaultUrl string
 @description('The key vault url for Azure Event Grid - Notifications access key.')
 param eventGridNotificationsAccessKeyVaultUrl string
 
-
 //@secure()
 //@description('The Application Insights Instrumentation.')
 //param appInsightsInstrumentationKey string
 
-
 // ------------------
 // RESOURCES
 // ------------------
-
-
 
 resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   name: containerName
@@ -92,11 +87,11 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   tags: tags
   identity: {
     type: 'UserAssigned'
-   userAssignedIdentities: {
-       '${keyVaultUserAssignedId}': {}
-       '${eventGridUserAssignedId}': {}
-   }
- }
+    userAssignedIdentities: {
+      '${keyVaultUserAssignedId}': {}
+      '${eventGridUserAssignedId}': {}
+    }
+  }
   properties: {
     managedEnvironmentId: containerAppsEnvironmentId
     configuration: {
@@ -131,7 +126,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
         {
           identity: keyVaultUserAssignedId
           keyVaultUrl: eventGridNotificationsAccessKeyVaultUrl
-          name: 'aeg-notificatiosn-key'
+          name: 'aeg-notifications-key'
         }
         {
           identity: keyVaultUserAssignedId
@@ -139,14 +134,16 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
           name: 'aeg-notifications-url'
         }
       ]
-      registries: !empty(containerRegistryName) ? [
-        {
-          server: containerRegistryName
-          username: containerRegistryUsername
-          passwordSecretRef: 'ghcr-password'
-//          identity: containerRegistryUserAssignedIdentityId
-        }
-      ] : []
+      registries: !empty(containerRegistryName)
+        ? [
+            {
+              server: containerRegistryName
+              username: containerRegistryUsername
+              passwordSecretRef: 'ghcr-password'
+              //          identity: containerRegistryUserAssignedIdentityId
+            }
+          ]
+        : []
     }
     template: {
       containers: [
@@ -158,26 +155,22 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
             memory: memory
           }
           env: [
-//            {
-//              name: 'ApplicationInsights__InstrumentationKey'
-//              secretRef: 'appinsights-key'
-//            }
-              {
-                 name: 'app.client.contact-history.access-key'
-                 secretRef: 'aeg-contact-history-key'
-              }
-              {
-                name: 'app.client.contact-history.url'
-                secretRef: 'aeg-contact-history-url'
-             }
-             {
+            {
+              name: 'app.client.contact-history.access-key'
+              secretRef: 'aeg-contact-history-key'
+            }
+            {
+              name: 'app.client.contact-history.url'
+              secretRef: 'aeg-contact-history-url'
+            }
+            {
               name: 'app.client.notifications.access-key'
               secretRef: 'aeg-notifications-key'
-           }
-           {
-             name: 'app.client.notifications.url'
-             secretRef: 'aeg-notifications-url'
-          }
+            }
+            {
+              name: 'app.client.notifications.url'
+              secretRef: 'aeg-notifications-url'
+            }
           ]
         }
       ]
@@ -187,7 +180,6 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
       }
     }
   }
-
 }
 
 // ------------------
