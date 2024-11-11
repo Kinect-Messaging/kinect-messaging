@@ -48,13 +48,23 @@ param minInstance int
 @description('The maximum instance for the service.')
 param maxInstance int
 
-// Key Vault Secrets
+// User Assigned Identities
+@secure()
 @description('The resource ID of the user assigned managed identity for accessing key vault.')
 param keyVaultUserAssignedId string
 
+// Key Vault Secrets
+@secure()
 @description('The key vault url for Azure Email Connection.')
 param azureEmailConnectionKeyVaultUrl string
 
+@secure()
+@description('The key vault url for Azure Event Grid - Contact History URI.')
+param eventGridContactHisotryURIKeyVaultUrl string
+
+@secure()
+@description('The key vault url for Azure Event Grid - Contact History access key.')
+param eventGridContactHistoryAccessKeyVaultUrl string
 
 //@secure()
 //@description('The Application Insights Instrumentation.')
@@ -103,6 +113,16 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
             keyVaultUrl: azureEmailConnectionKeyVaultUrl
             name: 'app-email-azure-connectionstring'
         }
+        {
+          identity: keyVaultUserAssignedId
+          keyVaultUrl: eventGridContactHistoryAccessKeyVaultUrl
+          name: 'aeg-access-key'
+        }
+        {
+          identity: keyVaultUserAssignedId
+          keyVaultUrl: eventGridContactHisotryURIKeyVaultUrl
+          name: 'aeg-contact-history-url'
+        }
       ]
       registries: !empty(containerRegistryName) ? [
         {
@@ -131,6 +151,14 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
               name: 'app.email.azure.connectionString'
               secretRef: 'app-email-azure-connectionstring'
             }
+            {
+              name: 'app.client.contact-history.access-key'
+              secretRef: 'aeg-access-key'
+           }
+           {
+             name: 'app.client.contact-history.url'
+             secretRef: 'aeg-contact-history-url'
+          }
           ]
         }
       ]

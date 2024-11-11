@@ -150,6 +150,8 @@ module emailContainerApp 'modules/email.bicep' = if(emailDeployFlag) {
     minInstance: minInstance
     portNumber: portNumber
     azureEmailConnectionKeyVaultUrl: azureEmailConnectionKeyVaultUrl
+    eventGridContactHisotryURIKeyVaultUrl: eventGridContactHisotryURIKeyVaultUrl
+    eventGridContactHistoryAccessKeyVaultUrl: eventGridContactHistoryAccessKeyVaultUrl
   }
 }
 
