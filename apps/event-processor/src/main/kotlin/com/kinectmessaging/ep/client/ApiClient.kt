@@ -73,7 +73,7 @@ class ApiClient () {
             .retrieve()
             .awaitBodyOrNull<MessageConfig>()
 
-    suspend fun sendNotifications(kMessage: KMessage, type: DeliveryChannel): String =
+    suspend fun sendNotifications(kMessage: KMessage, type: DeliveryChannel) =
         notificationsWebClient
             .post()
             .header(Defaults.TRANSACTION_ID_HEADER, MDC.get(Defaults.TRANSACTION_ID_HEADER) ?: UUID.randomUUID().toString())
@@ -90,7 +90,7 @@ class ApiClient () {
             }
             .bodyValue(kMessage)
             .retrieve()
-            .awaitBody<String>()
+            .awaitBodilessEntity()
 
     suspend fun createContactHistory(contactHistory: KContactHistory): ResponseEntity<Void> =
         contactHistoryWebClient
