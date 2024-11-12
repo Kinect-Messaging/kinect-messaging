@@ -1,5 +1,6 @@
 package com.kinectmessaging.email.controller
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.convertValue
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/kinect/messaging/email")
 class EmailController {
 
-    private val objectMapper: ObjectMapper = ObjectMapper().registerKotlinModule().registerModule(JavaTimeModule())
+    private val objectMapper: ObjectMapper = ObjectMapper().registerKotlinModule().registerModule(JavaTimeModule()).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
     private val log = LoggerFactory.getLogger(this::class.java)
 
     @Autowired
