@@ -48,13 +48,28 @@ param minInstance int
 @description('The maximum instance for the service.')
 param maxInstance int
 
-// Key Vault Secrets
+// User Assigned Identities
+@secure()
 @description('The resource ID of the user assigned managed identity for accessing key vault.')
-param keyVaultUserAssignedIdentityId string
+param keyVaultUserAssignedId string
 
+@secure()
+@description('The resource ID of the user assigned managed identity for accessing storage queues.')
+param storageQueueUserAssignedId string
+
+
+// Key Vault Secrets
+@secure()
 @description('The key vault url for Azure Email Connection.')
 param azureEmailConnectionKeyVaultUrl string
 
+@secure()
+@description('The key vault url for Azure Event Grid - Contact History URI.')
+param eventGridContactHistoryURIKeyVaultUrl string
+
+@secure()
+@description('The key vault url for Azure Event Grid - Contact History access key.')
+param eventGridContactHistoryAccessKeyVaultUrl string
 
 //@secure()
 //@description('The Application Insights Instrumentation.')
@@ -74,7 +89,8 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   identity: {
     type: 'UserAssigned'
    userAssignedIdentities: {
-       '${keyVaultUserAssignedIdentityId}': {}
+       '${keyVaultUserAssignedId}': {}
+       '${storageQueueUserAssignedId}': {}
    }
  }
   properties: {
@@ -99,9 +115,19 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
           value: containerRegistryPassword
         }
         {
-            identity: keyVaultUserAssignedIdentityId
+            identity: keyVaultUserAssignedId
             keyVaultUrl: azureEmailConnectionKeyVaultUrl
             name: 'app-email-azure-connectionstring'
+        }
+        {
+          identity: keyVaultUserAssignedId
+          keyVaultUrl: eventGridContactHistoryAccessKeyVaultUrl
+          name: 'aeg-contact-history-access-key'
+        }
+        {
+          identity: keyVaultUserAssignedId
+          keyVaultUrl: eventGridContactHistoryURIKeyVaultUrl
+          name: 'aeg-contact-history-url'
         }
       ]
       registries: !empty(containerRegistryName) ? [
@@ -131,6 +157,14 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
               name: 'app.email.azure.connectionString'
               secretRef: 'app-email-azure-connectionstring'
             }
+            {
+              name: 'app.client.contact-history.access-key'
+              secretRef: 'aeg-contact-history-access-key'
+           }
+           {
+             name: 'app.client.contact-history.url'
+             secretRef: 'aeg-contact-history-url'
+          }
           ]
         }
       ]

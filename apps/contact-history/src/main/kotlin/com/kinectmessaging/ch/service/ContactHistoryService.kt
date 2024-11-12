@@ -56,7 +56,7 @@ class ContactHistoryService {
                 messages = updatedContactMessage
             )
             contactHistoryRepository.save(updatedContactHistoryEntity)
-        } ?: log.error("No Contact History record for contact message id - ${contactMessage.messageId}")
+        } ?: throw InvalidInputException("No Contact History record for contact message id - ${contactMessage.messageId}")
 
     }
 
@@ -88,7 +88,7 @@ class ContactHistoryService {
                 messages = updatedContactMessage
             )
             contactHistoryRepository.save(updatedContactHistoryEntity)
-        } ?: log.error("No Contact History record for delivery tracking id - $deliveryTrackingId")
+        } ?: throw InvalidInputException("No Contact History record for delivery tracking id - $deliveryTrackingId")
 
     }
 

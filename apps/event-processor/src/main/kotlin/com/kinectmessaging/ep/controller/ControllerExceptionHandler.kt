@@ -1,4 +1,4 @@
-package com.kinectmessaging.ch.controller
+package com.kinectmessaging.ep.controller
 
 import com.kinectmessaging.libs.common.ErrorConstants
 import com.kinectmessaging.libs.exception.ErrorMessage

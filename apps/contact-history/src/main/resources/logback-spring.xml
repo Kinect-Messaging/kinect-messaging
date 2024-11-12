@@ -1,4 +1,4 @@
-<!-- logback.xml -->
+<!-- logback-spring.xml -->
 <configuration>
     <springProfile name="local">
         <include resource="org/springframework/boot/logging/logback/base.xml"/>

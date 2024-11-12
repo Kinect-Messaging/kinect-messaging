@@ -49,6 +49,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>process-aot</id>
+                        <goals>
+                            <goal>process-aot</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -71,4 +79,91 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <image>
+                                <env>
+                                    <BP_JVM_VERSION>23</BP_JVM_VERSION>
+                                    <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+                                    <BP_SPRING_AOT_ENABLED>true</BP_SPRING_AOT_ENABLED>
+                                    <BPL_SPRING_AOT_ENABLED>true</BPL_SPRING_AOT_ENABLED>
+                                    <JAVA_TOOL_OPTIONS>-Dspring.aot.enabled=true -DskipTests</JAVA_TOOL_OPTIONS>
+                                    <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>-H:-AddAllFileSystemProviders --initialize-at-build-time=org.slf4j,ch.qos.logback,com.fasterxml.jackson.core --trace-object-instantiation=com.fasterxml.jackson.core.Base64Variants --initialize-at-build-time=org.bouncycastle --initialize-at-build-time=net.i2p.crypto.eddsa.EdDSASecurityProvider --initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$Default --initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$NonceAndIV</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+                                </env>
+                                <buildCache>
+                                    <volume>
+                                        <name>cache-${project.artifactId}.build</name>
+                                    </volume>
+                                </buildCache>
+                                <launchCache>
+                                    <volume>
+                                        <name>cache-${project.artifactId}.launch</name>
+                                    </volume>
+                                </launchCache>
+                            </image>
+                            <docker>
+                                <publishRegistry>
+                                    <!--suppress UnresolvedMavenProperty -->
+                                    <url>${docker.publishRegistry.url}</url>
+                                    <!--suppress UnresolvedMavenProperty -->
+                                    <username>${docker.publishRegistry.username}</username>
+                                    <!--suppress UnresolvedMavenProperty -->
+                                    <password>${docker.publishRegistry.password}</password>
+                                </publishRegistry>
+                            </docker>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>build-image</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>build-image-no-fork</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>process-aot</id>
+                                <goals>
+                                    <goal>process-aot</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <configuration>
+                            <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+                            <metadataRepository>
+                                <enabled>true</enabled>
+                            </metadataRepository>
+                            <buildArgs>
+                                <buildArg>-H:-AddAllFileSystemProviders</buildArg>
+                                <buildArg>--initialize-at-build-time=org.slf4j,ch.qos.logback,com.fasterxml.jackson.core</buildArg>
+                                <buildArg>--initialize-at-build-time=org.bouncycastle</buildArg>
+                                <buildArg>--initialize-at-build-time=net.i2p.crypto.eddsa.EdDSASecurityProvider</buildArg>
+                                <buildArg>--initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$Default</buildArg>
+                                <buildArg>--initialize-at-run-time=org.bouncycastle.jcajce.provider.drbg.DRBG$NonceAndIV</buildArg>
+                            </buildArgs>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>native</id>
+                                <goals>
+                                    <goal>compile-no-fork</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

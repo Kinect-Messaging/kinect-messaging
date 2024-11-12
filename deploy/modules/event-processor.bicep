@@ -13,7 +13,6 @@ param tags object = {}
 @description('The resource Id of the container apps environment.')
 param containerAppsEnvironmentId string
 
-
 @description('The name of the container for the service. The name is use as Dapr App ID.')
 param containerName string
 
@@ -48,21 +47,39 @@ param minInstance int
 @description('The maximum instance for the service.')
 param maxInstance int
 
-// Key Vault Secrets
+// User Assigned Identities
+@secure()
 @description('The resource ID of the user assigned managed identity for accessing key vault.')
-param keyVaultUserAssignedIdentityId string
+param keyVaultUserAssignedId string
 
+@secure()
+@description('The resource ID of the user assigned managed identity for accessing event grid.')
+param eventGridUserAssignedId string
+
+// Key Vault Secrets
+@secure()
+@description('The key vault url for Azure Event Grid - Contact History URI.')
+param eventGridContactHistoryURIKeyVaultUrl string
+
+@secure()
+@description('The key vault url for Azure Event Grid - Contact History access key.')
+param eventGridContactHistoryAccessKeyVaultUrl string
+
+@secure()
+@description('The key vault url for Azure Event Grid - Notifications URI.')
+param eventGridNotificationsURIKeyVaultUrl string
+
+@secure()
+@description('The key vault url for Azure Event Grid - Notifications access key.')
+param eventGridNotificationsAccessKeyVaultUrl string
 
 //@secure()
 //@description('The Application Insights Instrumentation.')
 //param appInsightsInstrumentationKey string
 
-
 // ------------------
 // RESOURCES
 // ------------------
-
-
 
 resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   name: containerName
@@ -70,10 +87,11 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
   tags: tags
   identity: {
     type: 'UserAssigned'
-   userAssignedIdentities: {
-       '${keyVaultUserAssignedIdentityId}': {}
-   }
- }
+    userAssignedIdentities: {
+      '${keyVaultUserAssignedId}': {}
+      '${eventGridUserAssignedId}': {}
+    }
+  }
   properties: {
     managedEnvironmentId: containerAppsEnvironmentId
     configuration: {
@@ -95,15 +113,37 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
           name: 'ghcr-password'
           value: containerRegistryPassword
         }
-      ]
-      registries: !empty(containerRegistryName) ? [
         {
-          server: containerRegistryName
-          username: containerRegistryUsername
-          passwordSecretRef: 'ghcr-password'
-//          identity: containerRegistryUserAssignedIdentityId
+          identity: keyVaultUserAssignedId
+          keyVaultUrl: eventGridContactHistoryAccessKeyVaultUrl
+          name: 'aeg-contact-history-key'
         }
-      ] : []
+        {
+          identity: keyVaultUserAssignedId
+          keyVaultUrl: eventGridContactHistoryURIKeyVaultUrl
+          name: 'aeg-contact-history-url'
+        }
+        {
+          identity: keyVaultUserAssignedId
+          keyVaultUrl: eventGridNotificationsAccessKeyVaultUrl
+          name: 'aeg-notifications-key'
+        }
+        {
+          identity: keyVaultUserAssignedId
+          keyVaultUrl: eventGridNotificationsURIKeyVaultUrl
+          name: 'aeg-notifications-url'
+        }
+      ]
+      registries: !empty(containerRegistryName)
+        ? [
+            {
+              server: containerRegistryName
+              username: containerRegistryUsername
+              passwordSecretRef: 'ghcr-password'
+              //          identity: containerRegistryUserAssignedIdentityId
+            }
+          ]
+        : []
     }
     template: {
       containers: [
@@ -115,10 +155,22 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
             memory: memory
           }
           env: [
-//            {
-//              name: 'ApplicationInsights__InstrumentationKey'
-//              secretRef: 'appinsights-key'
-//            }
+            {
+              name: 'app.client.contact-history.access-key'
+              secretRef: 'aeg-contact-history-key'
+            }
+            {
+              name: 'app.client.contact-history.url'
+              secretRef: 'aeg-contact-history-url'
+            }
+            {
+              name: 'app.client.notifications.access-key'
+              secretRef: 'aeg-notifications-key'
+            }
+            {
+              name: 'app.client.notifications.url'
+              secretRef: 'aeg-notifications-url'
+            }
           ]
         }
       ]
@@ -128,7 +180,6 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
       }
     }
   }
-
 }
 
 // ------------------

@@ -1,10 +1,8 @@
 package com.kinectmessaging.ep.client
 
+import com.kinectmessaging.libs.common.CloudEventsHeaders
 import com.kinectmessaging.libs.common.Defaults
-import com.kinectmessaging.libs.model.JourneyConfig
-import com.kinectmessaging.libs.model.KContactHistory
-import com.kinectmessaging.libs.model.KMessage
-import com.kinectmessaging.libs.model.MessageConfig
+import com.kinectmessaging.libs.model.*
 import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -18,7 +16,9 @@ import org.springframework.web.reactive.function.client.awaitBodilessEntity
 import org.springframework.web.reactive.function.client.awaitBody
 import org.springframework.web.reactive.function.client.awaitBodyOrNull
 import reactor.netty.http.client.HttpClient
+import java.time.LocalDateTime
 import java.util.*
+
 
 var httpClient: HttpClient = HttpClient
     .create()
@@ -34,16 +34,34 @@ class ApiClient () {
     lateinit var messageWebClient: WebClient
 
     @Autowired
-    lateinit var emailWebClient: WebClient
+    lateinit var notificationsWebClient: WebClient
 
     @Autowired
     lateinit var contactHistoryWebClient: WebClient
 
+    @Value("\${app.cloud-events.headers.spec-version}")
+    lateinit var cloudEventsSpecVersion: String
+
+    @Value("\${app.cloud-events.headers.type.contact-history}")
+    lateinit var cloudEventsCHType: String
+
+    @Value("\${app.cloud-events.headers.type.email}")
+    lateinit var cloudEventsEmailType: String
+
+    @Value("\${app.cloud-events.headers.source}")
+    lateinit var cloudEventsSource: String
+
+    @Value("\${app.client.contact-history.access-key}")
+    lateinit var contactHistoryTopicAccessKey: String
+
+    @Value("\${app.client.notifications.access-key}")
+    lateinit var notificationsTopicAccessKey: String
+
     suspend fun getJourneyConfigsByEventName(eventName: String): List<JourneyConfig>? =
         journeyWebClient
             .get()
-            .uri("?eventName=$eventName")
-            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get("transaction-id") ?: UUID.randomUUID().toString())
+            .uri("/?eventName=$eventName")
+            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get(Defaults.TRANSACTION_ID_HEADER) ?: UUID.randomUUID().toString())
             .retrieve()
             .awaitBodyOrNull<List<JourneyConfig>>()
 
@@ -51,22 +69,41 @@ class ApiClient () {
         messageWebClient
             .get()
             .uri("/$id")
-            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get("transaction-id") ?: UUID.randomUUID().toString())
+            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get(Defaults.TRANSACTION_ID_HEADER) ?: UUID.randomUUID().toString())
             .retrieve()
             .awaitBodyOrNull<MessageConfig>()
 
-    suspend fun sendEmail(emailData: KMessage): String =
-        emailWebClient
+    suspend fun sendNotifications(kMessage: KMessage, type: DeliveryChannel) =
+        notificationsWebClient
             .post()
-            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get("transaction-id") ?: UUID.randomUUID().toString())
-            .bodyValue(emailData)
+            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get(Defaults.TRANSACTION_ID_HEADER) ?: UUID.randomUUID().toString())
+            .header("aeg-sas-key", notificationsTopicAccessKey)
+            .headers {
+                it.set(CloudEventsHeaders.ID, kMessage.id)
+                it.set(CloudEventsHeaders.SPEC_VERSION, cloudEventsSpecVersion)
+                when(type){
+                    DeliveryChannel.EMAIL -> it.set(CloudEventsHeaders.TYPE, cloudEventsEmailType)
+                    else -> TODO()
+                }
+                it.set(CloudEventsHeaders.SOURCE, cloudEventsSource)
+                it.set(CloudEventsHeaders.TIME, LocalDateTime.now().toString())
+            }
+            .bodyValue(kMessage)
             .retrieve()
-            .awaitBody<String>()
+            .awaitBodilessEntity()
 
     suspend fun createContactHistory(contactHistory: KContactHistory): ResponseEntity<Void> =
         contactHistoryWebClient
             .post()
-            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get("transaction-id") ?: UUID.randomUUID().toString())
+            .header(Defaults.TRANSACTION_ID_HEADER, MDC.get(Defaults.TRANSACTION_ID_HEADER) ?: UUID.randomUUID().toString())
+            .header("aeg-sas-key", contactHistoryTopicAccessKey)
+            .headers {
+                it.set(CloudEventsHeaders.ID, contactHistory.id)
+                it.set(CloudEventsHeaders.SPEC_VERSION, cloudEventsSpecVersion)
+                it.set(CloudEventsHeaders.TYPE, cloudEventsCHType)
+                it.set(CloudEventsHeaders.SOURCE, cloudEventsSource)
+                it.set(CloudEventsHeaders.TIME, LocalDateTime.now().toString())
+            }
             .bodyValue(contactHistory)
             .retrieve()
             .awaitBodilessEntity()
@@ -79,8 +116,8 @@ class Config{
     lateinit var journeyUrl: String
     @Value("\${app.client.message.url}")
     lateinit var messageUrl: String
-    @Value("\${app.client.email.url}")
-    lateinit var emailUrl: String
+    @Value("\${app.client.notifications.url}")
+    lateinit var notificationsUrl: String
     @Value("\${app.client.contact-history.url}")
     lateinit var contactHistoryUrl: String
 
@@ -101,11 +138,11 @@ class Config{
             .build()
 
     @Bean
-    fun emailWebClient(builder: WebClient.Builder): WebClient =
+    fun notificationsWebClient(builder: WebClient.Builder): WebClient =
         builder
             .clone()
             .clientConnector(ReactorClientHttpConnector(httpClient))
-            .baseUrl(emailUrl)
+            .baseUrl(notificationsUrl)
             .build()
 
     @Bean

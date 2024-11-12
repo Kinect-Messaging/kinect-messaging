@@ -113,7 +113,7 @@ jobs:
         run: |
           cd apps/${{ env.APP_NAME }}
           mvn --batch-mode spring-boot:build-image \
-          -Pnative,publish \
+          -Pnative \
           -DskipTests \
           -Ddocker.publishRegistry.username=${{ github.actor }} \
           -Ddocker.publishRegistry.password=${{ secrets.GITHUB_TOKEN }} \

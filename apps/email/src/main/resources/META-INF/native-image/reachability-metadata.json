@@ -7,6 +7,9 @@
       "type": "[I"
     },
     {
+      "type": "[Lcom.azure.communication.email.models.EmailSendStatus;"
+    },
+    {
       "type": "[Lcom.fasterxml.jackson.databind.deser.BeanDeserializerModifier;"
     },
     {
@@ -25,6 +28,9 @@
       "type": "[Lcom.fasterxml.jackson.databind.ser.Serializers;"
     },
     {
+      "type": "[Ljava.awt.datatransfer.DataFlavor;"
+    },
+    {
       "type": "[Ljava.lang.Class;"
     },
     {
@@ -35,6 +41,30 @@
     },
     {
       "type": "[Ljava.lang.annotation.Annotation;"
+    },
+    {
+      "type": "[Ljava.lang.reflect.AnnotatedType;"
+    },
+    {
+      "type": "[Ljava.lang.reflect.Constructor;"
+    },
+    {
+      "type": "[Ljava.lang.reflect.Field;"
+    },
+    {
+      "type": "[Ljava.lang.reflect.Method;"
+    },
+    {
+      "type": "[Ljava.lang.reflect.RecordComponent;"
+    },
+    {
+      "type": "[Ljava.lang.reflect.Type;"
+    },
+    {
+      "type": "[Ljava.lang.reflect.TypeVariable;"
+    },
+    {
+      "type": "[Ljavax.activation.CommandInfo;"
     },
     {
       "type": "[Ljavax.mail.Address;"
@@ -70,7 +100,8 @@
       ]
     },
     {
-      "type": "boolean"
+      "type": "boolean",
+      "allDeclaredFields": true
     },
     {
       "type": "brave.Tracer"
@@ -138,16 +169,209 @@
       "type": "co.elastic.clients.transport.ElasticsearchTransport"
     },
     {
+      "type": "com.azure.communication.email.implementation.models.EmailContent",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "com.azure.communication.email.implementation.models.EmailMessage",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "com.azure.communication.email.implementation.models.EmailRecipients",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "com.azure.communication.email.implementation.models.EmailSendResult",
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.String",
+            "com.azure.communication.email.models.EmailSendStatus"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.azure.communication.email.implementation.models.EmailsSendHeaders",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "com.azure.core.http.HttpHeaders"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.azure.communication.email.implementation.models.EmailsSendResponse",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "com.azure.core.http.HttpRequest",
+            "int",
+            "com.azure.core.http.HttpHeaders",
+            "com.azure.communication.email.implementation.models.EmailSendResult",
+            "com.azure.communication.email.implementation.models.EmailsSendHeaders"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.azure.communication.email.implementation.models.ErrorAdditionalInfo",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "com.azure.communication.email.implementation.models.ErrorDetail",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "com.azure.communication.email.models.EmailAddress",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "com.azure.communication.email.models.EmailSendResult",
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.String",
+            "com.azure.communication.email.models.EmailSendStatus",
+            "com.azure.core.models.ResponseError"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.azure.communication.email.models.EmailSendStatus",
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "fromString",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.azure.core.http.HttpHeaderName",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.azure.core.http.netty.NettyAsyncHttpClientProvider"
+    },
+    {
+      "type": "com.azure.core.http.netty.implementation.AzureSdkHandler"
+    },
+    {
+      "type": "com.azure.core.implementation.util.SerializableContent",
+      "fields": [
+        {
+          "name": "bytes"
+        }
+      ]
+    },
+    {
+      "type": "com.azure.core.models.ResponseError",
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "fromJson",
+          "parameterTypes": [
+            "com.azure.json.JsonReader"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.azure.core.util.ExpandableEnum"
+    },
+    {
+      "type": "com.azure.core.util.ExpandableStringEnum",
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "toString",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.azure.core.util.Header",
+      "fields": [
+        {
+          "name": "cachedStringValue"
+        }
+      ]
+    },
+    {
+      "type": "com.azure.core.util.QueryParameter",
+      "fields": [
+        {
+          "name": "cachedStringValue"
+        }
+      ]
+    },
+    {
+      "type": "com.azure.core.util.polling.LongRunningOperationStatus",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.azure.core.util.polling.implementation.PollResult",
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        },
+        {
+          "name": "setStatus",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "com.azure.json.JsonSerializable"
+    },
+    {
       "type": "com.couchbase.client.java.Bucket"
     },
     {
       "type": "com.couchbase.client.java.Cluster"
     },
     {
-      "type": "com.dashjoin.jsonata.Functions"
+      "type": "com.datastax.oss.driver.api.core.CqlSession"
     },
     {
-      "type": "com.datastax.oss.driver.api.core.CqlSession"
+      "type": "com.fasterxml.jackson.core.JsonFactory",
+      "methods": [
+        {
+          "name": "setStreamReadConstraints",
+          "parameterTypes": [
+            "com.fasterxml.jackson.core.StreamReadConstraints"
+          ]
+        }
+      ]
     },
     {
       "type": "com.fasterxml.jackson.core.JsonGenerator"
@@ -157,14 +381,35 @@
       "allDeclaredFields": true
     },
     {
+      "type": "com.fasterxml.jackson.core.StreamReadConstraints",
+      "methods": [
+        {
+          "name": "builder",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.fasterxml.jackson.core.StreamReadConstraints$Builder",
+      "methods": [
+        {
+          "name": "build",
+          "parameterTypes": []
+        },
+        {
+          "name": "maxStringLength",
+          "parameterTypes": [
+            "int"
+          ]
+        }
+      ]
+    },
+    {
       "type": "com.fasterxml.jackson.core.TreeCodec",
       "allDeclaredFields": true
     },
     {
       "type": "com.fasterxml.jackson.core.Versioned"
-    },
-    {
-      "type": "com.fasterxml.jackson.databind.JsonNode"
     },
     {
       "type": "com.fasterxml.jackson.databind.Module",
@@ -264,11 +509,11 @@
       "type": "com.ibm.lang.management.OperatingSystemMXBean"
     },
     {
-      "type": "com.kinectmessaging.ep.EventProcessorApplication",
+      "type": "com.kinectmessaging.email.KinectEmailApplication",
       "allDeclaredFields": true
     },
     {
-      "type": "com.kinectmessaging.ep.EventProcessorApplication$$SpringCGLIB$$0",
+      "type": "com.kinectmessaging.email.KinectEmailApplication$$SpringCGLIB$$0",
       "allDeclaredFields": true,
       "fields": [
         {
@@ -289,7 +534,7 @@
       ]
     },
     {
-      "type": "com.kinectmessaging.ep.EventProcessorApplicationKt",
+      "type": "com.kinectmessaging.email.KinectEmailApplicationKt",
       "methods": [
         {
           "name": "main",
@@ -300,7 +545,7 @@
       ]
     },
     {
-      "type": "com.kinectmessaging.ep.client.ApiClient",
+      "type": "com.kinectmessaging.email.client.ApiClient",
       "allDeclaredFields": true,
       "methods": [
         {
@@ -310,7 +555,7 @@
       ]
     },
     {
-      "type": "com.kinectmessaging.ep.client.Config",
+      "type": "com.kinectmessaging.email.client.Config",
       "allDeclaredFields": true,
       "methods": [
         {
@@ -320,13 +565,7 @@
           ]
         },
         {
-          "name": "emailWebClient",
-          "parameterTypes": [
-            "org.springframework.web.reactive.function.client.WebClient$Builder"
-          ]
-        },
-        {
-          "name": "messageWebClient",
+          "name": "templateWebClient",
           "parameterTypes": [
             "org.springframework.web.reactive.function.client.WebClient$Builder"
           ]
@@ -334,7 +573,7 @@
       ]
     },
     {
-      "type": "com.kinectmessaging.ep.client.Config$$SpringCGLIB$$0",
+      "type": "com.kinectmessaging.email.client.Config$$SpringCGLIB$$0",
       "allDeclaredFields": true,
       "fields": [
         {
@@ -355,7 +594,7 @@
       ]
     },
     {
-      "type": "com.kinectmessaging.ep.client.Config$$SpringCGLIB$$FastClass$$0",
+      "type": "com.kinectmessaging.email.client.Config$$SpringCGLIB$$FastClass$$0",
       "methods": [
         {
           "name": "<init>",
@@ -366,7 +605,7 @@
       ]
     },
     {
-      "type": "com.kinectmessaging.ep.client.Config$$SpringCGLIB$$FastClass$$1",
+      "type": "com.kinectmessaging.email.client.Config$$SpringCGLIB$$FastClass$$1",
       "methods": [
         {
           "name": "<init>",
@@ -377,62 +616,7 @@
       ]
     },
     {
-      "type": "com.kinectmessaging.ep.client.JourneyConfig",
-      "allDeclaredFields": true,
-      "methods": [
-        {
-          "name": "journeyWebClient",
-          "parameterTypes": [
-            "org.springframework.web.reactive.function.client.WebClient$Builder"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.ep.client.JourneyConfig$$SpringCGLIB$$0",
-      "allDeclaredFields": true,
-      "fields": [
-        {
-          "name": "CGLIB$FACTORY_DATA"
-        }
-      ],
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        },
-        {
-          "name": "CGLIB$SET_STATIC_CALLBACKS",
-          "parameterTypes": [
-            "org.springframework.cglib.proxy.Callback[]"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.ep.client.JourneyConfig$$SpringCGLIB$$FastClass$$0",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.Class"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.ep.client.JourneyConfig$$SpringCGLIB$$FastClass$$1",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.Class"
-          ]
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.ep.client.JourneyConfigClient",
+      "type": "com.kinectmessaging.email.controller.ControllerExceptionHandler",
       "allDeclaredFields": true,
       "methods": [
         {
@@ -442,17 +626,7 @@
       ]
     },
     {
-      "type": "com.kinectmessaging.ep.controller.ControllerExceptionHandler",
-      "allDeclaredFields": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.ep.controller.EventProcessorController",
+      "type": "com.kinectmessaging.email.controller.EmailController",
       "allDeclaredFields": true,
       "methods": [
         {
@@ -460,26 +634,26 @@
           "parameterTypes": []
         },
         {
-          "name": "processEvent",
+          "name": "sendEmail",
           "parameterTypes": [
-            "com.kinectmessaging.libs.model.KEvent",
-            "java.util.Map",
+            "com.kinectmessaging.libs.model.KMessage",
+            "java.lang.String",
             "kotlin.coroutines.Continuation"
           ]
         },
         {
-          "name": "processEvent$suspendImpl",
+          "name": "sendEmail$suspendImpl",
           "parameterTypes": [
-            "com.kinectmessaging.ep.controller.EventProcessorController",
-            "com.kinectmessaging.libs.model.KEvent",
-            "java.util.Map",
+            "com.kinectmessaging.email.controller.EmailController",
+            "com.kinectmessaging.libs.model.KMessage",
+            "java.lang.String",
             "kotlin.coroutines.Continuation"
           ]
         }
       ]
     },
     {
-      "type": "com.kinectmessaging.ep.service.EventProcessorService",
+      "type": "com.kinectmessaging.email.service.AzureEmailService",
       "allDeclaredFields": true,
       "methods": [
         {
@@ -489,14 +663,10 @@
       ]
     },
     {
-      "type": "com.kinectmessaging.libs.model.Address",
-      "allDeclaredFields": true
+      "type": "com.kinectmessaging.email.service.EmailService"
     },
     {
-      "type": "com.kinectmessaging.libs.model.Attachment"
-    },
-    {
-      "type": "com.kinectmessaging.libs.model.AttachmentConfig",
+      "type": "com.kinectmessaging.libs.model.Attachment",
       "allDeclaredFields": true
     },
     {
@@ -511,37 +681,11 @@
             "java.lang.String",
             "java.lang.String"
           ]
-        },
-        {
-          "name": "getCreatedBy",
-          "parameterTypes": []
-        },
-        {
-          "name": "getCreatedTime",
-          "parameterTypes": []
-        },
-        {
-          "name": "getUpdatedBy",
-          "parameterTypes": []
-        },
-        {
-          "name": "getUpdatedTime",
-          "parameterTypes": []
         }
       ]
     },
     {
-      "type": "com.kinectmessaging.libs.model.Audit$Access4JacksonSerializerf0e5e792",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.libs.model.Contact",
-      "allDeclaredFields": true
+      "type": "com.kinectmessaging.libs.model.CloudEventsSchema"
     },
     {
       "type": "com.kinectmessaging.libs.model.ContactMessages",
@@ -574,15 +718,6 @@
       ]
     },
     {
-      "type": "com.kinectmessaging.libs.model.ContactMessages$Access4JacksonSerializerca9b4500",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
       "type": "com.kinectmessaging.libs.model.DeliveryChannel",
       "allDeclaredFields": true
     },
@@ -609,23 +744,15 @@
       ]
     },
     {
-      "type": "com.kinectmessaging.libs.model.DeliveryStatus$Access4JacksonSerializer10702eac",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.libs.model.EmailConfig",
+      "type": "com.kinectmessaging.libs.model.EmailData",
       "allDeclaredFields": true,
       "methods": [
         {
           "name": "<init>",
           "parameterTypes": [
-            "com.kinectmessaging.libs.model.TargetSystem",
             "java.util.Map",
+            "java.lang.String",
+            "java.lang.String",
             "java.lang.String",
             "java.lang.String",
             "java.util.List",
@@ -633,152 +760,13 @@
             "java.util.List",
             "java.util.List",
             "java.util.List",
-            "java.util.Map",
             "java.util.Map"
           ]
-        },
-        {
-          "name": "getAttachments",
-          "parameterTypes": []
-        },
-        {
-          "name": "getBccRecipients",
-          "parameterTypes": []
-        },
-        {
-          "name": "getCcRecipients",
-          "parameterTypes": []
-        },
-        {
-          "name": "getEmailHeaders",
-          "parameterTypes": []
-        },
-        {
-          "name": "getPersonalizationData",
-          "parameterTypes": []
-        },
-        {
-          "name": "getReplyTo",
-          "parameterTypes": []
-        },
-        {
-          "name": "getSenderAddress",
-          "parameterTypes": []
-        },
-        {
-          "name": "getSubject",
-          "parameterTypes": []
-        },
-        {
-          "name": "getTargetSystem",
-          "parameterTypes": []
-        },
-        {
-          "name": "getTemplateConfig",
-          "parameterTypes": []
-        },
-        {
-          "name": "getToRecipients",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.libs.model.EmailConfig$Access4JacksonSerializerd4eb7994",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.libs.model.EmailData",
-      "allDeclaredFields": true,
-      "methods": [
-        {
-          "name": "getAttachments",
-          "parameterTypes": []
-        },
-        {
-          "name": "getBccRecipients",
-          "parameterTypes": []
-        },
-        {
-          "name": "getCcRecipients",
-          "parameterTypes": []
-        },
-        {
-          "name": "getEmailHeaders",
-          "parameterTypes": []
-        },
-        {
-          "name": "getHtmlTemplateId",
-          "parameterTypes": []
-        },
-        {
-          "name": "getPersonalizationData",
-          "parameterTypes": []
-        },
-        {
-          "name": "getReplyTo",
-          "parameterTypes": []
-        },
-        {
-          "name": "getSenderAddress",
-          "parameterTypes": []
-        },
-        {
-          "name": "getSubject",
-          "parameterTypes": []
-        },
-        {
-          "name": "getTextTemplateId",
-          "parameterTypes": []
-        },
-        {
-          "name": "getToRecipients",
-          "parameterTypes": []
         }
       ]
     },
     {
       "type": "com.kinectmessaging.libs.model.EmailData$Access4JacksonSerializer2c106597",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.libs.model.EmailRecipientConfig",
-      "allDeclaredFields": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.String",
-            "java.lang.String",
-            "java.lang.String"
-          ]
-        },
-        {
-          "name": "getEmailAddress",
-          "parameterTypes": []
-        },
-        {
-          "name": "getFirstName",
-          "parameterTypes": []
-        },
-        {
-          "name": "getLastName",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.libs.model.EmailRecipientConfig$Access4JacksonSerializer11c2f145",
       "methods": [
         {
           "name": "<init>",
@@ -794,153 +782,21 @@
       "allDeclaredFields": true
     },
     {
-      "type": "com.kinectmessaging.libs.model.JourneyConfig",
-      "allDeclaredFields": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.String",
-            "java.lang.String",
-            "java.util.List",
-            "com.kinectmessaging.libs.model.Audit"
-          ]
-        },
-        {
-          "name": "getAuditInfo",
-          "parameterTypes": []
-        },
-        {
-          "name": "getJourneyId",
-          "parameterTypes": []
-        },
-        {
-          "name": "getJourneyName",
-          "parameterTypes": []
-        },
-        {
-          "name": "getJourneySteps",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.libs.model.JourneySteps",
-      "allDeclaredFields": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "int",
-            "java.lang.String",
-            "java.lang.String",
-            "java.util.Map"
-          ]
-        },
-        {
-          "name": "getEventName",
-          "parameterTypes": []
-        },
-        {
-          "name": "getMessageConfigs",
-          "parameterTypes": []
-        },
-        {
-          "name": "getSeqId",
-          "parameterTypes": []
-        },
-        {
-          "name": "getStepCondition",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.libs.model.KContactHistory",
-      "allDeclaredFields": true,
-      "methods": [
-        {
-          "name": "getId",
-          "parameterTypes": []
-        },
-        {
-          "name": "getJourneyName",
-          "parameterTypes": []
-        },
-        {
-          "name": "getJourneyTransactionId",
-          "parameterTypes": []
-        },
-        {
-          "name": "getMessages",
-          "parameterTypes": []
-        },
-        {
-          "name": "getSourceEventId",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.libs.model.KContactHistory$Access4JacksonSerializera9e13992",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.libs.model.KEvent",
-      "allDeclaredFields": true,
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": [
-            "java.lang.String",
-            "java.lang.String",
-            "java.time.LocalDateTime",
-            "com.fasterxml.jackson.databind.JsonNode",
-            "java.util.List"
-          ]
-        },
-        {
-          "name": "getEventTime",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.libs.model.KEvent$Access4JacksonSerializereb8b36bd",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
       "type": "com.kinectmessaging.libs.model.KMessage",
       "allDeclaredFields": true,
       "methods": [
         {
-          "name": "getDeliveryChannel",
-          "parameterTypes": []
+          "name": "<init>",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.String",
+            "com.kinectmessaging.libs.model.DeliveryChannel",
+            "com.kinectmessaging.libs.model.TargetSystem",
+            "com.kinectmessaging.libs.model.EmailData"
+          ]
         },
         {
           "name": "getEmailData",
-          "parameterTypes": []
-        },
-        {
-          "name": "getId",
-          "parameterTypes": []
-        },
-        {
-          "name": "getSourceId",
-          "parameterTypes": []
-        },
-        {
-          "name": "getTargetSystem",
           "parameterTypes": []
         }
       ]
@@ -955,7 +811,7 @@
       ]
     },
     {
-      "type": "com.kinectmessaging.libs.model.MessageConfig",
+      "type": "com.kinectmessaging.libs.model.KTemplate",
       "allDeclaredFields": true,
       "methods": [
         {
@@ -963,64 +819,13 @@
           "parameterTypes": [
             "java.lang.String",
             "java.lang.String",
-            "int",
-            "java.lang.String",
-            "com.kinectmessaging.libs.model.MessageStatus",
-            "java.util.List",
+            "com.kinectmessaging.libs.model.TemplateType",
+            "com.kinectmessaging.libs.model.TemplateLanguage",
             "java.lang.String",
             "com.kinectmessaging.libs.model.Audit"
           ]
-        },
-        {
-          "name": "getAuditInfo",
-          "parameterTypes": []
-        },
-        {
-          "name": "getEmailConfig",
-          "parameterTypes": []
-        },
-        {
-          "name": "getJourneyId",
-          "parameterTypes": []
-        },
-        {
-          "name": "getMessageCondition",
-          "parameterTypes": []
-        },
-        {
-          "name": "getMessageId",
-          "parameterTypes": []
-        },
-        {
-          "name": "getMessageName",
-          "parameterTypes": []
-        },
-        {
-          "name": "getMessageStatus",
-          "parameterTypes": []
-        },
-        {
-          "name": "getMessageVersion",
-          "parameterTypes": []
         }
       ]
-    },
-    {
-      "type": "com.kinectmessaging.libs.model.MessageConfig$Access4JacksonSerializer39e1899c",
-      "methods": [
-        {
-          "name": "<init>",
-          "parameterTypes": []
-        }
-      ]
-    },
-    {
-      "type": "com.kinectmessaging.libs.model.MessageStatus",
-      "allDeclaredFields": true
-    },
-    {
-      "type": "com.kinectmessaging.libs.model.Person",
-      "allDeclaredFields": true
     },
     {
       "type": "com.kinectmessaging.libs.model.TargetSystem",
@@ -1028,6 +833,28 @@
     },
     {
       "type": "com.kinectmessaging.libs.model.TemplateLanguage",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.TemplatePersonalizationRequest",
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "getHtmlTemplateId",
+          "parameterTypes": []
+        },
+        {
+          "name": "getPersonalizationData",
+          "parameterTypes": []
+        },
+        {
+          "name": "getTextTemplateId",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.kinectmessaging.libs.model.TemplateType",
       "allDeclaredFields": true
     },
     {
@@ -1172,6 +999,15 @@
     },
     {
       "type": "com.sun.crypto.provider.GaloisCounterMode$AESGCM",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
+      "type": "com.sun.crypto.provider.HmacCore$HmacSHA256",
       "methods": [
         {
           "name": "<init>",
@@ -1558,9 +1394,6 @@
       "type": "io.netty.handler.ssl.SslHandler"
     },
     {
-      "type": "io.netty.handler.timeout.ReadTimeoutHandler"
-    },
-    {
       "type": "io.netty.incubator.channel.uring.IOUring"
     },
     {
@@ -1844,6 +1677,9 @@
       "type": "jakarta.xml.bind.Binder"
     },
     {
+      "type": "java.awt.datatransfer.Transferable"
+    },
+    {
       "type": "java.io.Closeable"
     },
     {
@@ -1888,9 +1724,6 @@
       ]
     },
     {
-      "type": "java.lang.CharSequence"
-    },
-    {
       "type": "java.lang.Character",
       "fields": [
         {
@@ -1900,7 +1733,12 @@
     },
     {
       "type": "java.lang.Class",
+      "allDeclaredFields": true,
       "methods": [
+        {
+          "name": "getModule",
+          "parameterTypes": []
+        },
         {
           "name": "getRecordComponents",
           "parameterTypes": []
@@ -1995,13 +1833,43 @@
       ]
     },
     {
-      "type": "java.lang.Module"
+      "type": "java.lang.Module",
+      "methods": [
+        {
+          "name": "addReads",
+          "parameterTypes": [
+            "java.lang.Module"
+          ]
+        },
+        {
+          "name": "isNamed",
+          "parameterTypes": []
+        },
+        {
+          "name": "isOpen",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
+        },
+        {
+          "name": "isOpen",
+          "parameterTypes": [
+            "java.lang.String",
+            "java.lang.Module"
+          ]
+        }
+      ]
     },
     {
       "type": "java.lang.NullPointerException"
     },
     {
-      "type": "java.lang.Object"
+      "type": "java.lang.Number",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "java.lang.Object",
+      "allDeclaredFields": true
     },
     {
       "type": "java.lang.OutOfMemoryError"
@@ -2032,6 +1900,7 @@
     },
     {
       "type": "java.lang.String",
+      "allDeclaredFields": true,
       "fields": [
         {
           "name": "TYPE"
@@ -2090,6 +1959,21 @@
     },
     {
       "type": "java.lang.constant.DynamicConstantDesc"
+    },
+    {
+      "type": "java.lang.invoke.MethodHandles",
+      "methods": [
+        {
+          "name": "privateLookupIn",
+          "parameterTypes": [
+            "java.lang.Class",
+            "java.lang.invoke.MethodHandles$Lookup"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "java.lang.invoke.TypeDescriptor"
     },
     {
       "type": "java.lang.invoke.TypeDescriptor$OfField"
@@ -2299,6 +2183,14 @@
       ]
     },
     {
+      "type": "java.util.concurrent.atomic.AtomicMarkableReference",
+      "fields": [
+        {
+          "name": "pair"
+        }
+      ]
+    },
+    {
       "type": "java.util.concurrent.atomic.Striped64",
       "fields": [
         {
@@ -2319,6 +2211,17 @@
     },
     {
       "type": "java.util.logging.LogManager"
+    },
+    {
+      "type": "javax.activation.CommandMap",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "javax.activation.DataHandler",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "javax.activation.DataSource"
     },
     {
       "type": "javax.annotation.ManagedBean"
@@ -2355,6 +2258,17 @@
       "allDeclaredFields": true
     },
     {
+      "type": "javax.mail.BodyPart",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "javax.mail.Multipart",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "javax.mail.Part"
+    },
+    {
       "type": "javax.mail.Session"
     },
     {
@@ -2362,20 +2276,20 @@
       "allDeclaredFields": true,
       "methods": [
         {
-          "name": "getAddress",
+          "name": "<init>",
           "parameterTypes": []
         },
         {
-          "name": "getPersonal",
-          "parameterTypes": []
+          "name": "setAddress",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
         },
         {
-          "name": "getType",
-          "parameterTypes": []
-        },
-        {
-          "name": "isGroup",
-          "parameterTypes": []
+          "name": "setPersonal",
+          "parameterTypes": [
+            "java.lang.String"
+          ]
         }
       ]
     },
@@ -2387,6 +2301,13 @@
           "parameterTypes": []
         }
       ]
+    },
+    {
+      "type": "javax.mail.internet.MimeBodyPart",
+      "allDeclaredFields": true
+    },
+    {
+      "type": "javax.mail.internet.MimePart"
     },
     {
       "type": "javax.management.ObjectName"
@@ -2446,9 +2367,6 @@
     },
     {
       "type": "kotlin.Boolean"
-    },
-    {
-      "type": "kotlin.CharSequence"
     },
     {
       "type": "kotlin.Cloneable"
@@ -2601,6 +2519,22 @@
       ]
     },
     {
+      "type": "kotlinx.coroutines.CompletedExceptionally",
+      "fields": [
+        {
+          "name": "_handled$volatile"
+        }
+      ]
+    },
+    {
+      "type": "kotlinx.coroutines.DispatchedCoroutine",
+      "fields": [
+        {
+          "name": "_decision$volatile"
+        }
+      ]
+    },
+    {
       "type": "kotlinx.coroutines.EventLoopImplBase",
       "fields": [
         {
@@ -2622,6 +2556,20 @@
         },
         {
           "name": "_state$volatile"
+        }
+      ]
+    },
+    {
+      "type": "kotlinx.coroutines.JobSupport$Finishing",
+      "fields": [
+        {
+          "name": "_exceptionsHolder$volatile"
+        },
+        {
+          "name": "_isCompleting$volatile"
+        },
+        {
+          "name": "_rootCause$volatile"
         }
       ]
     },
@@ -2694,6 +2642,31 @@
         },
         {
           "name": "parkedWorkersStack$volatile"
+        }
+      ]
+    },
+    {
+      "type": "kotlinx.coroutines.scheduling.CoroutineScheduler$Worker",
+      "fields": [
+        {
+          "name": "workerCtl$volatile"
+        }
+      ]
+    },
+    {
+      "type": "kotlinx.coroutines.scheduling.WorkQueue",
+      "fields": [
+        {
+          "name": "blockingTasksInBuffer$volatile"
+        },
+        {
+          "name": "consumerIndex$volatile"
+        },
+        {
+          "name": "lastScheduledTask$volatile"
+        },
+        {
+          "name": "producerIndex$volatile"
         }
       ]
     },
@@ -5245,12 +5218,6 @@
         {
           "name": "<init>",
           "parameterTypes": []
-        },
-        {
-          "name": "setPort",
-          "parameterTypes": [
-            "java.lang.Integer"
-          ]
         }
       ]
     },
@@ -6945,7 +6912,15 @@
     },
     {
       "type": "org.springframework.cloud.config.client.ConfigClientProperties",
-      "allDeclaredFields": true
+      "allDeclaredFields": true,
+      "methods": [
+        {
+          "name": "setEnabled",
+          "parameterTypes": [
+            "boolean"
+          ]
+        }
+      ]
     },
     {
       "type": "org.springframework.cloud.config.client.ConfigClientRetryBootstrapper",
@@ -7382,10 +7357,16 @@
       "type": "org.springframework.hateoas.Link"
     },
     {
+      "type": "org.springframework.http.HttpEntity"
+    },
+    {
       "type": "org.springframework.http.HttpStatus"
     },
     {
       "type": "org.springframework.http.ReactiveHttpInputMessage"
+    },
+    {
+      "type": "org.springframework.http.ResponseEntity"
     },
     {
       "type": "org.springframework.http.client.ReactorResourceFactory",
@@ -8037,6 +8018,14 @@
       ]
     },
     {
+      "type": "reactor.core.publisher.FluxOnErrorReturn$ReturnSubscriber",
+      "fields": [
+        {
+          "name": "requested"
+        }
+      ]
+    },
+    {
       "type": "reactor.core.publisher.FluxPublish$PubSubInner",
       "fields": [
         {
@@ -8059,7 +8048,37 @@
       ]
     },
     {
+      "type": "reactor.core.publisher.FluxRepeatPredicate$RepeatPredicateSubscriber",
+      "fields": [
+        {
+          "name": "wip"
+        }
+      ]
+    },
+    {
       "type": "reactor.core.publisher.FluxRetryWhen$RetryWhenMainSubscriber",
+      "fields": [
+        {
+          "name": "wip"
+        }
+      ]
+    },
+    {
+      "type": "reactor.core.publisher.FluxSubscribeOnCallable$CallableSubscribeOnSubscription",
+      "fields": [
+        {
+          "name": "mainFuture"
+        },
+        {
+          "name": "requestFuture"
+        },
+        {
+          "name": "state"
+        }
+      ]
+    },
+    {
+      "type": "reactor.core.publisher.FluxUsing$UsingSubscriber",
       "fields": [
         {
           "name": "wip"
@@ -8111,6 +8130,14 @@
       ]
     },
     {
+      "type": "reactor.core.publisher.MonoDelay$MonoDelayRunnable",
+      "fields": [
+        {
+          "name": "state"
+        }
+      ]
+    },
+    {
       "type": "reactor.core.publisher.MonoFlatMap$FlatMapMain",
       "fields": [
         {
@@ -8139,6 +8166,22 @@
     },
     {
       "type": "reactor.core.publisher.MonoNext$NextSubscriber",
+      "fields": [
+        {
+          "name": "wip"
+        }
+      ]
+    },
+    {
+      "type": "reactor.core.publisher.MonoSupplier$MonoSupplierSubscription",
+      "fields": [
+        {
+          "name": "requestedOnce"
+        }
+      ]
+    },
+    {
+      "type": "reactor.core.publisher.MonoUsing$MonoUsingSubscriber",
       "fields": [
         {
           "name": "wip"
@@ -8303,6 +8346,25 @@
       "fields": [
         {
           "name": "markCount"
+        }
+      ]
+    },
+    {
+      "type": "reactor.core.scheduler.ParallelScheduler",
+      "fields": [
+        {
+          "name": "state"
+        }
+      ]
+    },
+    {
+      "type": "reactor.core.scheduler.SchedulerTask",
+      "fields": [
+        {
+          "name": "future"
+        },
+        {
+          "name": "parent"
         }
       ]
     },
@@ -8644,6 +8706,15 @@
       ]
     },
     {
+      "type": "sun.security.rsa.RSASignature$SHA256withRSA",
+      "methods": [
+        {
+          "name": "<init>",
+          "parameterTypes": []
+        }
+      ]
+    },
+    {
       "type": "sun.security.rsa.RSASignature$SHA384withRSA",
       "methods": [
         {
@@ -8849,6 +8920,13 @@
     {
       "type": {
         "proxy": [
+          "com.azure.communication.email.implementation.EmailsImpl$EmailsService"
+        ]
+      }
+    },
+    {
+      "type": {
+        "proxy": [
           "java.lang.reflect.ParameterizedType",
           "org.springframework.core.SerializableTypeWrapper$SerializableTypeProxy",
           "java.io.Serializable"
@@ -8914,7 +8992,13 @@
       "glob": "META-INF/build-info.properties"
     },
     {
+      "glob": "META-INF/io.netty.versions.properties"
+    },
+    {
       "glob": "META-INF/javamail.charset.map"
+    },
+    {
+      "glob": "META-INF/maven/io.netty/netty-tcnative-boringssl-static/pom.properties"
     },
     {
       "glob": "META-INF/native/libnetty_resolver_dns_native_macos.dylib"
@@ -8951,6 +9035,27 @@
     },
     {
       "glob": "META-INF/services/ch.qos.logback.classic.spi.Configurator"
+    },
+    {
+      "glob": "META-INF/services/com.azure.core.http.HttpClientProvider"
+    },
+    {
+      "glob": "META-INF/services/com.azure.core.http.policy.AfterRetryPolicyProvider"
+    },
+    {
+      "glob": "META-INF/services/com.azure.core.http.policy.BeforeRetryPolicyProvider"
+    },
+    {
+      "glob": "META-INF/services/com.azure.core.util.serializer.JsonSerializerProvider"
+    },
+    {
+      "glob": "META-INF/services/com.azure.core.util.tracing.Tracer"
+    },
+    {
+      "glob": "META-INF/services/com.azure.core.util.tracing.TracerProvider"
+    },
+    {
+      "glob": "META-INF/services/com.azure.json.JsonProvider"
     },
     {
       "glob": "META-INF/services/com.fasterxml.jackson.databind.Module"
@@ -9031,34 +9136,37 @@
       "glob": "application.yml"
     },
     {
+      "glob": "azure-communication-email.properties"
+    },
+    {
+      "glob": "azure-core-http-netty.properties"
+    },
+    {
       "glob": "banner.txt"
     },
     {
-      "glob": "com/kinectmessaging/ep/"
+      "glob": "com/kinectmessaging/email/"
     },
     {
-      "glob": "com/kinectmessaging/ep/client/ApiClient.class"
+      "glob": "com/kinectmessaging/email/client/ApiClient.class"
     },
     {
-      "glob": "com/kinectmessaging/ep/client/Config.class"
+      "glob": "com/kinectmessaging/email/client/Config.class"
     },
     {
-      "glob": "com/kinectmessaging/ep/client/JourneyConfig.class"
+      "glob": "com/kinectmessaging/email/controller/ControllerExceptionHandler.class"
     },
     {
-      "glob": "com/kinectmessaging/ep/client/JourneyConfigClient.class"
+      "glob": "com/kinectmessaging/email/controller/EmailController$WhenMappings.class"
     },
     {
-      "glob": "com/kinectmessaging/ep/controller/ControllerExceptionHandler.class"
+      "glob": "com/kinectmessaging/email/controller/EmailController.class"
     },
     {
-      "glob": "com/kinectmessaging/ep/controller/EventProcessorController.class"
+      "glob": "com/kinectmessaging/email/service/AzureEmailService.class"
     },
     {
-      "glob": "com/kinectmessaging/ep/service/EventProcessorService$WhenMappings.class"
-    },
-    {
-      "glob": "com/kinectmessaging/ep/service/EventProcessorService.class"
+      "glob": "com/kinectmessaging/email/service/EmailService.class"
     },
     {
       "glob": "com/maciejwalkowiak/spring/boot/startup/StartupEventsAutoConfiguration.class"

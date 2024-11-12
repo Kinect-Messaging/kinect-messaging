@@ -21,6 +21,7 @@
 		<java.version>17</java.version>
 		<kotlin.version>1.9.22</kotlin.version>
 		<spring-cloud.version>2023.0.2</spring-cloud.version>
+		<cloud-events.version>4.0.1</cloud-events.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -136,5 +137,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
