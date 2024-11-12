@@ -59,7 +59,7 @@ param eventGridUserAssignedId string
 // Key Vault Secrets
 @secure()
 @description('The key vault url for Azure Event Grid - Contact History URI.')
-param eventGridContactHisotryURIKeyVaultUrl string
+param eventGridContactHistoryURIKeyVaultUrl string
 
 @secure()
 @description('The key vault url for Azure Event Grid - Contact History access key.')
@@ -120,7 +120,7 @@ resource containerApp 'Microsoft.App/containerApps@2024-03-01' = {
         }
         {
           identity: keyVaultUserAssignedId
-          keyVaultUrl: eventGridContactHisotryURIKeyVaultUrl
+          keyVaultUrl: eventGridContactHistoryURIKeyVaultUrl
           name: 'aeg-contact-history-url'
         }
         {
