@@ -1,6 +1,6 @@
 package com.kinectmessaging.config.controller
 
-import com.kinectmessaging.config.service.EnvService
+import com.kinectmessaging.config.service.EnvironmentService
 import com.kinectmessaging.libs.common.Defaults
 import com.kinectmessaging.libs.common.ErrorConstants
 import com.kinectmessaging.libs.common.LogConstants
@@ -20,54 +20,69 @@ private const val DEFAULT_SORT = "envName"
 
 @RestController
 @RequestMapping("/kinect/messaging/config/env")
-class EnvController {
+class EnvironmentController {
 
     private val log = LoggerFactory.getLogger(this::class.java)
 
     @Autowired
-    lateinit var envService: EnvService
+    lateinit var environmentService: EnvironmentService
 
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun saveEnv(
+    fun saveEnvironment(
         @RequestBody envConfig: EnvConfig,
-        @RequestHeader(name = "X-Transaction-Id") transactionId: String
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ): ResponseEntity<EnvConfig> {
-        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
         headerMap["env-id"] = envConfig.envId
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         MDCHelper.addMDC(headerMap)
         log.info("${LogConstants.SERVICE_START} {}", kv("request", envConfig))
-        val result = envService.saveEnv(envConfig)
+        val result = environmentService.saveEnvironment(envConfig)
+        log.info(LogConstants.SERVICE_END, kv("response", result))
+        MDCHelper.clearMDC()
+        return ResponseEntity(result, HttpStatus.OK)
+    }
+
+    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    fun publishEnvironments(
+        @RequestBody envConfigs: List<EnvConfig>,
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
+    ): ResponseEntity<String> {
+        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
+        headerMap["method"] = object {}.javaClass.enclosingMethod.name
+        MDCHelper.addMDC(headerMap)
+        log.info("${LogConstants.SERVICE_START} {}", kv("request", envConfigs))
+        val result = environmentService.publishEnvironments(envConfigs)
         log.info(LogConstants.SERVICE_END, kv("response", result))
         MDCHelper.clearMDC()
         return ResponseEntity(result, HttpStatus.OK)
     }
 
     @GetMapping("/{envId}")
-    fun getEnvById(
+    fun getEnvironmentById(
         @PathVariable envId: String,
-        @RequestHeader(name = "X-Transaction-Id") transactionId: String
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ): ResponseEntity<EnvConfig?> {
-        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
         headerMap["env-id"] = envId
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         MDCHelper.addMDC(headerMap)
         log.info("${LogConstants.SERVICE_START} {}", kv("request", envId))
-        val result = envService.findEnvById(envId)
+        val result = environmentService.findEnvironmentById(envId)
         log.info(LogConstants.SERVICE_END, kv("response", result))
         MDCHelper.clearMDC()
         return ResponseEntity(result, HttpStatus.OK)
     }
 
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getEnvs(
+    fun getEnvironments(
         @RequestParam(name = "_start", required = false) pageNo: Int? = Defaults.PAGE_NO,
         @RequestParam(name = "_end", required = false) pageSize: Int? = Defaults.PAGE_SIZE,
         @RequestParam(name = "_sort", required = false) sortBy: String? = DEFAULT_SORT,
         @RequestParam(name = "_order", required = false) sortOrder: Sort.Direction = Sort.Direction.ASC,
-        @RequestHeader(name = "X-Transaction-Id") transactionId: String
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ): ResponseEntity<List<EnvConfig>?> {
-        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         MDCHelper.addMDC(headerMap)
         log.info(
@@ -78,7 +93,7 @@ class EnvController {
             kv("sort-order", sortOrder)
         )
         val result = if (pageNo != null && pageSize != null && sortBy?.isNotBlank() == true) {
-            envService.findEnvs(pageNo, pageSize, sortBy, sortOrder)
+            environmentService.findEnvironments(pageNo, pageSize, sortBy, sortOrder)
         } else {
             MDCHelper.clearMDC()
             log.error("${ErrorConstants.NO_DATA_FOUND_MESSAGE}, page-number : $pageNo, page-size : $pageSize, sort-by : $sortBy")

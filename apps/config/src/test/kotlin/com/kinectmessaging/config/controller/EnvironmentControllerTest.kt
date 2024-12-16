@@ -11,31 +11,31 @@ import org.mockito.BDDMockito.given
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.http.MediaType
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
 import java.time.LocalDateTime
 import java.util.*
 
 @AutoConfigureWebTestClient
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class EnvControllerTest {
+class EnvironmentControllerTest {
 
     private final val baseUrl = "/kinect/messaging/config/env"
 
     @Autowired
     lateinit var webTestClient: WebTestClient
 
-    @MockBean
+    @MockitoBean
     lateinit var envRepository: EnvRepository
 
     val envConfigs = mutableListOf(
         EnvConfig(
             envId = "1",
-            envName = EnvNames.DEV,
+            envName = listOf(EnvNames.DEV),
             journeyId = "journey-1",
             messageId = "message-1",
             eventName = "CustomerCreated",
@@ -47,7 +47,7 @@ class EnvControllerTest {
         ),
         EnvConfig(
             envId = "2",
-            envName = EnvNames.PROD,
+            envName = listOf(EnvNames.PROD),
             journeyId = "journey-1",
             messageId = "message-1",
             eventName = "CustomerWelcome",
@@ -62,7 +62,7 @@ class EnvControllerTest {
     val envEntity = mutableListOf(
         EnvEntity(
             envId = "1",
-            envName = EnvNames.DEV,
+            envName = listOf(EnvNames.DEV),
             journeyId = "journey-1",
             messageId = "message-1",
             eventName = "CustomerCreated",
@@ -74,7 +74,7 @@ class EnvControllerTest {
         ),
         EnvEntity(
             envId = "2",
-            envName = EnvNames.PROD,
+            envName = listOf(EnvNames.PROD),
             journeyId = "journey-1",
             messageId = "message-1",
             eventName = "CustomerWelcome",
@@ -113,7 +113,7 @@ class EnvControllerTest {
     }
 
     @Test
-    fun getEnvById() {
+    fun getEnvironmentById() {
 
         // given
         val givenInput = "1"
@@ -134,7 +134,7 @@ class EnvControllerTest {
     }
 
     @Test
-    fun getEnvs() {
+    fun getEnvironments() {
 
         // given
         val pageNo = 1
