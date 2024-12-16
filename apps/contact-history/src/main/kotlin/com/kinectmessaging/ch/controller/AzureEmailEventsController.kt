@@ -3,8 +3,6 @@ package com.kinectmessaging.ch.controller
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.convertValue
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import com.kinectmessaging.ch.model.DeliveryData
 import com.kinectmessaging.ch.service.AzureDeliveryEventService
@@ -12,7 +10,6 @@ import com.kinectmessaging.libs.common.Defaults
 import com.kinectmessaging.libs.common.LogConstants
 import com.kinectmessaging.libs.logging.MDCHelper
 import com.kinectmessaging.libs.model.CloudEventsSchema
-import com.kinectmessaging.libs.model.KContactHistory
 import net.logstash.logback.argument.StructuredArguments.kv
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 @RestController()
