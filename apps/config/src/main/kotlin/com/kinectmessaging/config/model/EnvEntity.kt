@@ -11,7 +11,7 @@ data class EnvEntity(
     @Id
     val envId: String,
     @Indexed
-    val envName: EnvNames,
+    val envName: List<EnvNames>,
     val journeyId: String,
     val messageId: String,
     val eventName: String,

@@ -31,9 +31,9 @@ class TemplateController {
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun createTemplate(
         @RequestBody kTemplate: KTemplate,
-        @RequestHeader(name = "X-Transaction-Id") transactionId: String
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ): ResponseEntity<KTemplate?> {
-        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
         headerMap["template-id"] = kTemplate.templateId
         addMDC(headerMap)
         log.info("${LogConstants.SERVICE_START} {}", kv("request", kTemplate))
@@ -46,9 +46,9 @@ class TemplateController {
     @GetMapping("/{templateId}")
     fun getTemplate(
         @PathVariable templateId: String,
-        @RequestHeader(name = "X-Transaction-Id") transactionId: String
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ): ResponseEntity<KTemplate?> {
-        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
         headerMap["template-id"] = templateId
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         addMDC(headerMap)
@@ -65,9 +65,9 @@ class TemplateController {
         @RequestParam(name = "_end", required = false) pageSize: Int? = Defaults.PAGE_SIZE,
         @RequestParam(name = "_sort", required = false) sortBy: String? = "templateName",
         @RequestParam(name = "_order", required = false) sortOrder: Sort.Direction = Sort.Direction.ASC,
-        @RequestHeader(name = "X-Transaction-Id") transactionId: String
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ): ResponseEntity<List<KTemplate>?> {
-        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         addMDC(headerMap)
         log.info(
@@ -93,9 +93,9 @@ class TemplateController {
     @PostMapping("/personalize")
     suspend fun personalizeTemplate(
         @RequestBody templateRequest: TemplatePersonalizationRequest,
-        @RequestHeader(name = "X-Transaction-Id") transactionId: String
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ): ResponseEntity<List<KTemplate>?> {
-        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
         headerMap["html-template-id"] = templateRequest.htmlTemplateId.toString()
         headerMap["text-template-id"] = templateRequest.textTemplateId.toString()
         headerMap["method"] = object {}.javaClass.enclosingMethod.name

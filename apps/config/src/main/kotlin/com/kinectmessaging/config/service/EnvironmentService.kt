@@ -12,24 +12,32 @@ import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
 @Service
-class EnvService {
+class EnvironmentService {
 
     @Autowired
     lateinit var envRepository: EnvRepository
 
-    fun saveEnv(envConfig: EnvConfig): EnvConfig {
+    fun saveEnvironment(envConfig: EnvConfig): EnvConfig {
         val result = envRepository.save(envConfig.toEnvEntity())
         return result.toEnvConfig()
     }
 
-    fun findEnvById(envId: String): EnvConfig?{
+    fun publishEnvironments(envConfigs: List<EnvConfig>): String {
+        val result = "Failed"
+        envConfigs.forEach { envConfig ->
+            envConfig.envName
+        }
+        return result
+    }
+
+    fun findEnvironmentById(envId: String): EnvConfig?{
         val result = envRepository.findById(envId)
             .getOrNull()?.toEnvConfig()
             ?: throw InvalidInputException("${ErrorConstants.NO_DATA_FOUND_MESSAGE}env id : $envId")
         return result
     }
 
-    fun findEnvs(pageNo: Int, pageSize: Int, sortBy: String, sortOrder: Sort.Direction): List<EnvConfig>?{
+    fun findEnvironments(pageNo: Int, pageSize: Int, sortBy: String, sortOrder: Sort.Direction): List<EnvConfig>?{
         val pageOption = PageRequest.of(pageNo, pageSize, sortOrder, sortBy)
         val pageResult = envRepository.findAll(pageOption)
         val dbResult = pageResult.content

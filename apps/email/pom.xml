@@ -14,7 +14,6 @@
     <description>Email Service for Kinect</description>
     <properties>
         <java.version>17</java.version>
-        <kotlin.version>1.9.21</kotlin.version>
     </properties>
     <dependencies>
         <dependency>

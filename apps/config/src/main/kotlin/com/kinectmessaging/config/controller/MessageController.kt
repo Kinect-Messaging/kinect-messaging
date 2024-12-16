@@ -31,9 +31,9 @@ class MessageController {
     @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun createMessage(
         @RequestBody messageConfig: MessageConfig,
-        @RequestHeader(name = "X-Transaction-Id") transactionId: String
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ): ResponseEntity<MessageConfig> {
-        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
         headerMap["message-id"] = messageConfig.messageId
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         addMDC(headerMap)
@@ -47,9 +47,9 @@ class MessageController {
     @GetMapping("/{messageId}")
     fun getMessageById(
         @PathVariable messageId: String,
-        @RequestHeader(name = "X-Transaction-Id") transactionId: String
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ): ResponseEntity<MessageConfig?> {
-        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
         headerMap["message-id"] = messageId
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         addMDC(headerMap)
@@ -66,9 +66,9 @@ class MessageController {
         @RequestParam(name = "_end", required = false) pageSize: Int? = Defaults.PAGE_SIZE,
         @RequestParam(name = "_sort", required = false) sortBy: String? = DEFAULT_SORT,
         @RequestParam(name = "_order", required = false) sortOrder: Sort.Direction = Sort.Direction.ASC,
-        @RequestHeader(name = "X-Transaction-Id") transactionId: String
+        @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ): ResponseEntity<List<MessageConfig>?> {
-        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         addMDC(headerMap)
         log.info(

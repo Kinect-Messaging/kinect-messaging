@@ -33,7 +33,7 @@ class JourneyController {
         @RequestBody journeyConfig: JourneyConfig,
         @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ): ResponseEntity<JourneyConfig> {
-        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
         headerMap["journey-id"] = journeyConfig.journeyId
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         addMDC(headerMap)
@@ -49,7 +49,7 @@ class JourneyController {
         @RequestParam("eventName") eventName: String,
         @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ): ResponseEntity<List<JourneyConfig>?> {
-        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
         headerMap["event-name"] = eventName
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         addMDC(headerMap)
@@ -65,7 +65,7 @@ class JourneyController {
         @PathVariable journeyId: String,
         @RequestHeader(name = "X-Transaction-Id") transactionId: String
     ): ResponseEntity<JourneyConfig?> {
-        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
         headerMap["journey-id"] = journeyId
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         addMDC(headerMap)
@@ -84,7 +84,7 @@ class JourneyController {
         @RequestParam(name = "_order", required = false) sortOrder: Sort.Direction = Sort.Direction.ASC,
         @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
     ): ResponseEntity<List<JourneyConfig>?> {
-        val headerMap = mutableMapOf(Pair("transaction-id", transactionId))
+        val headerMap = mutableMapOf(Pair(Defaults.TRANSACTION_ID_HEADER, transactionId))
         headerMap["method"] = object {}.javaClass.enclosingMethod.name
         addMDC(headerMap)
         log.info(
