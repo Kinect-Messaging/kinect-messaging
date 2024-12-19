@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
 import java.io.File
 import java.time.LocalDateTime
@@ -28,7 +28,7 @@ class EventProcessorControllerTest {
     @Autowired
     lateinit var webTestClient: WebTestClient
 
-    @MockBean
+    @MockitoBean
     lateinit var apiClient: ApiClient
 
     private final val baseUrl = "/kinect/messaging/event"
