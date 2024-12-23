@@ -2,4 +2,4 @@ spring:
   application:
     name: kinect-config-app
   config:
-    import: "optional:configserver:http://kinect-config-server"
+    import: "optional:configserver:http://kinect-config-server-app"
