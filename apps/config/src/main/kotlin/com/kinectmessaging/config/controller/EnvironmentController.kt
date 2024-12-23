@@ -43,7 +43,7 @@ class EnvironmentController {
         return ResponseEntity(result, HttpStatus.OK)
     }
 
-    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(value = ["/publish"],consumes = [MediaType.APPLICATION_JSON_VALUE],)
     fun publishEnvironments(
         @RequestBody envConfigs: List<EnvConfig>,
         @RequestHeader(name = Defaults.TRANSACTION_ID_HEADER) transactionId: String
