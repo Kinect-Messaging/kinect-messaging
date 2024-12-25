@@ -1,5 +1,17 @@
 spring:
   application:
     name: kinect-config-app
-  config:
-    import: "optional:configserver:http://dev-kinect-config-server-app"
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/
+      database: config-db
+  cloud:
+    config:
+      enabled: false
+#server:
+#  port: 8081
+app:
+  client:
+    mjml:
+      url: "http://localhost:3000/mjml2html"
+      api-key: ${AZURE_APIM_KEY}
