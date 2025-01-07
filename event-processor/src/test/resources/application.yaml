@@ -1,0 +1,37 @@
+quarkus:
+  rest-client:
+    config-api:
+      url: http://localhost:8080
+      scope: jakarta.inject.Singleton
+    contact-history-api:
+      url: http://localhost:8080
+      scope: jakarta.inject.Singleton
+    notification-api:
+      url: http://localhost:8080
+      scope: jakarta.inject.Singleton
+  log:
+    category:
+      "com.kinectmessaging":
+        level: DEBUG
+app:
+  client:
+    config:
+      journey:
+        url: /kinect/messaging/config/journey/?eventName=
+      message:
+        url: /kinect/messaging/config/message
+    contact-history:
+      url: /kinect/messaging/contact-history
+      access-key: test-key
+    notification:
+      url: /kinect/messaging/events
+      access-key: test-key
+  cloud-events:
+    headers:
+      spec-version: 1.0
+      contact-history:
+        type: com.kinectmessaging.contact-history.create
+        source: event-processor
+      notification:
+        type: com.kinectmessaging.notification.create
+        source: event-processor
