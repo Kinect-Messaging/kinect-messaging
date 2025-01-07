@@ -122,7 +122,7 @@ class TemplateResourceTest {
    personalizationData
   )
 
-  every { mjmlClient.renderMjmlToHtml(any(String::class), any(MjmlRequest::class), any(String::class)) } returns MjmlResponse(
+  every { mjmlClient.renderMjmlToHtml(any(String::class), any(MjmlRequest::class)) } returns MjmlResponse(
    html = htmlTemplateResponse,
    json = null,
    errors = null
@@ -156,7 +156,7 @@ class TemplateResourceTest {
    personalizationData
   )
 
-  every { mjmlClient.renderMjmlToHtml(any(String::class), any(MjmlRequest::class), any(String::class)) } returns MjmlResponse(
+  every { mjmlClient.renderMjmlToHtml(any(String::class), any(MjmlRequest::class)) } returns MjmlResponse(
    html = htmlTemplateResponse,
    json = null,
    errors = null

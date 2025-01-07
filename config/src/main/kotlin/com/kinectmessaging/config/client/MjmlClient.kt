@@ -16,10 +16,8 @@ interface MjmlClient {
     @POST
     @Path("/mjml2html")
     @Consumes(MediaType.APPLICATION_JSON)
-    @ClientHeaderParam(name = "Ocp-Apim-Subscription-Key", value = ["{apiKey}"])
     fun renderMjmlToHtml(
         @Url url: String?,
         mjmlRequest: MjmlRequest,
-        @NotBody apiKey: String?
     ): MjmlResponse
 }

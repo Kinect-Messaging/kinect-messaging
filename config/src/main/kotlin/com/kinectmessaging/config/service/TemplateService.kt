@@ -11,7 +11,6 @@ import com.kinectmessaging.libs.model.KTemplate
 import com.kinectmessaging.libs.model.TemplatePersonalizationRequest
 import io.quarkus.logging.Log
 import io.quarkus.panache.common.Sort
-import io.quarkus.qute.Engine
 import io.quarkus.qute.Qute
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
@@ -28,16 +27,11 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 class TemplateService(
     @ConfigProperty(name = "app.client.mjml.url")
     val mjmlClientBaseUrl: String,
-    @ConfigProperty(name = "app.client.api-key")
-    val apiKey: String?,
     ) {
 
     @Inject
     @field:RestClient
     lateinit var mjmlClient: MjmlClient
-
-    @Inject
-    lateinit var templateEngine: Engine
 
     fun findTemplateById(id: String): KTemplate? {
         val templateFromDB = TemplateEntity.findById(id)
@@ -108,13 +102,6 @@ class TemplateService(
         return null
     }
 
-    private fun renderMustacheTemplate(template: String, context: Map<String, Map<String, String?>?>?): String {
-        val compiler = DefaultMustacheFactory().compile(StringReader(template), "template")
-        val writer = StringWriter()
-        val result = compiler.execute(writer, context).flush().toString()
-        return result
-    }
-
     private fun renderQuteTemplate(template: String, context: Map<String, Map<String, String?>?>?, contentType: String?): String {
         Log.debug("Template context data: $context")
         val result = Qute.fmt(template).contentType(contentType).dataMap(context).render()
@@ -125,8 +112,7 @@ class TemplateService(
     private fun renderMjmlTemplate(template: String): String {
         val response = mjmlClient.renderMjmlToHtml(
             mjmlClientBaseUrl,
-            MjmlRequest(Base64.encode(template.encodeToByteArray())),
-            apiKey
+            MjmlRequest(Base64.encode(template.encodeToByteArray()))
         )
         val htmlContent = String(Base64.decode(response.html))
         return htmlContent
