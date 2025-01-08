@@ -12,8 +12,8 @@ data class MjmlRequest(
 @Serializable
 data class MjmlResponse(
     val html: String,
-    val json: String?,
-    val errors: List<String>?
+    val json: String? = null,
+    val errors: List<String>? = null
 )
 
 data class MjmlError(
