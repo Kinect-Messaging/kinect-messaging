@@ -85,7 +85,6 @@ fun `given Email Data with Azure when send Email then receive Email`() {
  every { templateClient.loadTemplate(
      any(String::class),
      personalizationRequest = any(TemplatePersonalizationRequest::class),
-     apiKey = any(String::class),
  ) }.returns(mutableListOf(
   KTemplate(
          templateId = "1",
