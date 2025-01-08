@@ -88,6 +88,7 @@ class EmailService(
                 Log.debug("Created Azure Email Message : $message")
 
                 val result = mailClient.sendMailAndAwait(message)
+                Log.debug("Sent email to recipient - ${message.to}")
 
                 val contactMessages = ContactMessages(
                     messageId = kMessage.id,
@@ -111,8 +112,8 @@ class EmailService(
                     .withDataContentType(MediaType.APPLICATION_JSON)
                     .withData(PojoCloudEventData.wrap(contactMessages, mapper::writeValueAsBytes))
                     .build()
-                contactHistoryClient.updateContactMessages(contactHistoryClientBaseUrl, contactHistoryEvent, contactHistoryTopicAccessKey)
-                Log.info("Updating contact history from Azure Email Service for id - ${contactMessages.messageId}")
+                contactHistoryClient.updateContactMessages(contactHistoryClientBaseUrl, contactHistoryEvent)
+                Log.info("Updating contact history from Azure Email Service for id - ${contactMessages.messageId} and Delivery Tracking id - ${result.messageID}")
             }
 
             return htmlEmailMessage ?: "No Template rendered"
