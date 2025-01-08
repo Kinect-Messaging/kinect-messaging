@@ -42,11 +42,11 @@ jobs:
       docker-tag: ${{ steps.meta.outputs.tags }}
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: '23'
-          distribution: 'graalvm'
+          distribution: 'temurin'
           cache: 'maven'
           #        cache-dependency-path: 'sub-project/pom.xml' # optional
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
@@ -131,23 +131,23 @@ jobs:
           cosign sign --yes ${images}
 
   # Convert App Name to Pascal case
-  setup:
-    needs: [ build ]
-    runs-on: ubuntu-latest
-    name: Prepare workflow variables
-    environment:
-      name: dev
-    outputs:
-      app-name: ${{ steps.assign-app-name.outputs.APP_NAME }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: shogo82148/actions-setup-perl@v1
-        with:
-          perl-version: "5.38"
-      - id: assign-app-name
-        run: |
-          perl -v
-          echo APP_NAME="$(echo ${{ github.event.inputs.name }} | perl -pe 's/-(.)/\u$1/g')" >> "$GITHUB_OUTPUT"
+#  setup:
+#    needs: [ build ]
+#    runs-on: ubuntu-latest
+#    name: Prepare workflow variables
+#    environment:
+#      name: dev
+#    outputs:
+#      app-name: ${{ steps.assign-app-name.outputs.APP_NAME }}
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: shogo82148/actions-setup-perl@v1
+#        with:
+#          perl-version: "5.38"
+#      - id: assign-app-name
+#        run: |
+#          perl -v
+#          echo APP_NAME="$(echo ${{ github.event.inputs.name }} | perl -pe 's/-(.)/\u$1/g')" >> "$GITHUB_OUTPUT"
 
 #  # This job is used for linting the bicep files
 #  lint:
