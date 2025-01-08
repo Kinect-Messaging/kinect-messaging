@@ -22,13 +22,11 @@ import java.time.LocalDateTime
 
 
 @ApplicationScoped
-class EmailService (
+class EmailService(
     @ConfigProperty(name = "app.client.template.url")
     val templateClientBaseUrl: String,
     @ConfigProperty(name = "app.client.contact-history.url")
     val contactHistoryClientBaseUrl: String,
-    @ConfigProperty(name = "app.client.api-key")
-    val apiKey: String?,
     @ConfigProperty(name = "app.cloud-events.headers.spec-version")
     val cloudEventsSpecVersion: String,
     @ConfigProperty(name = "app.cloud-events.headers.type")
@@ -67,8 +65,7 @@ class EmailService (
                         textTemplateId = emailData.textTemplateId,
                         htmlTemplateId = emailData.htmlTemplateId,
                         personalizationData = emailData.personalizationData
-                    ),
-                    null
+                    )
                 )
 
             val plainEmailBody = templates?.first { it.templateId == emailData.textTemplateId }?.templateContent

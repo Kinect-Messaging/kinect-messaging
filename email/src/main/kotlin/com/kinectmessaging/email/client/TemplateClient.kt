@@ -15,10 +15,8 @@ interface TemplateClient {
     @POST
 //    @Path("/kinect/messaging/config/template")
     @Consumes(MediaType.APPLICATION_JSON)
-    @ClientHeaderParam(name = "Ocp-Apim-Subscription-Key", value = ["{apiKey}"])
     fun loadTemplate(
         @Url url: String?,
-        personalizationRequest: TemplatePersonalizationRequest,
-        @NotBody apiKey: String?
+        personalizationRequest: TemplatePersonalizationRequest
     ): List<KTemplate>?
 }
