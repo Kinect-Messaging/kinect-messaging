@@ -14,7 +14,6 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient
 @RegisterRestClient(configKey = "mjml-api")
 interface MjmlClient {
     @POST
-    @Path("/mjml2html")
     @Consumes(MediaType.APPLICATION_JSON)
     fun renderMjmlToHtml(
         @Url url: String?,
