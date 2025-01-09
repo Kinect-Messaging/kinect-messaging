@@ -1,6 +1,7 @@
 package com.kinectmessaging.email
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.kinectmessaging.email.com.kinectmessaging.email.client.CloudEventSerializer
 import com.kinectmessaging.email.service.EmailService
 import com.kinectmessaging.libs.common.LogConstants
 import com.kinectmessaging.libs.model.KMessage
@@ -15,6 +16,8 @@ import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.POST
 import jakarta.ws.rs.Path
 import jakarta.ws.rs.core.MediaType
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Serializer
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.jboss.logging.MDC
@@ -36,7 +39,7 @@ class EmailResource(private val emailService: EmailService) {
 
     @Path("/message")
     @Consumes(MediaType.APPLICATION_JSON, JsonFormat.CONTENT_TYPE)
-    fun sendEmailFromQueue(event: CloudEvent){
+    fun sendEmailFromQueue(event: @Serializable(with = CloudEventSerializer::class) CloudEvent){
         MDC.put("function", object {}.javaClass.enclosingMethod.name)
         Log.info("${LogConstants.SERVICE_START} with request - $event")
         event.data?.let { eventData ->

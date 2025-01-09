@@ -19,6 +19,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.eclipse.microprofile.rest.client.inject.RestClient
 import java.net.URI
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
 
 
 @ApplicationScoped
@@ -112,6 +113,15 @@ class EmailService(
                     .withDataContentType(MediaType.APPLICATION_JSON)
                     .withData(PojoCloudEventData.wrap(contactMessages, mapper::writeValueAsBytes))
                     .build()
+
+//                val contactHistoryEvent = CloudEventsSchema(
+//                    id = contactMessages.messageId,
+//                    source = URI.create(cloudEventsSource),
+//                    type = cloudEventsType,
+//                    time = OffsetDateTime.now(),
+//                    dataContentType = MediaType.APPLICATION_JSON,
+//                    data = mapper.writeValueAsString(contactMessages)
+//                )
                 contactHistoryClient.updateContactMessages(contactHistoryClientBaseUrl, contactHistoryEvent)
                 Log.info("Updating contact history from Azure Email Service for id - ${contactMessages.messageId} and Delivery Tracking id - ${result.messageID}")
             }
