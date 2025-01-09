@@ -7,19 +7,21 @@ import com.kinectmessaging.libs.common.EmailUtils
 import com.kinectmessaging.libs.model.*
 import io.cloudevents.core.builder.CloudEventBuilder
 import io.cloudevents.core.data.PojoCloudEventData
+import io.cloudevents.core.format.ContentType
+import io.cloudevents.core.provider.EventFormatProvider
 import io.quarkus.logging.Log
 import io.vertx.ext.mail.MailMessage
 import io.vertx.mutiny.ext.mail.MailClient
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
 import jakarta.mail.internet.InternetAddress
+import jakarta.ws.rs.BadRequestException
 import jakarta.ws.rs.core.MediaType
 import kotlinx.serialization.Serializable
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.eclipse.microprofile.rest.client.inject.RestClient
 import java.net.URI
 import java.time.LocalDateTime
-import java.time.OffsetDateTime
 
 
 @ApplicationScoped
@@ -34,8 +36,8 @@ class EmailService(
     val cloudEventsType: String,
     @ConfigProperty(name = "app.cloud-events.headers.source")
     val cloudEventsSource: String,
-    @ConfigProperty(name = "app.client.contact-history.access-key")
-    val contactHistoryTopicAccessKey: String,
+    @ConfigProperty(name = "quarkus.mailer.from")
+    var senderAddress: String,
 ) {
 
     @Inject
@@ -71,15 +73,15 @@ class EmailService(
 
             val plainEmailBody = templates?.first { it.templateId == emailData.textTemplateId }?.templateContent
             val htmlEmailMessage = templates?.first { it.templateId == emailData.htmlTemplateId }?.templateContent
-            val senderAddress = if (EmailUtils.isEmailValid(emailData.senderAddress)){
+            senderAddress = if (EmailUtils.isEmailValid(emailData.senderAddress)){
                 emailData.senderAddress
             } else {
-                null
+                senderAddress
             }
 
             if (plainEmailBody?.isNotBlank() == true || htmlEmailMessage?.isNotBlank() == true) {
                 val message = MailMessage()
-                senderAddress?.let { message.from = it }
+                message.from = senderAddress
                 message.subject = subject
                 message.to = toRecipients
                 message.cc = ccRecipients
@@ -114,15 +116,12 @@ class EmailService(
                     .withData(PojoCloudEventData.wrap(contactMessages, mapper::writeValueAsBytes))
                     .build()
 
-//                val contactHistoryEvent = CloudEventsSchema(
-//                    id = contactMessages.messageId,
-//                    source = URI.create(cloudEventsSource),
-//                    type = cloudEventsType,
-//                    time = OffsetDateTime.now(),
-//                    dataContentType = MediaType.APPLICATION_JSON,
-//                    data = mapper.writeValueAsString(contactMessages)
-//                )
-                contactHistoryClient.updateContactMessages(contactHistoryClientBaseUrl, contactHistoryEvent)
+                val serialized: ByteArray = EventFormatProvider
+                    .getInstance()
+                    .resolveFormat(ContentType.JSON)
+                    ?.serialize(contactHistoryEvent) ?: throw BadRequestException("Unable to serialize cloud event data $contactHistoryEvent")
+
+                contactHistoryClient.updateContactMessages(contactHistoryClientBaseUrl, serialized )
                 Log.info("Updating contact history from Azure Email Service for id - ${contactMessages.messageId} and Delivery Tracking id - ${result.messageID}")
             }
 

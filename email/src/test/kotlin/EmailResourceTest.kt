@@ -1,7 +1,10 @@
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.kinectmessaging.email.com.kinectmessaging.email.client.ContactHistoryClient
 import com.kinectmessaging.email.com.kinectmessaging.email.client.TemplateClient
 import com.kinectmessaging.libs.model.*
-import io.cloudevents.CloudEvent
+import io.cloudevents.core.builder.CloudEventBuilder
+import io.cloudevents.core.data.PojoCloudEventData
+import io.cloudevents.core.provider.EventFormatProvider
 import io.mockk.every
 import io.quarkiverse.mailpit.test.InjectMailbox
 import io.quarkiverse.mailpit.test.Mailbox
@@ -11,9 +14,8 @@ import io.quarkiverse.test.junit.mockk.InjectMock
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-import jakarta.mail.internet.InternetAddress
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
+import jakarta.ws.rs.BadRequestException
+import jakarta.ws.rs.core.MediaType
 import kotlinx.serialization.json.Json
 import org.apache.http.HttpStatus
 import org.eclipse.microprofile.rest.client.inject.RestClient
@@ -22,8 +24,8 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
+import java.net.URI
 import java.time.LocalDateTime
-import java.util.*
 
 
 @QuarkusTest
@@ -107,7 +109,7 @@ fun `given Email Data with Azure when send Email then receive Email`() {
 
   ))
 
- every { contactHistoryClient.updateContactMessages(any(String::class), any(CloudEvent::class)) }.returns(Unit)
+ every { contactHistoryClient.updateContactMessages(any(String::class), any(ByteArray::class)) }.returns(Unit)
 
  val requestInput = "{\n" +
          "    \"id\": \"50ca4b05-13df-49f8-8623-7174a7dd3ac8\",\n" +
@@ -161,5 +163,57 @@ fun `given Email Data with Azure when send Email then receive Email`() {
 @Test
  fun sendEmailFromQueue() {
 
- }
+    val requestInput = "{\n" +
+            "    \"id\": \"50ca4b05-13df-49f8-8623-7174a7dd3ac8\",\n" +
+            "    \"sourceId\": \"5a61fc93-d5ed-4916-a7de-ecc3b89f157c\",\n" +
+            "    \"deliveryChannel\": \"EMAIL\",\n" +
+            "    \"targetSystem\": \"AZURE_COMMUNICATION_SERVICE\",\n" +
+            "    \"emailData\": {\n" +
+            "        \"emailHeaders\": null,\n" +
+            "        \"textTemplateId\": \"1\",\n" +
+            "        \"htmlTemplateId\": \"2\",\n" +
+            "        \"senderAddress\": \"DoNotReply@kinectmessaging.com\",\n" +
+            "        \"subject\": \"New Contact Form Submission\",\n" +
+            "        \"toRecipients\": [\n" +
+            "            \"Support <kinectsupport@yopmail.com>\"\n" +
+            "        ],\n" +
+            "        \"ccRecipients\": null,\n" +
+            "        \"bccRecipients\": null,\n" +
+            "        \"attachments\": null,\n" +
+            "        \"replyTo\": null,\n" +
+            "        \"personalizationData\": {\n" +
+            "            \"formData\": {\n" +
+            "                \"name\": \"Eliane\",\n" +
+            "                \"email\": \"Maria56@yahoo.com\",\n" +
+            "                \"phone\": \"953-694-2345\",\n" +
+            "                \"reason\": \"Delinquo amicitia color eveniet eligendi adaugeo.\"\n" +
+            "            }\n" +
+            "        }\n" +
+            "    }\n" +
+            "}"
+    val givenInput = Json.decodeFromString<KMessage>(requestInput)
+    val mapper = ObjectMapper()
+    val event = CloudEventBuilder.v1()
+        .withSource(URI.create("test-source"))
+        .withType("test")
+        .withId(givenInput.id)
+        .withDataContentType(MediaType.APPLICATION_JSON)
+        .withData(PojoCloudEventData.wrap(givenInput, mapper::writeValueAsBytes))
+        .build()
+
+    val serialized: ByteArray = EventFormatProvider
+        .getInstance()
+        .resolveFormat(io.cloudevents.core.format.ContentType.JSON)
+        ?.serialize(event) ?: throw BadRequestException("Unable to serialize cloud event data $event")
+
+    // call a REST endpoint that sends email
+    given()
+        .header("Content-Type", "application/cloudevents+json")
+        .body(event)
+        .`when`()
+        .post("$baseUrl/async")
+        .then()
+        .statusCode(HttpStatus.SC_NO_CONTENT)
+
+}
 }

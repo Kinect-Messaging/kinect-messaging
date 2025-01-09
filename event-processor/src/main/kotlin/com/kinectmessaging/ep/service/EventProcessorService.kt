@@ -10,12 +10,14 @@ import com.kinectmessaging.libs.exception.InvalidInputException
 import com.kinectmessaging.libs.model.*
 import io.cloudevents.core.builder.CloudEventBuilder
 import io.cloudevents.core.data.PojoCloudEventData
+import io.cloudevents.core.format.ContentType
+import io.cloudevents.core.provider.EventFormatProvider
 import io.quarkus.logging.Log
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
 import jakarta.mail.internet.InternetAddress
+import jakarta.ws.rs.BadRequestException
 import jakarta.ws.rs.core.MediaType
-import kotlinx.serialization.json.*
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.eclipse.microprofile.rest.client.inject.RestClient
 import java.net.URI
@@ -42,16 +44,10 @@ class EventProcessorService(
     val notificationCloudEventsType: String,
     @ConfigProperty(name = "app.cloud-events.headers.notification.source")
     val notificationCloudEventsSource: String,
-    @ConfigProperty(name = "app.client.contact-history.access-key")
-    val contactHistoryTopicAccessKey: String,
-    @ConfigProperty(name = "app.client.notification.access-key")
-    val notificationTopicAccessKey: String,
 ) {
 
     @Inject
     private lateinit var mapper: ObjectMapper
-
-    private val jsonMapper = Json
 
     @Inject
     @field:RestClient
@@ -205,7 +201,12 @@ class EventProcessorService(
                 .withDataContentType(MediaType.APPLICATION_JSON)
                 .withData(PojoCloudEventData.wrap(contactHistory, mapper::writeValueAsBytes))
                 .build()
-            contactHistoryClient.createContactHistory(contactHistoryClientBaseUrl, contactHistoryEvent, contactHistoryTopicAccessKey)
+
+            val serialized: ByteArray = EventFormatProvider
+                .getInstance()
+                .resolveFormat(ContentType.JSON)
+                ?.serialize(contactHistoryEvent) ?: throw BadRequestException("Unable to serialize cloud event data $contactHistoryEvent")
+            contactHistoryClient.createContactHistory(contactHistoryClientBaseUrl, serialized)
         }
 
         Log.debug("${LogConstants.SERVICE_DEBUG} Publishing notification messages to delivery channels for event ${event.eventName} with id ${event.eventId} - $notificationMessages")
@@ -218,12 +219,16 @@ class EventProcessorService(
                 .withDataContentType(MediaType.APPLICATION_JSON)
                 .withData(PojoCloudEventData.wrap(notificationMessage, mapper::writeValueAsBytes))
                 .build()
+
+            val serialized: ByteArray = EventFormatProvider
+                .getInstance()
+                .resolveFormat(ContentType.JSON)
+                ?.serialize(notificationEvent) ?: throw BadRequestException("Unable to serialize cloud event data $notificationEvent")
             when(notificationMessage.deliveryChannel){
                 DeliveryChannel.EMAIL -> {
                     notificationClient.sendNotification(
                         notificationClientBaseUrl,
-                        notificationEvent,
-                        notificationTopicAccessKey
+                        serialized
                     )
                 }
                 else -> {

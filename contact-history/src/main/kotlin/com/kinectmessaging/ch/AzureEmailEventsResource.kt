@@ -5,6 +5,8 @@ import com.kinectmessaging.ch.model.DeliveryData
 import com.kinectmessaging.ch.service.AzureDeliveryEventService
 import com.kinectmessaging.libs.common.LogConstants
 import io.cloudevents.CloudEvent
+import io.cloudevents.core.format.ContentType
+import io.cloudevents.core.provider.EventFormatProvider
 import io.cloudevents.jackson.JsonFormat
 import io.cloudevents.jackson.PojoCloudEventDataMapper
 import io.quarkus.logging.Log
@@ -25,10 +27,15 @@ class AzureEmailEventsResource(private val azureDeliveryEventService: AzureDeliv
     @POST
     @Path("/delivery")
     @Consumes(MediaType.APPLICATION_JSON, JsonFormat.CONTENT_TYPE)
-    fun consumeEmailDeliveryEvents(event: CloudEvent){
+    fun consumeEmailDeliveryEvents(event: String){
         MDC.put("function", object {}.javaClass.enclosingMethod.name)
         Log.info("${LogConstants.SERVICE_START} with request - $event")
-        event.data?.let { eventData ->
+        val cloudEvent: CloudEvent? = EventFormatProvider
+            .getInstance()
+            .resolveFormat(ContentType.JSON)
+            ?.deserialize(event.encodeToByteArray())
+
+        cloudEvent?.data?.let { eventData ->
             val contactMessage = PojoCloudEventDataMapper.from(mapper, DeliveryData::class.java)
                 .map(eventData).value
             val result = contactMessage.let { azureDeliveryEventService.emailDeliveryEventProcessor(it) }

@@ -13,10 +13,9 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient
 interface ContactHistoryClient {
     @POST
     @Consumes(JsonFormat.CONTENT_TYPE)
-    @ClientHeaderParam(name = "aeg-sas-key", value = ["{contactHistoryTopicAccessKey}"])
+    @ClientHeaderParam(name = "aeg-sas-key", value = ["\${app.client.contact-history.access-key}"])
     fun createContactHistory(
         @Url url: String?,
-        event: CloudEvent,
-        @NotBody contactHistoryTopicAccessKey: String
+        event: ByteArray
     )
 }

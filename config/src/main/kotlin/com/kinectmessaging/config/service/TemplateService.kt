@@ -1,6 +1,5 @@
 package com.kinectmessaging.config.service
 
-import com.github.mustachejava.DefaultMustacheFactory
 import com.kinectmessaging.config.client.MjmlClient
 import com.kinectmessaging.config.model.MjmlRequest
 import com.kinectmessaging.config.model.TemplateEntity
@@ -17,8 +16,6 @@ import jakarta.inject.Inject
 import jakarta.ws.rs.core.MediaType
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.eclipse.microprofile.rest.client.inject.RestClient
-import java.io.StringReader
-import java.io.StringWriter
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 

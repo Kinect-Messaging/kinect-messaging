@@ -10,10 +10,9 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient
 @RegisterRestClient(configKey = "notification-api")
 interface NotificationClient {
     @POST
-    @ClientHeaderParam(name = "aeg-sas-key", value = ["{notificationTopicAccessKey}"])
+    @ClientHeaderParam(name = "aeg-sas-key", value = ["\${app.client.notification.access-key}"])
     fun sendNotification(
-        @Url url: String?,
-        event: CloudEvent,
-        @NotBody notificationTopicAccessKey: String
+        @NotBody @Url url: String?,
+        event: ByteArray
     )
 }

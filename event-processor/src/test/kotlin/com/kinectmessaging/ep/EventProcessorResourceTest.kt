@@ -14,7 +14,6 @@ import io.restassured.http.ContentType
 import jakarta.inject.Inject
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
 import org.apache.http.HttpStatus
 import org.eclipse.microprofile.rest.client.inject.RestClient
 import org.junit.jupiter.api.Assertions
@@ -198,9 +197,9 @@ class EventProcessorResourceTest (){
         every { configClient.getMessageConfigsById("/kinect/messaging/config/message/499a34eb-70c4-4fa2-b5fb-0a0635ad7813") }
             .returns(Json.decodeFromString<MessageConfig>(mockMessageResponse2))
 
-        every { contactHistoryClient.createContactHistory(any(String::class), any(CloudEvent::class), any(String::class)) }.returns(Unit)
+        every { contactHistoryClient.createContactHistory(any(String::class), any(ByteArray::class)) }.returns(Unit)
 
-        every { notificationClient.sendNotification(any(String::class), any(CloudEvent::class), any(String::class)) }
+        every { notificationClient.sendNotification(any(String::class), any(ByteArray::class)) }
             .returns(Unit)
 
         val requestInput = Json.encodeToString(givenInput)
@@ -238,9 +237,9 @@ class EventProcessorResourceTest (){
         every { configClient.getMessageConfigsById("/kinect/messaging/config/message/499a34eb-70c4-4fa2-b5fb-0a0635ad7813") }
             .returns(Json.decodeFromString<MessageConfig>(mockMessageResponse2))
 
-        every { contactHistoryClient.createContactHistory(any(String::class), any(CloudEvent::class), any(String::class)) }.returns(Unit)
+        every { contactHistoryClient.createContactHistory(any(String::class), any(ByteArray::class)) }.returns(Unit)
 
-        every { notificationClient.sendNotification(any(String::class), any(CloudEvent::class), any(String::class)) }
+        every { notificationClient.sendNotification(any(String::class), any(ByteArray::class)) }
             .returns(Unit)
 
         val requestInput = Json.encodeToString(givenInput)

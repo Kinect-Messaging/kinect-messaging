@@ -2,6 +2,7 @@ package com.kinectmessaging.ep.client
 
 import com.kinectmessaging.libs.model.JourneyConfig
 import com.kinectmessaging.libs.model.MessageConfig
+import io.quarkus.rest.client.reactive.NotBody
 import io.quarkus.rest.client.reactive.Url
 import jakarta.ws.rs.GET
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient
@@ -10,11 +11,11 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient
 interface ConfigClient {
     @GET
     fun getJourneyConfigsByEventName(
-        @Url url: String,
+        @NotBody @Url url: String,
     ): List<JourneyConfig>?
 
     @GET
     fun getMessageConfigsById(
-        @Url url: String,
+        @NotBody @Url url: String,
     ): MessageConfig?
 }

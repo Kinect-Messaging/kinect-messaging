@@ -7,6 +7,8 @@ import com.kinectmessaging.libs.common.LogConstants
 import com.kinectmessaging.libs.model.ContactMessages
 import com.kinectmessaging.libs.model.KContactHistory
 import io.cloudevents.CloudEvent
+import io.cloudevents.core.format.ContentType
+import io.cloudevents.core.provider.EventFormatProvider
 import io.cloudevents.jackson.JsonFormat
 import io.cloudevents.jackson.PojoCloudEventDataMapper
 import io.quarkus.logging.Log
@@ -74,10 +76,15 @@ class ContactHistoryResource(private val contactHistoryService: ContactHistorySe
     @POST
     @Path("/message")
     @Consumes(MediaType.APPLICATION_JSON, JsonFormat.CONTENT_TYPE)
-    fun updateContactMessageByMessageId(event: CloudEvent){
+    fun updateContactMessageByMessageId(event: String){
         MDC.put("function", object {}.javaClass.enclosingMethod.name)
         Log.info("${LogConstants.SERVICE_START} with request - $event")
-        event.data?.let { eventData ->
+        val cloudEvent: CloudEvent? = EventFormatProvider
+            .getInstance()
+            .resolveFormat(ContentType.JSON)
+            ?.deserialize(event.encodeToByteArray())
+
+        cloudEvent?.data?.let { eventData ->
             val contactMessage = PojoCloudEventDataMapper.from(mapper, ContactMessages::class.java)
                 .map(eventData).value
             val result = contactMessage.let { contactHistoryService.updateContactMessageByMessageId(it) }
