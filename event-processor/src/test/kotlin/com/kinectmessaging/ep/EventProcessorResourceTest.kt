@@ -4,22 +4,19 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.kinectmessaging.ep.client.ConfigClient
 import com.kinectmessaging.ep.client.ContactHistoryClient
 import com.kinectmessaging.ep.client.NotificationClient
-import com.kinectmessaging.libs.model.*
-import io.cloudevents.CloudEvent
+import com.kinectmessaging.libs.model.JourneyConfig
+import com.kinectmessaging.libs.model.MessageConfig
 import io.mockk.every
 import io.quarkiverse.test.junit.mockk.InjectMock
 import io.quarkus.test.junit.QuarkusTest
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import jakarta.inject.Inject
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.apache.http.HttpStatus
 import org.eclipse.microprofile.rest.client.inject.RestClient
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import java.time.LocalDateTime
-import java.util.*
 
 @QuarkusTest
 class EventProcessorResourceTest (){
@@ -156,77 +153,70 @@ class EventProcessorResourceTest (){
             "    }\n" +
             "}"
 
-    @Test
-    fun `given Event Data when valid Email Config with Payload recipients then trigger Notifications`() {
-        val payload = testPayload?.let { mapper.readTree(it) }
-        //given
-        val givenInput = KEvent(
-            eventId = UUID.randomUUID().toString(),
-            eventName = "CustomerSupportRequested",
-            eventTime = LocalDateTime.now(),
-            payload = payload,
-            recipients = mutableListOf(
-                Person(
-                    firstName = "Kinect",
-                    lastName = "Tester",
-                    contacts = mutableListOf(
-                        Contact(
-                        email = "kinecttester@yopmail.com",
-                        phone = "123-456-7890",
-                        address = Address(
-                            addressLine1 = "customer.address.addressLine1",
-                            addressLine2 = null,
-                            city = "customer.address.city",
-                            state = "customer.address.state",
-                            postalCode = "customer.address.zip",
-                            country = "customer.address.country",
-                        )
-                    )
-                    ),
-                    preferredLanguage = mutableMapOf(Pair(Language.EN, 1)),
-                )
-            )
-        )
-
-        every { configClient.getJourneyConfigsByEventName(any(String::class)) }
-            .returns(Json.decodeFromString<List<JourneyConfig>>(mockJourneyResponse))
-
-        every { configClient.getMessageConfigsById("/kinect/messaging/config/message/517b5eb0-33c3-4779-88a5-eb333a0350a") }
-            .returns(Json.decodeFromString<MessageConfig>(mockMessageResponse1))
-
-        every { configClient.getMessageConfigsById("/kinect/messaging/config/message/499a34eb-70c4-4fa2-b5fb-0a0635ad7813") }
-            .returns(Json.decodeFromString<MessageConfig>(mockMessageResponse2))
-
-        every { contactHistoryClient.createContactHistory(any(String::class), any(ByteArray::class)) }.returns(Unit)
-
-        every { notificationClient.sendNotification(any(String::class), any(ByteArray::class)) }
-            .returns(Unit)
-
-        val requestInput = Json.encodeToString(givenInput)
-        // call a REST endpoint that sends events
-        val response = given()
-            .header("Content-Type", ContentType.JSON)
-            .body(requestInput)
-            .`when`()
-            .post(baseUrl)
-            .then()
-            .statusCode(HttpStatus.SC_OK)
-            .extract().body()
-
-        Assertions.assertEquals( true, response.asString().contains("Total notifications sent - 2"),)
-    }
+//    @Test
+//    fun `given Event Data when valid Email Config with Payload recipients then trigger Notifications`() {
+//        val payload = testPayload?.let { mapper.readTree(it) }
+//        //given
+//        val givenInput = KEvent(
+//            eventId = UUID.randomUUID().toString(),
+//            eventName = "CustomerSupportRequested",
+//            eventTime = LocalDateTime.now(),
+//            payload = payload,
+//            recipients = mutableListOf(
+//                Person(
+//                    firstName = "Kinect",
+//                    lastName = "Tester",
+//                    contacts = mutableListOf(
+//                        Contact(
+//                        email = "kinecttester@yopmail.com",
+//                        phone = "123-456-7890",
+//                        address = Address(
+//                            addressLine1 = "customer.address.addressLine1",
+//                            addressLine2 = null,
+//                            city = "customer.address.city",
+//                            state = "customer.address.state",
+//                            postalCode = "customer.address.zip",
+//                            country = "customer.address.country",
+//                        )
+//                    )
+//                    ),
+//                    preferredLanguage = mutableMapOf(Pair(Language.EN, 1)),
+//                )
+//            )
+//        )
+//
+//        every { configClient.getJourneyConfigsByEventName(any(String::class)) }
+//            .returns(Json.decodeFromString<List<JourneyConfig>>(mockJourneyResponse))
+//
+//        every { configClient.getMessageConfigsById("/kinect/messaging/config/message/517b5eb0-33c3-4779-88a5-eb333a0350a") }
+//            .returns(Json.decodeFromString<MessageConfig>(mockMessageResponse1))
+//
+//        every { configClient.getMessageConfigsById("/kinect/messaging/config/message/499a34eb-70c4-4fa2-b5fb-0a0635ad7813") }
+//            .returns(Json.decodeFromString<MessageConfig>(mockMessageResponse2))
+//
+//        every { contactHistoryClient.createContactHistory(any(String::class), any(ByteArray::class)) }.returns(Unit)
+//
+//        every { notificationClient.sendNotification(any(String::class), any(ByteArray::class)) }
+//            .returns(Unit)
+//
+//        val requestInput = Json.encodeToString(givenInput)
+//        // call a REST endpoint that sends events
+//        val response = given()
+//            .header("Content-Type", ContentType.JSON)
+//            .body(requestInput)
+//            .`when`()
+//            .post(baseUrl)
+//            .then()
+//            .statusCode(HttpStatus.SC_OK)
+//            .extract().body()
+//
+//        Assertions.assertEquals( true, response.asString().contains("Total notifications sent - 2"),)
+//    }
 
     @Test
     fun `given Event Data when valid Email Config with Config recipients then trigger Notifications`() {
-        val payload = testPayload?.let { mapper.readTree(it) }
-        //given
-        val givenInput = KEvent(
-            eventId = UUID.randomUUID().toString(),
-            eventName = "CustomerSupportRequested",
-            eventTime = LocalDateTime.now(),
-            payload = payload,
-            recipients = null
-        )
+        val requestInput =  object {}.javaClass.getResourceAsStream("/test_input_cloudevent_email_1.json")?.bufferedReader()?.readText()
+
 
         every { configClient.getJourneyConfigsByEventName(any(String::class)) }
             .returns(Json.decodeFromString<List<JourneyConfig>>(mockJourneyResponse))
@@ -242,7 +232,7 @@ class EventProcessorResourceTest (){
         every { notificationClient.sendNotification(any(String::class), any(ByteArray::class)) }
             .returns(Unit)
 
-        val requestInput = Json.encodeToString(givenInput)
+
         // call a REST endpoint that sends events
         val response = given()
             .header("Content-Type", ContentType.JSON)

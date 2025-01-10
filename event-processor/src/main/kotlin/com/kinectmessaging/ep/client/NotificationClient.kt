@@ -1,6 +1,5 @@
 package com.kinectmessaging.ep.client
 
-import io.cloudevents.CloudEvent
 import io.quarkus.rest.client.reactive.NotBody
 import io.quarkus.rest.client.reactive.Url
 import jakarta.ws.rs.POST

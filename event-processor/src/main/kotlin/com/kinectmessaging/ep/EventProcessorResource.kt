@@ -2,8 +2,11 @@ package com.kinectmessaging.ep
 
 import com.kinectmessaging.ep.service.EventProcessorService
 import com.kinectmessaging.libs.common.LogConstants
-import com.kinectmessaging.libs.model.KEvent
+import io.cloudevents.CloudEvent
+import io.cloudevents.core.format.ContentType
+import io.cloudevents.core.provider.EventFormatProvider
 import io.quarkus.logging.Log
+import jakarta.ws.rs.BadRequestException
 import jakarta.ws.rs.Consumes
 import jakarta.ws.rs.POST
 import jakarta.ws.rs.Path
@@ -15,13 +18,20 @@ class EventProcessorResource(private val eventProcessorService: EventProcessorSe
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    fun processEvent(event: KEvent): String {
+    fun processEvent(event: String): String {
         MDC.put("function", object {}.javaClass.enclosingMethod.name)
-        MDC.put("event-id", event.eventId)
-        MDC.put("event-name", event.eventName)
         Log.info("${LogConstants.SERVICE_START} with request - $event")
-        val result = eventProcessorService.processEvent(event)
+
+        val cloudEvent: CloudEvent? = EventFormatProvider
+            .getInstance()
+            .resolveFormat(ContentType.JSON)
+            ?.deserialize(event.encodeToByteArray())
+
+        val result = cloudEvent?.let { eventProcessorService.processEvent(it) } ?: {
+            Log.error("${LogConstants.SERVICE_END} with error. Invalid data received. Null or empty event.")
+            throw BadRequestException("Invalid data received. Null or empty event")
+        }
         Log.info("${LogConstants.SERVICE_END} with response - $result")
-        return result
+        return result as String
     }
 }

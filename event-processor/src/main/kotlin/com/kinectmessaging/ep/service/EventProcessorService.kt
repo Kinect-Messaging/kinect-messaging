@@ -6,12 +6,13 @@ import com.kinectmessaging.ep.client.ConfigClient
 import com.kinectmessaging.ep.client.ContactHistoryClient
 import com.kinectmessaging.ep.client.NotificationClient
 import com.kinectmessaging.libs.common.LogConstants
-import com.kinectmessaging.libs.exception.InvalidInputException
 import com.kinectmessaging.libs.model.*
+import io.cloudevents.CloudEvent
 import io.cloudevents.core.builder.CloudEventBuilder
 import io.cloudevents.core.data.PojoCloudEventData
 import io.cloudevents.core.format.ContentType
 import io.cloudevents.core.provider.EventFormatProvider
+import io.cloudevents.jackson.PojoCloudEventDataMapper
 import io.quarkus.logging.Log
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
@@ -66,179 +67,183 @@ class EventProcessorService(
      * Function to process the incoming event and convert to a list of notifications to be sent via different channels. Upon successful invocation of each target, returns a count of notifications processed.
      * @return Total number of notifications processed.
      */
-    fun processEvent(event: KEvent): String{
-        val result: String
+    fun processEvent(event: CloudEvent): String{
+        var result = "No notification created for provided event data and configuration."
 
-        // Throw error if both payload and recipients are empty
-        if (event.payload == null && event.recipients?.isEmpty() == true){
-            throw InvalidInputException(message = "Payload and recipients are empty in the event. Fix event data and retry.")
-        }
+        event.data?.let { eventData ->
+            val payload = PojoCloudEventDataMapper.from(mapper, Map::class.java)
+                .map(eventData).value
+            Log.debug("${LogConstants.SERVICE_DEBUG} Payload from event - $payload")
 
-        // Get matching configurations for the event
-        val notificationMessages = mutableListOf<KMessage>()
-        val contactHistoryList = mutableListOf<KContactHistory>()
-        Log.debug("${LogConstants.SERVICE_DEBUG} Calling Journey configs for event ${event.eventName} with id ${event.eventId}")
-        val matchingJourneys = configClient.getJourneyConfigsByEventName("$journeyClientBaseUrl${event.eventName}")
-        Log.debug("${LogConstants.SERVICE_DEBUG} Fetched Journey configs for event ${event.eventName} with id ${event.eventId} - $matchingJourneys")
-        val payload: Map<*, *>? = mapper.convertValue(event.payload, Map::class.java)
-        Log.debug("${LogConstants.SERVICE_DEBUG} Payload for jsonata evaluation - $payload")
-        matchingJourneys?.forEach { journeyConfig ->
-            val messageConfigs = mutableListOf<MessageConfig>()
-            val journeyTransactionId = UUID.randomUUID().toString()
-            val journeySteps = journeyConfig.journeySteps
-            journeySteps?.filter { it.eventName == event.eventName }?.forEach { journeyStep ->
+            // Get matching configurations for the event
+            val notificationMessages = mutableListOf<KMessage>()
+            val contactHistoryList = mutableListOf<KContactHistory>()
+            Log.debug("${LogConstants.SERVICE_DEBUG} Calling Journey configs for event ${event.type} with id ${event.id}")
+            val matchingJourneys = configClient.getJourneyConfigsByEventName("$journeyClientBaseUrl${event.type}")
+            Log.debug("${LogConstants.SERVICE_DEBUG} Fetched Journey configs for event ${event.type} with id ${event.id} - $matchingJourneys")
+//            val payload: Map<*, *>? = mapper.convertValue(eventPayload, Map::class.java)
 
-                // verify if step condition exists and evaluates to true
-                val stepConditionResult =
-                    when(journeyStep.stepCondition?.isNotBlank()){
-                        true -> {
-                            jsonata(journeyStep.stepCondition).evaluate(payload) as Boolean
+            matchingJourneys?.forEach { journeyConfig ->
+                val messageConfigs = mutableListOf<MessageConfig>()
+                val journeyTransactionId = UUID.randomUUID().toString()
+                val journeySteps = journeyConfig.journeySteps
+                journeySteps?.filter { it.eventName == event.type }?.forEach { journeyStep ->
+
+                    // verify if step condition exists and evaluates to true
+                    val stepConditionResult =
+                        when(journeyStep.stepCondition?.isNotBlank()){
+                            true -> {
+                                jsonata(journeyStep.stepCondition).evaluate(payload) as Boolean
+                            }
+                            false, null -> true
                         }
-                        false, null -> true
-                    }
 
-                // Get message configurations for each id
-                if (stepConditionResult){
-                    journeyStep.messageConfigs.forEach { (key, _) ->
-                        configClient.getMessageConfigsById("${messageClientBaseUrl}/$key")?.let { messageConfigs.add(it) }
+                    // Get message configurations for each id
+                    if (stepConditionResult){
+                        journeyStep.messageConfigs.forEach { (key, _) ->
+                            configClient.getMessageConfigsById("${messageClientBaseUrl}/$key")?.let { messageConfigs.add(it) }
+                        }
                     }
+                } ?: Log.warn("No valid journey steps for event ${event.type} and journey ${journeyConfig.journeyName}")
+
+                Log.debug("${LogConstants.SERVICE_DEBUG} Fetched Message configs for event ${event.type} with id ${event.id} - $messageConfigs")
+                // Create relevant notification from configs
+                if (messageConfigs.isEmpty()){
+                    Log.warn("No valid message configs fetched for event ${event.type} and journey ${journeyConfig.journeyName}")
                 }
-            } ?: Log.warn("No valid journey steps for event ${event.eventName} and journey ${journeyConfig.journeyName}")
-
-            Log.debug("${LogConstants.SERVICE_DEBUG} Fetched Message configs for event ${event.eventName} with id ${event.eventId} - $messageConfigs")
-            // Create relevant notification from configs
-            if (messageConfigs.isEmpty()){
-                Log.warn("No valid message configs fetched for event ${event.eventName} and journey ${journeyConfig.journeyName}")
-            }
-            messageConfigs.forEach { messageConfig ->
-                // verify if message condition exists and evaluates to true
-                val messageConditionResult =
-                    when(messageConfig.messageCondition?.isNotBlank()){
-                        true -> {
-                            jsonata(messageConfig.messageCondition).evaluate(payload) as Boolean
+                messageConfigs.forEach { messageConfig ->
+                    // verify if message condition exists and evaluates to true
+                    val messageConditionResult =
+                        when(messageConfig.messageCondition?.isNotBlank()){
+                            true -> {
+                                jsonata(messageConfig.messageCondition).evaluate(payload) as Boolean
+                            }
+                            false, null -> true
                         }
-                        false, null -> true
-                    }
 
-                // Evaluate Email Config
-                if (messageConditionResult){
-                    messageConfig.emailConfig?.forEach { emailConfig ->
-                        val textTemplateId = emailConfig.templateConfig.filterValues { it == "text" }.keys.first()
-                        val htmlTemplateId = emailConfig.templateConfig.filterValues { it == "html" }.keys.first()
-                        val senderAddress = emailConfig.senderAddress ?: ""
-                        val subject = jsonata(emailConfig.subject).evaluate(payload).toString()
-                        val toRecipients = if (event.recipients?.isNotEmpty() == true){
-                            evaluateEmailRecipientsFromPayload(event.recipients)
-                        } else {
-                            evaluateEmailRecipientsFromEmailConfig(emailConfig.toRecipients, payload)
-                        }
-                        val ccRecipients = evaluateEmailRecipientsFromEmailConfig(emailConfig.ccRecipients, payload)
-                        val bccRecipients = evaluateEmailRecipientsFromEmailConfig(emailConfig.bccRecipients, payload)
-                        val replyTo = evaluateEmailRecipientsFromEmailConfig(emailConfig.replyTo, payload)
-                        val personalizationData = evaluatePersonalizationData(emailConfig.personalizationData, payload)
-                        val notificationMessage = KMessage(
-                            id = UUID.randomUUID().toString(),
-                            sourceId = event.eventId,
-                            deliveryChannel = DeliveryChannel.EMAIL,
-                            targetSystem = emailConfig.targetSystem,
-                            emailData = EmailData(
-                                emailHeaders = emailConfig.emailHeaders,
-                                textTemplateId = textTemplateId,
-                                htmlTemplateId = htmlTemplateId,
-                                senderAddress = senderAddress,
-                                subject = subject,
-                                toRecipients = toRecipients,
-                                ccRecipients = ccRecipients,
-                                bccRecipients = bccRecipients,
-                                attachments = null,
-                                replyTo = replyTo,
-                                personalizationData = personalizationData
-                            )
-                        )
-
-                        // Add Contact History record
-                        toRecipients.forEach { recipient ->
-                            contactHistoryList.add(
-                                KContactHistory(
-                                    id = UUID.randomUUID().toString(),
-                                    sourceEventId = event.eventId,
-                                    journeyTransactionId = journeyTransactionId,
-                                    journeyName = journeyConfig.journeyName,
-                                    messages = ContactMessages(
-                                        messageId = notificationMessage.id,
-                                        deliveryTrackingId = null,
-                                        deliveryChannel = notificationMessage.deliveryChannel,
-                                        contactAddress = recipient.address,
-                                        deliveryStatus = mutableListOf(
-                                            DeliveryStatus(
-                                                statusTime = LocalDateTime.now(),
-                                                status = HistoryStatusCodes.CREATED,
-                                                statusMessage = null,
-                                                originalStatus = null,
-                                            )
-                                        ),
-                                        engagementStatus = null,
-                                    ),
+                    // Evaluate Email Config
+                    if (messageConditionResult){
+                        messageConfig.emailConfig?.forEach { emailConfig ->
+                            val textTemplateId = emailConfig.templateConfig.filterValues { it == "text" }.keys.first()
+                            val htmlTemplateId = emailConfig.templateConfig.filterValues { it == "html" }.keys.first()
+                            val senderAddress = emailConfig.senderAddress ?: ""
+                            val subject = jsonata(emailConfig.subject).evaluate(payload).toString()
+                            val toRecipients = evaluateEmailRecipientsFromEmailConfig(emailConfig.toRecipients, payload)
+                            val ccRecipients = evaluateEmailRecipientsFromEmailConfig(emailConfig.ccRecipients, payload)
+                            val bccRecipients = evaluateEmailRecipientsFromEmailConfig(emailConfig.bccRecipients, payload)
+                            val replyTo = evaluateEmailRecipientsFromEmailConfig(emailConfig.replyTo, payload)
+                            val personalizationData = evaluatePersonalizationData(emailConfig.personalizationData, payload)
+                            val notificationMessage = KMessage(
+                                id = UUID.randomUUID().toString(),
+                                sourceId = event.id,
+                                deliveryChannel = DeliveryChannel.EMAIL,
+                                targetSystem = emailConfig.targetSystem,
+                                emailData = EmailData(
+                                    emailHeaders = emailConfig.emailHeaders,
+                                    textTemplateId = textTemplateId,
+                                    htmlTemplateId = htmlTemplateId,
+                                    senderAddress = senderAddress,
+                                    subject = subject,
+                                    toRecipients = toRecipients,
+                                    ccRecipients = ccRecipients,
+                                    bccRecipients = bccRecipients,
+                                    attachments = null,
+                                    replyTo = replyTo,
+                                    personalizationData = personalizationData
                                 )
                             )
-                        }
 
-                        notificationMessages.add(notificationMessage)
+                            // Add Contact History record
+                            toRecipients.forEach { recipient ->
+                                contactHistoryList.add(
+                                    KContactHistory(
+                                        id = UUID.randomUUID().toString(),
+                                        sourceEventId = event.id,
+                                        journeyTransactionId = journeyTransactionId,
+                                        journeyName = journeyConfig.journeyName,
+                                        messages = ContactMessages(
+                                            messageId = notificationMessage.id,
+                                            deliveryTrackingId = null,
+                                            deliveryChannel = notificationMessage.deliveryChannel,
+                                            contactAddress = recipient.address,
+                                            deliveryStatus = mutableListOf(
+                                                DeliveryStatus(
+                                                    statusTime = LocalDateTime.now(),
+                                                    status = HistoryStatusCodes.CREATED,
+                                                    statusMessage = null,
+                                                    originalStatus = null,
+                                                )
+                                            ),
+                                            engagementStatus = null,
+                                        ),
+                                    )
+                                )
+                            }
+
+                            notificationMessages.add(notificationMessage)
+                        }
                     }
                 }
             }
-        }
 
 
-        Log.debug("${LogConstants.SERVICE_DEBUG} Updating Contact History records for event ${event.eventName} with id ${event.eventId} - $contactHistoryList ")
-        // Publish contact history records
-        contactHistoryList.forEach { contactHistory ->
-            Log.debug("Updating Contact History ${contactHistory.id}")
-            val contactHistoryEvent = CloudEventBuilder.v1()
-                .withSource(URI.create(contactHistoryCloudEventsSource))
-                .withType(contactHistoryCloudEventsType)
-                .withId(contactHistory.id)
-                .withDataContentType(MediaType.APPLICATION_JSON)
-                .withData(PojoCloudEventData.wrap(contactHistory, mapper::writeValueAsBytes))
-                .build()
+            Log.debug("${LogConstants.SERVICE_DEBUG} Updating Contact History records for event ${event.type} with id ${event.id} - $contactHistoryList ")
+            // Publish contact history records
+            contactHistoryList.forEach { contactHistory ->
+                Log.debug("Updating Contact History ${contactHistory.id}")
+                val contactHistoryEvent = CloudEventBuilder.v1()
+                    .withSource(URI.create(contactHistoryCloudEventsSource))
+                    .withType(contactHistoryCloudEventsType)
+                    .withId(contactHistory.id)
+                    .withDataContentType(MediaType.APPLICATION_JSON)
+                    .withData(PojoCloudEventData.wrap(contactHistory, mapper::writeValueAsBytes))
+                    .build()
 
-            val serialized: ByteArray = EventFormatProvider
-                .getInstance()
-                .resolveFormat(ContentType.JSON)
-                ?.serialize(contactHistoryEvent) ?: throw BadRequestException("Unable to serialize cloud event data $contactHistoryEvent")
-            contactHistoryClient.createContactHistory(contactHistoryClientBaseUrl, serialized)
-        }
-
-        Log.debug("${LogConstants.SERVICE_DEBUG} Publishing notification messages to delivery channels for event ${event.eventName} with id ${event.eventId} - $notificationMessages")
-        // Invoke the relevant target service for each notification
-        notificationMessages.forEach { notificationMessage ->
-            val notificationEvent = CloudEventBuilder.v1()
-                .withSource(URI.create(notificationCloudEventsSource))
-                .withType(notificationCloudEventsType)
-                .withId(notificationMessage.id)
-                .withDataContentType(MediaType.APPLICATION_JSON)
-                .withData(PojoCloudEventData.wrap(notificationMessage, mapper::writeValueAsBytes))
-                .build()
-
-            val serialized: ByteArray = EventFormatProvider
-                .getInstance()
-                .resolveFormat(ContentType.JSON)
-                ?.serialize(notificationEvent) ?: throw BadRequestException("Unable to serialize cloud event data $notificationEvent")
-            when(notificationMessage.deliveryChannel){
-                DeliveryChannel.EMAIL -> {
-                    notificationClient.sendNotification(
-                        notificationClientBaseUrl,
-                        serialized
-                    )
-                }
-                else -> {
-                    Log.warn("No valid delivery channel found in notification message for event ${event.eventName} with id ${event.eventId} - $notificationMessage")
-                }
+                val serialized: ByteArray = EventFormatProvider
+                    .getInstance()
+                    .resolveFormat(ContentType.JSON)
+                    ?.serialize(contactHistoryEvent) ?: throw BadRequestException("Unable to serialize cloud event data $contactHistoryEvent")
+                contactHistoryClient.createContactHistory(contactHistoryClientBaseUrl, serialized)
             }
 
+            Log.debug("${LogConstants.SERVICE_DEBUG} Publishing notification messages to delivery channels for event ${event.type} with id ${event.id} - $notificationMessages")
+            // Invoke the relevant target service for each notification
+            notificationMessages.forEach { notificationMessage ->
+                val notificationEvent = CloudEventBuilder.v1()
+                    .withSource(URI.create(notificationCloudEventsSource))
+                    .withType(notificationCloudEventsType)
+                    .withId(notificationMessage.id)
+                    .withDataContentType(MediaType.APPLICATION_JSON)
+                    .withData(PojoCloudEventData.wrap(notificationMessage, mapper::writeValueAsBytes))
+                    .build()
+
+                val serialized: ByteArray = EventFormatProvider
+                    .getInstance()
+                    .resolveFormat(ContentType.JSON)
+                    ?.serialize(notificationEvent) ?: throw BadRequestException("Unable to serialize cloud event data $notificationEvent")
+                when(notificationMessage.deliveryChannel){
+                    DeliveryChannel.EMAIL -> {
+                        notificationClient.sendNotification(
+                            notificationClientBaseUrl,
+                            serialized
+                        )
+                    }
+                    else -> {
+                        Log.warn("No valid delivery channel found in notification message for event ${event.type} with id ${event.id} - $notificationMessage")
+                    }
+                }
+
+            }
+
+            result = "Total notifications sent - ${notificationMessages.size}"
+
+        } ?: {
+            Log.error("${LogConstants.SERVICE_END} with error. Invalid data received. Null or empty event.")
+            throw BadRequestException("Event Data is empty in the event. Fix event data and retry.")
         }
 
-        result = "Total notifications sent - ${notificationMessages.size}"
+
+
         return result
     }
 

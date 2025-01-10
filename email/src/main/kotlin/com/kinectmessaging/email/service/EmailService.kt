@@ -78,8 +78,8 @@ class EmailService(
             } else {
                 senderAddress
             }
-
-            if (plainEmailBody?.isNotBlank() == true || htmlEmailMessage?.isNotBlank() == true) {
+            
+            val result = if (plainEmailBody?.isNotBlank() == true || htmlEmailMessage?.isNotBlank() == true) {
                 val message = MailMessage()
                 message.from = senderAddress
                 message.subject = subject
@@ -123,9 +123,14 @@ class EmailService(
 
                 contactHistoryClient.updateContactMessages(contactHistoryClientBaseUrl, serialized )
                 Log.info("Updating contact history from Azure Email Service for id - ${contactMessages.messageId} and Delivery Tracking id - ${result.messageID}")
-            }
 
-            return htmlEmailMessage ?: "No Template rendered"
+                "Delivery Tracking id - ${result.messageID}"
+            } 
+            else{
+                "No Template rendered"
+            }
+            return result
+            
         } ?: throw RuntimeException("Unable to send email. Email data is empty.")
     }
 

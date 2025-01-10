@@ -1,6 +1,5 @@
 package com.kinectmessaging.ep.client
 
-import io.cloudevents.CloudEvent
 import io.cloudevents.jackson.JsonFormat
 import io.quarkus.rest.client.reactive.NotBody
 import io.quarkus.rest.client.reactive.Url
@@ -15,7 +14,7 @@ interface ContactHistoryClient {
     @Consumes(JsonFormat.CONTENT_TYPE)
     @ClientHeaderParam(name = "aeg-sas-key", value = ["\${app.client.contact-history.access-key}"])
     fun createContactHistory(
-        @Url url: String?,
+        @NotBody @Url url: String?,
         event: ByteArray
     )
 }
