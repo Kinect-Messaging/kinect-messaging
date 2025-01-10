@@ -28,15 +28,26 @@ class ContactHistoryResource(private val contactHistoryService: ContactHistorySe
     var mapper: ObjectMapper? = null
 
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    fun createJourney(
-        contactHistory: KContactHistory,
+    @Consumes(MediaType.APPLICATION_JSON, JsonFormat.CONTENT_TYPE)
+    fun createContactHistory(
+        event: String,
     ) {
         MDC.put("function", object {}.javaClass.enclosingMethod.name)
-        Log.info("${LogConstants.SERVICE_START} with request - $contactHistory")
-        val result = contactHistoryService.saveContactHistory(contactHistory)
-        Log.info("${LogConstants.SERVICE_END} with response - $result")
+        Log.info("${LogConstants.SERVICE_START} with request - $event")
+        val cloudEvent: CloudEvent? = EventFormatProvider
+            .getInstance()
+            .resolveFormat(ContentType.JSON)
+            ?.deserialize(event.encodeToByteArray())
+
+        cloudEvent?.data?.let { eventData ->
+            val contactHistory = PojoCloudEventDataMapper.from(mapper, KContactHistory::class.java)
+                .map(eventData).value
+            val result = contactHistory.let { contactHistoryService.saveContactHistory(it) }
+            Log.info("${LogConstants.SERVICE_END} with response - $result")
+        } ?: {
+            Log.error("${LogConstants.SERVICE_END} with error. Invalid data received. Null or empty event.")
+            throw BadRequestException("Invalid data received. Null or empty event")
+        }
     }
 
     @GET
