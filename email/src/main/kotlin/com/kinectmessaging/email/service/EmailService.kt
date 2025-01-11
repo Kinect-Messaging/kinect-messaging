@@ -116,7 +116,7 @@ class EmailService(
                     .withData(PojoCloudEventData.wrap(contactMessages, mapper::writeValueAsBytes))
                     .build()
 
-                val serialized: ByteArray = EventFormatProvider
+                val serialized = EventFormatProvider
                     .getInstance()
                     .resolveFormat(ContentType.JSON)
                     ?.serialize(contactHistoryEvent) ?: throw BadRequestException("Unable to serialize cloud event data $contactHistoryEvent")

@@ -198,6 +198,7 @@ class EventProcessorService(
                     .withDataContentType(MediaType.APPLICATION_JSON)
                     .withData(PojoCloudEventData.wrap(contactHistory, mapper::writeValueAsBytes))
                     .build()
+                Log.debug("Cloud event data prepared for notification - ${mapper.writeValueAsString(contactHistoryEvent)}")
 
                 val serialized: ByteArray = EventFormatProvider
                     .getInstance()
@@ -209,6 +210,7 @@ class EventProcessorService(
             Log.debug("${LogConstants.SERVICE_DEBUG} Publishing notification messages to delivery channels for event ${event.type} with id ${event.id} - $notificationMessages")
             // Invoke the relevant target service for each notification
             notificationMessages.forEach { notificationMessage ->
+
                 val notificationEvent = CloudEventBuilder.v1()
                     .withSource(URI.create(notificationCloudEventsSource))
                     .withType(notificationCloudEventsType)

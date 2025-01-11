@@ -25,7 +25,7 @@ const val DEFAULT_SORT = "journeyName"
 class ContactHistoryResource(private val contactHistoryService: ContactHistoryService) {
 
     @Inject
-    var mapper: ObjectMapper? = null
+    lateinit var mapper: ObjectMapper
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON, JsonFormat.CONTENT_TYPE)
@@ -40,7 +40,8 @@ class ContactHistoryResource(private val contactHistoryService: ContactHistorySe
             ?.deserialize(event.encodeToByteArray())
 
         cloudEvent?.data?.let { eventData ->
-            val contactHistory = PojoCloudEventDataMapper.from(mapper, KContactHistory::class.java)
+            val contactHistory =
+                PojoCloudEventDataMapper.from(mapper, KContactHistory::class.java)
                 .map(eventData).value
             val result = contactHistory.let { contactHistoryService.saveContactHistory(it) }
             Log.info("${LogConstants.SERVICE_END} with response - $result")
