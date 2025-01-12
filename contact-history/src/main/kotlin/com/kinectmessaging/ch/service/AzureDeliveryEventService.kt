@@ -23,7 +23,7 @@ class AzureDeliveryEventService(private val contactHistoryService: ContactHistor
                     HistoryStatusCodes.FAILED
                 }
             }
-        deliveryData.messageId?.let { messageId ->
+        deliveryData.internetMessageId?.let { messageId ->
             contactHistoryService.updateContactMessageByDeliveryTrackingId(
                 deliveryTrackingId = messageId,
                 deliveryStatus = DeliveryStatus(
