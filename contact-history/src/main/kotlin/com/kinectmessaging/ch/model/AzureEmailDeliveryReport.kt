@@ -1,5 +1,6 @@
 package com.kinectmessaging.ch.model
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import kotlinx.serialization.Serializable
 
 data class AzureEmailDeliveryReport(
@@ -13,19 +14,23 @@ data class AzureEmailDeliveryReport(
     val eventTime: String
 )
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Serializable
 data class DeliveryData (
-    val sender: String,
-    val recipient: String,
-    val messageId: String,
-    val status: AzureEmailDeliveryStatus,
-    val deliveryStatusDetails: DeliveryStatusDetails,
+    val sender: String?,
+    val recipient: String?,
+    val internetMessageId: String?,
+    val messageId: String?,
+    val status: AzureEmailDeliveryStatus?,
+    val deliveryStatusDetails: DeliveryStatusDetails?,
     val deliveryAttemptTimestamp: String?
 )
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Serializable
 data class DeliveryStatusDetails (
-    val statusMessage: String
+    val statusMessage: String?,
+    val recipientMailServerHostName: String?
 )
 
 @Serializable
