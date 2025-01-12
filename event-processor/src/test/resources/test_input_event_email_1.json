@@ -1,0 +1,16 @@
+{
+  "customer": {
+    "firstName": "Unit",
+    "lastName": "Tester",
+    "email": "kinecttester@yopmail.com",
+    "phone": "123-456-7890",
+    "address": {
+      "addressLine1": "123 abc st",
+      "city": "Atlanta",
+      "state": "GA",
+      "zip": "30000",
+      "country": "USA"
+    }
+  },
+  "contactReason": "Request a demo"
+}

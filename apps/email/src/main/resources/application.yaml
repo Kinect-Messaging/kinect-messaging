@@ -1,5 +1,0 @@
-spring:
-  application:
-    name: kinect-email-app
-  config:
-    import: "optional:configserver:http://kinect-config-server-app"
