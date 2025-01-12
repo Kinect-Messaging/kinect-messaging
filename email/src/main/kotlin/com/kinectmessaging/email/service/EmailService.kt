@@ -29,12 +29,6 @@ class EmailService(
     val templateClientBaseUrl: String,
     @ConfigProperty(name = "app.client.contact-history.url")
     val contactHistoryClientBaseUrl: String,
-    @ConfigProperty(name = "app.cloud-events.headers.spec-version")
-    val cloudEventsSpecVersion: String,
-    @ConfigProperty(name = "app.cloud-events.headers.type")
-    val cloudEventsType: String,
-    @ConfigProperty(name = "app.cloud-events.headers.source")
-    val cloudEventsSource: String,
     @ConfigProperty(name = "quarkus.mailer.from")
     var senderAddress: String,
 ) {
@@ -107,19 +101,6 @@ class EmailService(
                     ),
                     engagementStatus = null
                 )
-                val contactHistoryEvent = CloudEventBuilder.v1()
-                    .withSource(URI.create(cloudEventsSource))
-                    .withType(cloudEventsType)
-                    .withId(contactMessages.messageId)
-                    .withDataContentType(MediaType.APPLICATION_JSON)
-                    .withData(PojoCloudEventData.wrap(contactMessages, mapper::writeValueAsBytes))
-                    .build()
-
-                val serialized = EventFormatProvider
-                    .getInstance()
-                    .resolveFormat(ContentType.JSON)
-                    ?.serialize(contactHistoryEvent) ?: throw BadRequestException("Unable to serialize cloud event data $contactHistoryEvent")
-
                 contactHistoryClient.updateContactMessages(contactHistoryClientBaseUrl, contactMessages.messageId, OffsetDateTime.now().toString(), contactMessages )
                 Log.info("Updating contact history from Azure Email Service for id - ${contactMessages.messageId} and Delivery Tracking id - ${result.messageID}")
 
