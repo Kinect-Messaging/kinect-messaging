@@ -154,7 +154,7 @@ fun `given Email Data with Azure when send Email then receive Email`() {
  // verify that it was sent
     val message: Message = mailbox.findFirst(givenInput.emailData?.senderAddress)
     assertThat(message, notNullValue())
-    assertThat(message.to[0].address, `is`(givenInput.emailData?.toRecipients?.get(0)?.address))
+    assertThat(message.to[0].address, `is`(givenInput.emailData?.toRecipients?.get(0)?.contacts?.first()?.email))
     assertThat(message.subject, `is`(givenInput.emailData?.subject))
     assertThat(message.text, `is`(textTemplate))
 
