@@ -1,5 +1,7 @@
 package com.kinectmessaging.ch.model
 
+import kotlinx.serialization.Serializable
+
 data class AzureEmailDeliveryReport(
     val id: String,
     val topic: String,
@@ -11,6 +13,7 @@ data class AzureEmailDeliveryReport(
     val eventTime: String
 )
 
+@Serializable
 data class DeliveryData (
     val sender: String,
     val recipient: String,
@@ -20,10 +23,12 @@ data class DeliveryData (
     val deliveryAttemptTimestamp: String?
 )
 
+@Serializable
 data class DeliveryStatusDetails (
     val statusMessage: String
 )
 
+@Serializable
 enum class AzureEmailDeliveryStatus {
     Delivered,
     Suppressed,

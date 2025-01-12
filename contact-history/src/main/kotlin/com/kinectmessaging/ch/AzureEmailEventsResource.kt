@@ -26,7 +26,7 @@ class AzureEmailEventsResource(private val azureDeliveryEventService: AzureDeliv
 
     @POST
     @Path("/delivery")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON, JsonFormat.CONTENT_TYPE)
     fun consumeEmailDeliveryEvents(event: String){
         MDC.put("function", object {}.javaClass.enclosingMethod.name)
         Log.info("${LogConstants.SERVICE_START} with request - $event")
