@@ -76,7 +76,6 @@ class EventProcessorService(
             Log.debug("${LogConstants.SERVICE_DEBUG} Calling Journey configs for event ${event.type} with id ${event.id}")
             val matchingJourneys = configClient.getJourneyConfigsByEventName("$journeyClientBaseUrl${event.type}")
             Log.debug("${LogConstants.SERVICE_DEBUG} Fetched Journey configs for event ${event.type} with id ${event.id} - $matchingJourneys")
-//            val payload: Map<*, *>? = mapper.convertValue(eventPayload, Map::class.java)
 
             matchingJourneys?.forEach { journeyConfig ->
                 val messageConfigs = mutableListOf<MessageConfig>()
@@ -150,29 +149,32 @@ class EventProcessorService(
 
                             // Add Contact History record
                             toRecipients.forEach { recipient ->
-                                contactHistoryList.add(
-                                    KContactHistory(
-                                        id = UUID.randomUUID().toString(),
-                                        sourceEventId = event.id,
-                                        journeyTransactionId = journeyTransactionId,
-                                        journeyName = journeyConfig.journeyName,
-                                        messages = ContactMessages(
-                                            messageId = notificationMessage.id,
-                                            deliveryTrackingId = null,
-                                            deliveryChannel = notificationMessage.deliveryChannel,
-                                            contactAddress = recipient.address,
-                                            deliveryStatus = mutableListOf(
-                                                DeliveryStatus(
-                                                    statusTime = LocalDateTime.now(),
-                                                    status = HistoryStatusCodes.CREATED,
-                                                    statusMessage = null,
-                                                    originalStatus = null,
-                                                )
+                                recipient.contacts?.first()?.email?.let {
+                                    contactHistoryList.add(
+                                        KContactHistory(
+                                            id = UUID.randomUUID().toString(),
+                                            sourceEventId = event.id,
+                                            journeyTransactionId = journeyTransactionId,
+                                            journeyName = journeyConfig.journeyName,
+                                            messages = ContactMessages(
+                                                messageId = notificationMessage.id,
+                                                deliveryTrackingId = null,
+                                                deliveryChannel = notificationMessage.deliveryChannel,
+                                                contactAddress = it,
+                                                deliveryStatus = mutableListOf(
+                                                    DeliveryStatus(
+                                                        statusTime = LocalDateTime.now(),
+                                                        status = HistoryStatusCodes.CREATED,
+                                                        statusMessage = null,
+                                                        originalStatus = null,
+                                                    )
+                                                ),
+                                                engagementStatus = null,
                                             ),
-                                            engagementStatus = null,
-                                        ),
+                                        )
                                     )
-                                )
+                                }
+
                             }
 
                             notificationMessages.add(notificationMessage)
@@ -257,15 +259,21 @@ class EventProcessorService(
      * Function to parse the recipients of each email configurations per message configuration and evaluate the recipients. Uses Jsonata evaluation to convert the configurations to actual values and maps to a list of InternetAddress.
      * @return List<InternetAddress>
      */
-    private fun evaluateEmailRecipientsFromEmailConfig(recipientConfigs: List<EmailRecipientConfig>?, payload: Map<*, *>?): List<InternetAddress>{
-        val recipients = mutableListOf<InternetAddress>()
+    private fun evaluateEmailRecipientsFromEmailConfig(recipientConfigs: List<EmailRecipientConfig>?, payload: Map<*, *>?): List<Person>{
+        val recipients = mutableListOf<Person>()
         recipientConfigs?.forEach { recipientConfig ->
             val emailAddress = recipientConfig.emailAddress
             if (emailAddress.isNotBlank()) {
                 recipients.add(
-                    InternetAddress(
-                        jsonata(recipientConfig.emailAddress).evaluate(payload).toString(),
-                        jsonata(recipientConfig.firstName).evaluate(payload).toString() + ", " +  jsonata(recipientConfig.lastName).evaluate(payload).toString()
+                    Person(
+                        jsonata(recipientConfig.firstName).evaluate(payload).toString(),
+                        jsonata(recipientConfig.lastName).evaluate(payload).toString(),
+                        listOf(
+                            Contact(
+                                jsonata(recipientConfig.emailAddress).evaluate(payload).toString(),
+                                null,
+                                null
+                        ))
                     )
                 )
             }

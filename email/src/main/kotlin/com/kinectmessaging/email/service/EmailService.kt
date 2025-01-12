@@ -14,10 +14,8 @@ import io.vertx.ext.mail.MailMessage
 import io.vertx.mutiny.ext.mail.MailClient
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
-import jakarta.mail.internet.InternetAddress
 import jakarta.ws.rs.BadRequestException
 import jakarta.ws.rs.core.MediaType
-import kotlinx.serialization.Serializable
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.eclipse.microprofile.rest.client.inject.RestClient
 import java.net.URI
@@ -135,10 +133,12 @@ class EmailService(
         } ?: throw RuntimeException("Unable to send email. Email data is empty.")
     }
 
-    private fun mapRecipients(recipients: List<@Serializable(with = InternetAddressSerializer::class) InternetAddress>): List<String> {
+    private fun mapRecipients(recipients: List<Person>): List<String> {
         val messageRecipients = mutableListOf<String>()
-        recipients.forEach {
-            messageRecipients.add(it.address)
+        recipients.forEach { recipient ->
+            recipient.contacts?.forEach { contact ->
+                contact.email?.let { messageRecipients.add(it) }
+            }
         }
         return messageRecipients
     }
