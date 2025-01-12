@@ -22,6 +22,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.eclipse.microprofile.rest.client.inject.RestClient
 import java.net.URI
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
 
 
 @ApplicationScoped
@@ -121,7 +122,7 @@ class EmailService(
                     .resolveFormat(ContentType.JSON)
                     ?.serialize(contactHistoryEvent) ?: throw BadRequestException("Unable to serialize cloud event data $contactHistoryEvent")
 
-                contactHistoryClient.updateContactMessages(contactHistoryClientBaseUrl, serialized )
+                contactHistoryClient.updateContactMessages(contactHistoryClientBaseUrl, contactMessages.messageId, OffsetDateTime.now().toString(), contactMessages )
                 Log.info("Updating contact history from Azure Email Service for id - ${contactMessages.messageId} and Delivery Tracking id - ${result.messageID}")
 
                 "Delivery Tracking id - ${result.messageID}"

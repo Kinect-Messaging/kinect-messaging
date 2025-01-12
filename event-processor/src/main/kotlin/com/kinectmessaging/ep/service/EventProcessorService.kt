@@ -8,21 +8,16 @@ import com.kinectmessaging.ep.client.NotificationClient
 import com.kinectmessaging.libs.common.LogConstants
 import com.kinectmessaging.libs.model.*
 import io.cloudevents.CloudEvent
-import io.cloudevents.core.builder.CloudEventBuilder
-import io.cloudevents.core.data.PojoCloudEventData
-import io.cloudevents.core.format.ContentType
-import io.cloudevents.core.provider.EventFormatProvider
 import io.cloudevents.jackson.PojoCloudEventDataMapper
 import io.quarkus.logging.Log
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
 import jakarta.mail.internet.InternetAddress
 import jakarta.ws.rs.BadRequestException
-import jakarta.ws.rs.core.MediaType
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.eclipse.microprofile.rest.client.inject.RestClient
-import java.net.URI
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.util.*
 
 @ApplicationScoped
@@ -109,7 +104,7 @@ class EventProcessorService(
                 Log.debug("${LogConstants.SERVICE_DEBUG} Fetched Message configs for event ${event.type} with id ${event.id} - $messageConfigs")
                 // Create relevant notification from configs
                 if (messageConfigs.isEmpty()){
-                    Log.warn("No valid message configs fetched for event ${event.type} and journey ${journeyConfig.journeyName}")
+                    Log.warn("No valid message configs fetched for event ${event.type} with result - $messageConfigs")
                 }
                 messageConfigs.forEach { messageConfig ->
                     // verify if message condition exists and evaluates to true
@@ -191,43 +186,50 @@ class EventProcessorService(
             // Publish contact history records
             contactHistoryList.forEach { contactHistory ->
                 Log.debug("Updating Contact History ${contactHistory.id}")
-                val contactHistoryEvent = CloudEventBuilder.v1()
-                    .withSource(URI.create(contactHistoryCloudEventsSource))
-                    .withType(contactHistoryCloudEventsType)
-                    .withId(contactHistory.id)
-                    .withDataContentType(MediaType.APPLICATION_JSON)
-                    .withData(PojoCloudEventData.wrap(contactHistory, mapper::writeValueAsBytes))
-                    .build()
-                Log.debug("Cloud event data prepared for notification - ${mapper.writeValueAsString(contactHistoryEvent)}")
-
-                val serialized: ByteArray = EventFormatProvider
-                    .getInstance()
-                    .resolveFormat(ContentType.JSON)
-                    ?.serialize(contactHistoryEvent) ?: throw BadRequestException("Unable to serialize cloud event data $contactHistoryEvent")
-                contactHistoryClient.createContactHistory(contactHistoryClientBaseUrl, serialized)
+//                val contactHistoryEvent = CloudEventBuilder.v1()
+//                    .withSource(URI.create(contactHistoryCloudEventsSource))
+//                    .withType(contactHistoryCloudEventsType)
+//                    .withId(contactHistory.id)
+//                    .withDataContentType(MediaType.APPLICATION_JSON)
+//                    .withData(PojoCloudEventData.wrap(contactHistory, mapper::writeValueAsBytes))
+//                    .build()
+//                Log.debug("Cloud event data prepared for notification - $contactHistoryEvent")
+//
+//                val serialized: ByteArray = EventFormatProvider
+//                    .getInstance()
+//                    .resolveFormat(ContentType.JSON)
+//                    ?.serialize(contactHistoryEvent) ?: throw BadRequestException("Unable to serialize cloud event data $contactHistoryEvent")
+                contactHistoryClient.createContactHistory(
+                    contactHistoryClientBaseUrl,
+                    contactHistory.id,
+                    OffsetDateTime.now().toString(),
+                    contactHistory
+                )
             }
 
             Log.debug("${LogConstants.SERVICE_DEBUG} Publishing notification messages to delivery channels for event ${event.type} with id ${event.id} - $notificationMessages")
             // Invoke the relevant target service for each notification
             notificationMessages.forEach { notificationMessage ->
 
-                val notificationEvent = CloudEventBuilder.v1()
-                    .withSource(URI.create(notificationCloudEventsSource))
-                    .withType(notificationCloudEventsType)
-                    .withId(notificationMessage.id)
-                    .withDataContentType(MediaType.APPLICATION_JSON)
-                    .withData(PojoCloudEventData.wrap(notificationMessage, mapper::writeValueAsBytes))
-                    .build()
-
-                val serialized: ByteArray = EventFormatProvider
-                    .getInstance()
-                    .resolveFormat(ContentType.JSON)
-                    ?.serialize(notificationEvent) ?: throw BadRequestException("Unable to serialize cloud event data $notificationEvent")
+//                val notificationEvent = CloudEventBuilder.v1()
+//                    .withSource(URI.create(notificationCloudEventsSource))
+//                    .withType(notificationCloudEventsType)
+//                    .withId(notificationMessage.id)
+//                    .withDataContentType(MediaType.APPLICATION_JSON)
+//                    .withData(PojoCloudEventData.wrap(notificationMessage, mapper::writeValueAsBytes))
+//                    .build()
+//
+//                val serialized: ByteArray = EventFormatProvider
+//                    .getInstance()
+//                    .resolveFormat(ContentType.JSON)
+//                    ?.serialize(notificationEvent) ?: throw BadRequestException("Unable to serialize cloud event data $notificationEvent")
                 when(notificationMessage.deliveryChannel){
                     DeliveryChannel.EMAIL -> {
                         notificationClient.sendNotification(
                             notificationClientBaseUrl,
-                            serialized
+                            notificationMessage.id,
+                            OffsetDateTime.now().toString(),
+                            notificationMessage
                         )
                     }
                     else -> {

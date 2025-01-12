@@ -109,7 +109,7 @@ fun `given Email Data with Azure when send Email then receive Email`() {
 
   ))
 
- every { contactHistoryClient.updateContactMessages(any(String::class), any(ByteArray::class)) }.returns(Unit)
+ every { contactHistoryClient.updateContactMessages(any(String::class), any(String::class), any(String::class),  any(ContactMessages::class)) }.returns(Unit)
 
  val requestInput = "{\n" +
          "    \"id\": \"50ca4b05-13df-49f8-8623-7174a7dd3ac8\",\n" +

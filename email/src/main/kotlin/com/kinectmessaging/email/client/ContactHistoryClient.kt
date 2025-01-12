@@ -1,5 +1,7 @@
 package com.kinectmessaging.email.com.kinectmessaging.email.client
 
+import com.kinectmessaging.libs.common.CloudEventsHeaders
+import com.kinectmessaging.libs.model.ContactMessages
 import io.cloudevents.jackson.JsonFormat
 import io.quarkus.rest.client.reactive.NotBody
 import io.quarkus.rest.client.reactive.Url
@@ -13,8 +15,15 @@ interface ContactHistoryClient {
     @POST
     @Consumes(JsonFormat.CONTENT_TYPE)
     @ClientHeaderParam(name = "aeg-sas-key", value = ["\${app.client.contact-history.access-key}"])
+    @ClientHeaderParam(name = CloudEventsHeaders.SPEC_VERSION, value = ["\${app.cloud-events.headers.spec-version}"])
+    @ClientHeaderParam(name = CloudEventsHeaders.TYPE, value = ["\${app.cloud-events.headers.contact-history.type}"])
+    @ClientHeaderParam(name = CloudEventsHeaders.SOURCE, value = ["\${app.cloud-events.headers.contact-history.source}"])
+    @ClientHeaderParam(name = CloudEventsHeaders.TIME, value = ["{eventTime}"])
+    @ClientHeaderParam(name = CloudEventsHeaders.ID, value = ["{eventId}"])
     fun updateContactMessages(
         @NotBody @Url url: String?,
-        event: ByteArray
+        @NotBody eventId: String,
+        @NotBody eventTime: String,
+        event: ContactMessages
     )
 }

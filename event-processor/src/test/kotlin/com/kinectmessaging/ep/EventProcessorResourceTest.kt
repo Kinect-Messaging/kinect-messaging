@@ -5,6 +5,8 @@ import com.kinectmessaging.ep.client.ConfigClient
 import com.kinectmessaging.ep.client.ContactHistoryClient
 import com.kinectmessaging.ep.client.NotificationClient
 import com.kinectmessaging.libs.model.JourneyConfig
+import com.kinectmessaging.libs.model.KContactHistory
+import com.kinectmessaging.libs.model.KMessage
 import com.kinectmessaging.libs.model.MessageConfig
 import io.mockk.every
 import io.quarkiverse.test.junit.mockk.InjectMock
@@ -227,9 +229,9 @@ class EventProcessorResourceTest (){
         every { configClient.getMessageConfigsById("/kinect/messaging/config/message/499a34eb-70c4-4fa2-b5fb-0a0635ad7813") }
             .returns(Json.decodeFromString<MessageConfig>(mockMessageResponse2))
 
-        every { contactHistoryClient.createContactHistory(any(String::class), any(ByteArray::class)) }.returns(Unit)
+        every { contactHistoryClient.createContactHistory(any(String::class), any(String::class), any(String::class), any(KContactHistory::class)) }.returns(Unit)
 
-        every { notificationClient.sendNotification(any(String::class), any(ByteArray::class)) }
+        every { notificationClient.sendNotification(any(String::class), any(String::class), any(String::class), any(KMessage::class)) }
             .returns(Unit)
 
 
