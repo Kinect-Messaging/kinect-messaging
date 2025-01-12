@@ -9,8 +9,6 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-const val DEFAULT_MAX_EVENTS = 10
-
 @ApplicationScoped
 class AzureDeliveryEventService(private val contactHistoryService: ContactHistoryService) {
 
@@ -25,21 +23,23 @@ class AzureDeliveryEventService(private val contactHistoryService: ContactHistor
                     HistoryStatusCodes.FAILED
                 }
             }
-        contactHistoryService.updateContactMessageByDeliveryTrackingId(
-            deliveryTrackingId = deliveryData.messageId,
-            deliveryStatus = DeliveryStatus(
-                statusTime = deliveryData.deliveryAttemptTimestamp?.let {
-                    LocalDateTime.parse(
-                        it,
-                        DateTimeFormatter.ISO_ZONED_DATE_TIME
-                    )
-                } ?: LocalDateTime.now(),
-                status = status,
-                statusMessage = deliveryData.deliveryStatusDetails.statusMessage,
-                originalStatus = null
-            ),
-            engagementStatus = null
-        )
+        deliveryData.messageId?.let { messageId ->
+            contactHistoryService.updateContactMessageByDeliveryTrackingId(
+                deliveryTrackingId = messageId,
+                deliveryStatus = DeliveryStatus(
+                    statusTime = deliveryData.deliveryAttemptTimestamp?.let {
+                        LocalDateTime.parse(
+                            it,
+                            DateTimeFormatter.ISO_ZONED_DATE_TIME
+                        )
+                    } ?: LocalDateTime.now(),
+                    status = status,
+                    statusMessage = deliveryData.deliveryStatusDetails?.statusMessage,
+                    originalStatus = null
+                ),
+                engagementStatus = null
+            )
+        }
         return "Updated status $status for id ${deliveryData.messageId}"
     }
 }
