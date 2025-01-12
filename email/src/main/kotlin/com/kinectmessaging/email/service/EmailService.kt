@@ -1,24 +1,16 @@
 package com.kinectmessaging.email.service
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.kinectmessaging.email.com.kinectmessaging.email.client.ContactHistoryClient
 import com.kinectmessaging.email.com.kinectmessaging.email.client.TemplateClient
 import com.kinectmessaging.libs.common.EmailUtils
 import com.kinectmessaging.libs.model.*
-import io.cloudevents.core.builder.CloudEventBuilder
-import io.cloudevents.core.data.PojoCloudEventData
-import io.cloudevents.core.format.ContentType
-import io.cloudevents.core.provider.EventFormatProvider
 import io.quarkus.logging.Log
 import io.vertx.ext.mail.MailMessage
 import io.vertx.mutiny.ext.mail.MailClient
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
-import jakarta.ws.rs.BadRequestException
-import jakarta.ws.rs.core.MediaType
 import org.eclipse.microprofile.config.inject.ConfigProperty
 import org.eclipse.microprofile.rest.client.inject.RestClient
-import java.net.URI
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 
@@ -35,9 +27,6 @@ class EmailService(
 
     @Inject
     lateinit var mailClient: MailClient
-
-    @Inject
-    lateinit var mapper: ObjectMapper
 
     @Inject
     @RestClient
